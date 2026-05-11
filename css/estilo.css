@@ -1,0 +1,144 @@
+
+/* ===== ESTILO GENERAL ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #f8f9ff, #e9f0ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.container {
+    background: white;
+    padding: 40px;
+    width: 420px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    text-align: center;
+    animation: aparecer 0.6s ease;
+}
+
+/* ===== ANIMACIÓN ===== */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== LOGO ===== */
+.logo {
+    width: 170px;
+    margin-bottom: 20px;
+}
+
+/* ===== TITULOS ===== */
+h1 {
+    margin-bottom: 10px;
+    color: #222;
+    font-size: 28px;
+}
+
+p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* ===== INPUT ===== */
+input {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+}
+
+input:focus {
+    border-color: #fc75e5;
+    box-shadow: 0 0 10px rgba(252, 117, 229, 0.3);
+}
+
+/* ===== AVATARES ===== */
+.avatars {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.avatars img {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 15px;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+/* hover avatar */
+.avatars img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+/* avatar seleccionado */
+.avatars img.selected {
+    border: 3px solid #fc75e5;
+    transform: scale(1.1);
+    box-shadow: 0 5px 20px rgba(252, 117, 229, 0.4);
+}
+
+/* ===== BOTÓN ===== */
+button {
+    width: 100%;
+    padding: 15px;
+    font-size: 17px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #fc75e5, #ff4fd8);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+/* efecto hover */
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(252, 117, 229, 0.35);
+}
+
+/* efecto click */
+button:active {
+    transform: scale(0.98);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 500px) {
+
+    .container {
+        width: 90%;
+        padding: 30px 20px;
+    }
+
+    .avatars img {
+        width: 70px;
+        height: 70px;
+    }
+}
