@@ -1,11 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>juego de matematicas</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprende con Nosotros</title>
+
+  <!-- CSS -->
+    <link rel="stylesheet" href="css/estilo_juego1.css">
+
 </head>
 <body>
-    
+
+<div id="game">
+    <h1> Aprende con Nosotros </h1>
+    <h2 id="title">Primero aprendamos los números</h2>
+
+    <!-- reloj de arena -->
+    <div id="loader">⏳</div>
+
+    <div id="numbers"></div>
+
+    <div id="guessGame" style="display:none;">
+        <h2>¿Cuántos objetos hay?</h2>
+        <div id="itemsArea"></div>
+        <div id="answers"></div>
+    </div>
+
+    <p id="message"></p>
+</div>
+
+<script src="js/script_juego.js"></script>
+
 </body>
 </html>
