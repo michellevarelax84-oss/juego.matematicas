@@ -1,67 +1,151 @@
-let totalItems = 0;
+let numerosAprendidos = [];
 
-const objetos = ["🍎", "⚽", "⭐", "🧸", "🚗", "🐶", "🌈"];
+/* audios */
+const sonidoClick = new Audio("sonidos/click.mp3");
+const sonidoError = new Audio("sonidos/error.mp3");
+const sonidoConfeti = new Audio("sonidos/confite.mp3");
 
-const sonidoClick = new Audio("audio/click.mp3");
-const sonidoError = new Audio("audio/error.mp3");
-const sonidoCorrecto = new Audio("audio/confeti.mp3");
+/* ========================= */
+/* FUNCIÓN HABLAR */
+/* ========================= */
 
-/* ⏳ SOLO BIENVENIDA */
-function hablarBienvenida(texto, callback) {
+function hablar(texto, callback = null) {
     const loader = document.getElementById("loader");
+
+    speechSynthesis.cancel();
     loader.style.display = "block";
 
-    const msg = new SpeechSynthesisUtterance(texto);
-    msg.lang = "es-ES";
+    const mensaje = new SpeechSynthesisUtterance(texto);
+    mensaje.lang = "es-ES";
+    mensaje.rate = 0.9;
 
-    msg.onend = () => {
+    mensaje.onend = () => {
         loader.style.display = "none";
-        if (callback) callback();
+
+        if (callback) {
+            callback();
+        }
     };
 
-    speechSynthesis.speak(msg);
+    speechSynthesis.speak(mensaje);
 }
 
-/* hablar normal */
-function hablar(texto) {
-    const msg = new SpeechSynthesisUtterance(texto);
-    msg.lang = "es-ES";
-    speechSynthesis.speak(msg);
+/* ========================= */
+/* NÚMERO GRANDE CON TRANSICIÓN */
+/* ========================= */
+
+function mostrarNumeroGrande(numero) {
+    let anterior = document.getElementById("numeroGrande");
+
+    if (anterior) {
+        anterior.remove();
+    }
+
+    let numeroVisual = document.createElement("div");
+    numeroVisual.id = "numeroGrande";
+    numeroVisual.innerText = numero;
+
+    document.getElementById("game").appendChild(numeroVisual);
+
+    setTimeout(() => {
+        numeroVisual.style.opacity = "0";
+        numeroVisual.style.transform =
+            "translateY(-20px) scale(1.2)";
+
+        setTimeout(() => {
+            numeroVisual.remove();
+        }, 800);
+
+    }, 1200);
 }
 
-/* ETAPA 1 */
+/* ========================= */
+/* ETAPA 1: NÚMEROS */
+/* ========================= */
+
 function startNumbers() {
     const container = document.getElementById("numbers");
+    const zonaManzanas = document.getElementById("zonaManzanas");
+    const message = document.getElementById("message");
+
     container.innerHTML = "";
+    zonaManzanas.innerHTML = "";
+    message.innerHTML = "";
 
-    let numerosTocados = [];
-
-    hablarBienvenida(
-        "Bienvenido. Aprende con nosotros. Vamos a aprender los números.",
-        () => {}
+    hablar(
+        "Bienvenido. Aprende con nosotros. Vamos a aprender los números."
     );
 
+    /* crear números del 1 al 10 */
     for (let i = 1; i <= 10; i++) {
         let box = document.createElement("div");
         box.className = "number-box";
         box.innerText = i;
 
+        /* si ya fue tocado */
+        if (numerosAprendidos.includes(i)) {
+            box.style.background = "#d4ffd4";
+            box.style.pointerEvents = "none";
+        }
+
         box.onclick = () => {
-            if (!numerosTocados.includes(i)) {
-                sonidoClick.play();
-                numerosTocados.push(i);
+            sonidoClick.play();
 
-                hablar(i);
-
-                box.style.background = "#d4ffd4";
-                box.style.pointerEvents = "none";
+            /* guardar solo una vez */
+            if (!numerosAprendidos.includes(i)) {
+                numerosAprendidos.push(i);
             }
 
-            if (numerosTocados.length === 10) {
-                document.getElementById("message").innerText =
-                    "🎉 ¡Muy bien! Ahora vamos a contar objetos.";
+            /* bloquear después de tocar */
+            box.style.background = "#d4ffd4";
+            box.style.pointerEvents = "none";
 
-                hablar("Muy bien. Ahora vamos a contar objetos.", startGuessGame);
+            /* mostrar número grande */
+            mostrarNumeroGrande(i);
+
+            /* limpiar manzanas anteriores */
+            zonaManzanas.innerHTML = "";
+
+            /* mostrar manzanas abajo */
+            for (let j = 1; j <= i; j++) {
+                let item = document.createElement("div");
+                item.className = "item";
+                item.innerText = "🍎";
+
+                item.onclick = () => {
+                    sonidoClick.play();
+
+                    if (j === 1) {
+                        hablar("Una manzana");
+                    } else {
+                        hablar(j + " manzanas");
+                    }
+                };
+
+                zonaManzanas.appendChild(item);
+            }
+
+            /* si aún no termina */
+            if (numerosAprendidos.length < 10) {
+                hablar(i.toString());
+            }
+
+            /* cuando llega al 10 */
+            if (numerosAprendidos.length === 10) {
+                hablar(
+                    "10",
+                    () => {
+                        message.innerText =
+                            "🎉 ¡Muy bien! Ya aprendiste los números del 1 al 10";
+
+                        hablar(
+                            "Muy bien. Ya aprendiste los números del uno al diez.",
+                            () => {
+                                sonidoConfeti.play();
+                            }
+                        );
+                    }
+                );
             }
         };
 
@@ -69,29 +153,23 @@ function startNumbers() {
     }
 }
 
-/* ETAPA 2 */
-function startGuessGame() {
-    const container = document.getElementById("numbers");
-    container.innerHTML = "";
+/* ========================= */
+/* ERROR */
+/* ========================= */
 
-    totalItems = Math.floor(Math.random() * 5) + 1;
+function mostrarError() {
+    sonidoError.play();
 
-    hablar("¿Cuántos objetos hay?");
+    document.getElementById("message").innerText =
+        "❌ Error, inténtalo otra vez";
 
-    for (let i = 0; i < totalItems; i++) {
-        let item = document.createElement("div");
-        item.className = "item";
-        item.innerText = "🍎";
-
-        item.onclick = () => {
-            sonidoClick.play();
-            hablar(i + 1);
-            item.onclick = null;
-        };
-
-        container.appendChild(item);
-    }
+    hablar("Error. Inténtalo otra vez.");
 }
 
-/* iniciar */
-startNumbers();
+/* ========================= */
+/* INICIAR */
+/* ========================= */
+
+window.onload = () => {
+    startNumbers();
+};
