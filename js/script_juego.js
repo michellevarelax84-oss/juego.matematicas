@@ -1,9 +1,12 @@
 let numerosAprendidos = [];
 
-/* audios */
+/* ========================= */
+/* AUDIOS */
+/* ========================= */
+
 const sonidoClick = new Audio("sonidos/click.mp3");
 const sonidoError = new Audio("sonidos/error.mp3");
-const sonidoConfeti = new Audio("sonidos/confite.mp3");
+const sonidoConfeti = new Audio("sonidos/confeti.mp3");
 
 /* ========================= */
 /* FUNCIÓN HABLAR */
@@ -13,14 +16,19 @@ function hablar(texto, callback = null) {
     const loader = document.getElementById("loader");
 
     speechSynthesis.cancel();
-    loader.style.display = "block";
+
+    if (loader) {
+        loader.style.display = "block";
+    }
 
     const mensaje = new SpeechSynthesisUtterance(texto);
     mensaje.lang = "es-ES";
     mensaje.rate = 0.9;
 
-    mensaje.onend = () => {
-        loader.style.display = "none";
+    mensaje.onend = function () {
+        if (loader) {
+            loader.style.display = "none";
+        }
 
         if (callback) {
             callback();
@@ -31,7 +39,7 @@ function hablar(texto, callback = null) {
 }
 
 /* ========================= */
-/* NÚMERO GRANDE CON TRANSICIÓN */
+/* MOSTRAR NÚMERO GRANDE */
 /* ========================= */
 
 function mostrarNumeroGrande(numero) {
@@ -47,12 +55,12 @@ function mostrarNumeroGrande(numero) {
 
     document.getElementById("game").appendChild(numeroVisual);
 
-    setTimeout(() => {
+    setTimeout(function () {
         numeroVisual.style.opacity = "0";
         numeroVisual.style.transform =
             "translateY(-20px) scale(1.2)";
 
-        setTimeout(() => {
+        setTimeout(function () {
             numeroVisual.remove();
         }, 800);
 
@@ -60,7 +68,7 @@ function mostrarNumeroGrande(numero) {
 }
 
 /* ========================= */
-/* ETAPA 1: NÚMEROS */
+/* ETAPA 1: APRENDER NÚMEROS */
 /* ========================= */
 
 function startNumbers() {
@@ -76,43 +84,36 @@ function startNumbers() {
         "Bienvenido. Aprende con nosotros. Vamos a aprender los números."
     );
 
-    /* crear números del 1 al 10 */
     for (let i = 1; i <= 10; i++) {
         let box = document.createElement("div");
         box.className = "number-box";
         box.innerText = i;
 
-        /* si ya fue tocado */
         if (numerosAprendidos.includes(i)) {
             box.style.background = "#d4ffd4";
             box.style.pointerEvents = "none";
         }
 
-        box.onclick = () => {
+        box.onclick = function () {
             sonidoClick.play();
 
-            /* guardar solo una vez */
             if (!numerosAprendidos.includes(i)) {
                 numerosAprendidos.push(i);
             }
 
-            /* bloquear después de tocar */
             box.style.background = "#d4ffd4";
             box.style.pointerEvents = "none";
 
-            /* mostrar número grande */
             mostrarNumeroGrande(i);
 
-            /* limpiar manzanas anteriores */
             zonaManzanas.innerHTML = "";
 
-            /* mostrar manzanas abajo */
             for (let j = 1; j <= i; j++) {
                 let item = document.createElement("div");
                 item.className = "item";
                 item.innerText = "🍎";
 
-                item.onclick = () => {
+                item.onclick = function () {
                     sonidoClick.play();
 
                     if (j === 1) {
@@ -125,28 +126,31 @@ function startNumbers() {
                 zonaManzanas.appendChild(item);
             }
 
-            /* si aún no termina */
-            if (numerosAprendidos.length < 10) {
-                hablar(i.toString());
-            }
+            hablar(i.toString(), function () {
 
-            /* cuando llega al 10 */
-            if (numerosAprendidos.length === 10) {
-                hablar(
-                    "10",
-                    () => {
-                        message.innerText =
-                            "🎉 ¡Muy bien! Ya aprendiste los números del 1 al 10";
+                if (numerosAprendidos.length === 10) {
+                    message.innerText =
+                        "🎉 ¡Muy bien! Ya aprendiste los números del 1 al 10";
 
-                        hablar(
-                            "Muy bien. Ya aprendiste los números del uno al diez.",
-                            () => {
-                                sonidoConfeti.play();
-                            }
-                        );
-                    }
-                );
-            }
+                    hablar(
+                        "Muy bien. Ya aprendiste los números del uno al diez.",
+                        function () {
+                            // sonido confeti
+                            sonidoConfeti.play();
+
+                            // confeti visual
+                            confetti({
+                                particleCount: 250,
+                                spread: 150,
+                                origin: { y: 0.6 }
+                            });
+
+                            // mostrar botón siguiente
+                            document.getElementById("btnSiguiente").style.display = "inline-block";
+                        }
+                    );
+                }
+            });
         };
 
         container.appendChild(box);
@@ -167,9 +171,17 @@ function mostrarError() {
 }
 
 /* ========================= */
-/* INICIAR */
+/* IR AL SIGUIENTE JUEGO */
 /* ========================= */
 
-window.onload = () => {
+function irSiguienteJuego() {
+    window.location.href = "juego2.html";
+}
+
+/* ========================= */
+/* INICIAR JUEGO */
+/* ========================= */
+
+window.onload = function () {
     startNumbers();
 };

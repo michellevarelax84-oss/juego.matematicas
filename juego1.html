@@ -6,14 +6,16 @@
 <title>Aprende con Nosotros</title>
 
 <link rel="stylesheet" href="css/estilo_juego1.css">
+
+<!-- Librería de confeti visual -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 </head>
 <body>
 
 <div id="game">
-    <h1>🎮 Aprende con Nosotros 🎮</h1>
 
-    <!-- puntos -->
-    <div id="score">⭐ Puntos: 0</div>
+    <h1>Aprende con Nosotros</h1>
 
     <!-- reloj -->
     <div id="loader">⏳</div>
@@ -26,6 +28,14 @@
 
     <!-- mensaje -->
     <p id="message"></p>
+
+    <!-- botón siguiente -->
+    <button id="btnSiguiente"
+        onclick="irSiguienteJuego()"
+        style="display: none;">
+        Siguiente
+    </button>
+
 </div>
 
 <script src="js/script_juego.js"></script>

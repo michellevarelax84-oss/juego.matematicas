@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Juguemos a Contar</title>
+
+<!-- favicon -->
+<link rel="icon"
+href="img/logo1.png"
+type="image/png">
+
+<!-- CSS -->
+<link rel="stylesheet"
+href="css/estilo_juego2.css">
+
+<!-- confeti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="contenedorPrincipal">
+
+    <!-- título -->
+    <h1>Juguemos a Contar</h1>
+
+    <!-- imagen -->
+    <img src="img/matematica.png"
+    class="imagenPrincipal">
+
+    <!-- texto -->
+    <p>
+        Arrastra el número correcto
+        hacia las manzanas
+    </p>
+
+    <!-- CONTENEDOR JUEGO -->
+    <div id="contenedorJuego">
+
+        <!-- NÚMEROS DESORDENADOS -->
+        <div class="numerosDesordenados">
+
+            <div class="numero"
+            draggable="true"
+            id="2">
+                2
+            </div>
+
+            <div class="numero"
+            draggable="true"
+            id="1">
+                1
+            </div>
+
+            <div class="numero"
+            draggable="true"
+            id="3">
+                3
+            </div>
+
+        </div>
+
+        <!-- ZONAS -->
+        <div class="columna">
+
+            <div class="zona"
+            data-numero="1">
+                🍎
+            </div>
+
+            <div class="zona"
+            data-numero="2">
+                🍎🍎
+            </div>
+
+            <div class="zona"
+            data-numero="3">
+                🍎🍎🍎
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- mensaje -->
+    <p id="mensaje"></p>
+
+    <!-- botones -->
+    <div class="botones">
+
+        <button onclick="reiniciarJuego()">
+            Intentar nuevamente
+        </button>
+
+        <button id="btnSiguiente"
+        onclick="irFinal()"
+        style="display:none;">
+            Siguiente nivel
+        </button>
+
+    </div>
+
+</div>
+
+<!-- audios -->
+<audio id="audioCorrecto"
+src="sonidos/correcto.mp3"></audio>
+
+<audio id="audioError"
+src="sonidos/error.mp3"></audio>
+
+<audio id="audioFinal"
+src="sonidos/confeti.mp3"></audio>
+
+<!-- JS -->
+<script src="js/script_juego.js"></script>
+
+</body>
+</html>
