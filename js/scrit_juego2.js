@@ -1,4 +1,29 @@
-let correctos = 0;
+/* ========================= */
+/* VARIABLES */
+/* ========================= */
+
+let respuestas = {};
+
+/* ========================= */
+/* VOZ */
+/* ========================= */
+
+function hablar(texto){
+
+    const voz =
+    new SpeechSynthesisUtterance(
+        texto
+    );
+
+    voz.lang = "es-ES";
+
+    voz.rate = 1;
+
+    voz.pitch = 1;
+
+    speechSynthesis.speak(voz);
+
+}
 
 /* ========================= */
 /* ARRASTRAR */
@@ -14,10 +39,10 @@ function arrastrar(event){
 }
 
 /* ========================= */
-/* PERMITIR */
+/* PERMITIR DROP */
 /* ========================= */
 
-function permitirDrop(event){
+function permitir(event){
 
     event.preventDefault();
 
@@ -31,97 +56,167 @@ function soltar(event){
 
     event.preventDefault();
 
-    const numeroArrastrado =
+    const numero =
     event.dataTransfer.getData(
         "text"
     );
 
-    const numeroCorrecto =
-    event.target.dataset.numero;
+    const zona =
+    event.target;
 
-    /* CORRECTO */
+    /* limpiar zona */
 
-    if(numeroArrastrado === numeroCorrecto){
+    zona.innerHTML = "";
 
-        event.target.classList.add(
-            "correcta"
-        );
+    /* mover numero */
 
-        event.target.innerHTML +=
-        " ✅";
+    const elemento =
+    document.getElementById(numero);
 
-        document.getElementById(
-            "mensaje"
-        ).innerHTML =
-        "⭐ ¡Muy bien!";
+    zona.appendChild(elemento);
 
-        document.getElementById(
-            "audioCorrecto"
-        ).play();
+    /* guardar respuesta */
 
-        confetti({
-            particleCount:100,
-            spread:90
-        });
+    respuestas[
+        zona.dataset.numero
+    ] = numero;
 
-        /* ocultar número */
+}
 
-        document.getElementById(
-            numeroArrastrado
-        ).style.display =
-        "none";
+/* ========================= */
+/* VALIDAR */
+/* ========================= */
 
-        correctos++;
+function validar(){
 
-        if(correctos === 3){
+    let correctas = 0;
 
-            document.getElementById(
-                "mensaje"
-            ).innerHTML =
-            "🎉 ¡Felicitaciones, completaste el juego!";
+    const zonas =
+    document.querySelectorAll(".zona");
 
-            document.getElementById(
-                "audioFinal"
-            ).play();
+    zonas.forEach(zona => {
 
-            confetti({
-                particleCount:300,
-                spread:180
-            });
+        const correcto =
+        zona.dataset.numero;
 
-            document.getElementById(
-                "btnSiguiente"
-            ).style.display =
-            "inline-block";
-        }
+        const respuesta =
+        respuestas[correcto];
 
-    }
+        /* CORRECTO */
 
-    /* ERROR */
+        if(respuesta === correcto){
 
-    else{
-
-        event.target.classList.add(
-            "error"
-        );
-
-        document.getElementById(
-            "audioError"
-        ).play();
-
-        document.getElementById(
-            "mensaje"
-        ).innerHTML =
-        "❌ Inténtalo nuevamente";
-
-        setTimeout(() => {
-
-            event.target.classList.remove(
+            zona.classList.remove(
                 "error"
             );
 
-        },1000);
+            zona.classList.add(
+                "correcta"
+            );
+
+            correctas++;
+
+        }
+
+        /* INCORRECTO */
+
+        else{
+
+            zona.classList.remove(
+                "correcta"
+            );
+
+            zona.classList.add(
+                "error"
+            );
+
+        }
+
+    });
+
+    /* TODO CORRECTO */
+
+    if(correctas === 3){
+
+        document.getElementById(
+            "mensaje"
+        ).innerHTML =
+        "🎉 ¡Felicitaciones! Todo está correcto";
+
+        document.getElementById(
+            "correcto"
+        ).play();
+
+        hablar(
+            "Felicitaciones. Todo está correcto."
+        );
+
+        confetti({
+            particleCount:300,
+            spread:180
+        });
+
+        document.getElementById(
+            "btnSiguiente"
+        ).style.display =
+        "inline-block";
 
     }
+  /* HAY ERRORES */
+
+else{
+
+    document.getElementById(
+        "mensaje"
+    ).innerHTML =
+    " Algunos números están incorrectos.";
+
+    document.getElementById(
+        "error"
+    ).play();
+
+    hablar(
+        "Algunos números están incorrectos. Vuelve a intentarlo"
+    );
 
 }
+
+}
+
+/* ========================= */
+/* REINICIAR */
+/* ========================= */
+
+function reiniciar(){
+
+    location.reload();
+
+}
+
+/* ========================= */
+/* SIGUIENTE JUEGO */
+/* ========================= */
+
+function siguienteJuego(){
+
+    hablar(
+        "Pasando al siguiente juego"
+    );
+
+    alert(
+        "🎮 Pasando al siguiente juego"
+    );
+
+}
+
+/* ========================= */
+/* VOZ INICIAL */
+/* ========================= */
+
+window.onload = function(){
+
+    hablar(
+        "Arrastra los números hacia las manzanas y luego presiona validar respuestas"
+    );
+
+};

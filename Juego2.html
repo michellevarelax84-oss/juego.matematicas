@@ -2,84 +2,99 @@
 <html lang="es">
 
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 <title>Juguemos a Contar</title>
 
-<!-- favicon -->
-<link rel="icon"
-href="img/logo1.png"
-type="image/png">
+<!-- CONFETI -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-<!-- CSS -->
 <link rel="stylesheet"
 href="css/estilo_juego2.css">
-
-<!-- confeti -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 </head>
 
 <body>
 
-<div id="contenedorPrincipal">
+<div id="contenedor">
 
-    <!-- título -->
+    <!-- TITULO -->
+
     <h1>Juguemos a Contar</h1>
 
-    <!-- imagen -->
-    <img src="img/matematica.png"
-    class="imagenPrincipal">
+    <h2 id="nivel">
+        ⭐ Nivel 1
+    </h2>
 
-    <!-- texto -->
+    <!-- IMAGEN -->
+
+    <img src="img/matematica.png"
+    class="imagen">
+
+    <!-- TEXTO -->
+
     <p>
-        Arrastra el número correcto
-        hacia las manzanas
+        Arrastra los números
+        hacia las manzanas 🍎
     </p>
 
-    <!-- CONTENEDOR JUEGO -->
-    <div id="contenedorJuego">
+    <!-- JUEGO -->
 
-        <!-- NÚMEROS DESORDENADOS -->
-        <div class="numerosDesordenados">
+    <div id="juego">
 
-            <div class="numero"
-            draggable="true"
-            id="2">
-                2
-            </div>
+        <!-- NUMEROS -->
+
+        <div class="numeros">
 
             <div class="numero"
             draggable="true"
-            id="1">
+            id="1"
+            ondragstart="arrastrar(event)">
                 1
             </div>
 
             <div class="numero"
             draggable="true"
-            id="3">
+            id="2"
+            ondragstart="arrastrar(event)">
+                2
+            </div>
+
+            <div class="numero"
+            draggable="true"
+            id="3"
+            ondragstart="arrastrar(event)">
                 3
             </div>
 
         </div>
 
         <!-- ZONAS -->
-        <div class="columna">
+
+        <div class="zonas">
 
             <div class="zona"
-            data-numero="1">
+            data-numero="1"
+            ondrop="soltar(event)"
+            ondragover="permitir(event)">
                 🍎
             </div>
 
             <div class="zona"
-            data-numero="2">
+            data-numero="2"
+            ondrop="soltar(event)"
+            ondragover="permitir(event)">
                 🍎🍎
             </div>
 
             <div class="zona"
-            data-numero="3">
+            data-numero="3"
+            ondrop="soltar(event)"
+            ondragover="permitir(event)">
                 🍎🍎🍎
             </div>
 
@@ -87,38 +102,43 @@ href="css/estilo_juego2.css">
 
     </div>
 
-    <!-- mensaje -->
-    <p id="mensaje"></p>
+    <!-- MENSAJE -->
 
-    <!-- botones -->
+    <div id="mensaje"></div>
+
+    <!-- BOTONES -->
+
     <div class="botones">
 
-        <button onclick="reiniciarJuego()">
-            Intentar nuevamente
+        <button onclick="validar()">
+            Validar respuestas
+        </button>
+
+        <button onclick="reiniciar()">
+            Reiniciar Juego
         </button>
 
         <button id="btnSiguiente"
-        onclick="irFinal()"
+        onclick="siguienteJuego()"
         style="display:none;">
-            Siguiente nivel
+            Siguiente juego
         </button>
 
     </div>
 
 </div>
 
-<!-- audios -->
-<audio id="audioCorrecto"
+<!-- AUDIOS -->
+
+<audio id="correcto"
 src="sonidos/correcto.mp3"></audio>
 
-<audio id="audioError"
+<audio id="error"
 src="sonidos/error.mp3"></audio>
 
-<audio id="audioFinal"
-src="sonidos/confeti.mp3"></audio>
-
 <!-- JS -->
-<script src="js/script_juego.js"></script>
+
+<script src="js/scrit_juego2.js"></script>
 
 </body>
 </html>
