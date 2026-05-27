@@ -1,23 +1,39 @@
-        // Obtener datos guardados
-        const nombreUsuario = localStorage.getItem("nombreUsuario");
-        const avatarUsuario = localStorage.getItem("avatarUsuario");
+        // =========================
+        // CARGAR AVATAR
+        // =========================
 
-        // Mostrar saludo
-        if (nombreUsuario) {
-            document.getElementById("saludol").innerHTML =
-                "Bienvenido " + nombreUsuario + " 🎉";
+let avatarGuardado = localStorage.getItem("avatarSeleccionado");
+
+document.getElementById("avatar").src = avatarGuardado;
+
+        if(avatarGuardado){
+
+            avatar.src = avatarGuardado;
+
+        }else{
+
+            avatar.src = "img/avatar1.png";
+
         }
 
-        // Mostrar avatar seleccionado
-        if (avatarUsuario) {
-            document.getElementById("avatar").src = avatarUsuario;
-        } else {
-            // Avatar por defecto si no encuentra nada
-            document.getElementById("avatar").src = "img/avatar1.png";
-        }
+        // =========================
+        // SALUDO
+        // =========================
 
-        // Ir al juego
-        function irJuego1() {
-            window.location.href = "juego1.html";
-        }
-        
+        let saludo = document.getElementById("saludol");
+
+        saludo.innerHTML = "¡Bienvenido!";
+
+        // =========================
+        // IR AL JUEGO
+        // =========================
+
+// =========================
+// IR AL SIGUIENTE JUEGO
+// =========================
+
+function irJuego1(){
+
+    window.location.href = "juego1.html";
+
+}

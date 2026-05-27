@@ -162,14 +162,14 @@ function validar(){
         "inline-block";
 
     }
-  /* HAY ERRORES */
+/* HAY ERRORES */
 
 else{
 
     document.getElementById(
         "mensaje"
     ).innerHTML =
-    " Algunos números están incorrectos.";
+    "❌ Algunos números están incorrectos.";
 
     document.getElementById(
         "error"
@@ -178,6 +178,14 @@ else{
     hablar(
         "Algunos números están incorrectos. Vuelve a intentarlo"
     );
+
+    /* ESPERAR MÁS TIEMPO */
+
+    setTimeout(() => {
+
+        location.reload();
+
+    },6000);
 
 }
 
@@ -193,21 +201,8 @@ function reiniciar(){
 
 }
 
-/* ========================= */
-/* SIGUIENTE JUEGO */
-/* ========================= */
 
-function siguienteJuego(){
 
-    hablar(
-        "Pasando al siguiente juego"
-    );
-
-    alert(
-        "🎮 Pasando al siguiente juego"
-    );
-
-}
 
 /* ========================= */
 /* VOZ INICIAL */
@@ -220,3 +215,14 @@ window.onload = function(){
     );
 
 };
+/* ========================= */
+/* SIGUIENTE JUEGO */
+/* ========================= */
+
+function siguienteJuego(){
+
+
+    window.location.href =
+    "juego3.html";
+
+}
