@@ -10,11 +10,20 @@ content="width=device-width, initial-scale=1.0">
 
 <title>Juguemos a Contar</title>
 
-<!-- CONFETI -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<!-- FAVICON -->
+
+<link rel="icon"
+href="img/logo1.png"
+type="image/png">
+
+<!-- CSS -->
 
 <link rel="stylesheet"
 href="css/estilo_juego2.css">
+
+<!-- CONFETI -->
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 </head>
 
@@ -24,13 +33,15 @@ href="css/estilo_juego2.css">
 
     <!-- TITULO -->
 
-    <h1>Juguemos a Contar</h1>
+    <h1>
+        Juguemos a Contar
+    </h1>
+
+    <!-- NIVEL -->
 
     <h2 id="nivel">
         ⭐ Nivel 1
     </h2>
-
-    
 
     <!-- TEXTO -->
 
@@ -43,29 +54,43 @@ href="css/estilo_juego2.css">
 
     <div id="juego">
 
-        <!-- NUMEROS -->
+        <!-- NUMEROS DESORDENADOS -->
 
         <div class="numeros">
 
-            <div class="numero"
+            <div class="numero n1"
+            draggable="true"
+            id="3"
+            ondragstart="arrastrar(event)">
+                3
+            </div>
+
+            <div class="numero n2"
             draggable="true"
             id="1"
             ondragstart="arrastrar(event)">
                 1
             </div>
 
-            <div class="numero"
+            <div class="numero n3"
+            draggable="true"
+            id="5"
+            ondragstart="arrastrar(event)">
+                5
+            </div>
+
+            <div class="numero n4"
             draggable="true"
             id="2"
             ondragstart="arrastrar(event)">
                 2
             </div>
 
-            <div class="numero"
+            <div class="numero n5"
             draggable="true"
-            id="3"
+            id="4"
             ondragstart="arrastrar(event)">
-                3
+                4
             </div>
 
         </div>
@@ -95,6 +120,20 @@ href="css/estilo_juego2.css">
                 🍎🍎🍎
             </div>
 
+            <div class="zona"
+            data-numero="4"
+            ondrop="soltar(event)"
+            ondragover="permitir(event)">
+                🍎🍎🍎🍎
+            </div>
+
+            <div class="zona"
+            data-numero="5"
+            ondrop="soltar(event)"
+            ondragover="permitir(event)">
+                🍎🍎🍎🍎🍎
+            </div>
+
         </div>
 
     </div>
@@ -111,14 +150,11 @@ href="css/estilo_juego2.css">
             Validar respuestas
         </button>
 
-
         <button id="btnSiguiente"
         onclick="siguienteJuego()"
         style="display:none;">
             Siguiente juego
         </button>
-
-
 
     </div>
 

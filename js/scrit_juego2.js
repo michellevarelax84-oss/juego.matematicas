@@ -10,6 +10,8 @@ let respuestas = {};
 
 function hablar(texto){
 
+    speechSynthesis.cancel();
+
     const voz =
     new SpeechSynthesisUtterance(
         texto
@@ -32,7 +34,7 @@ function hablar(texto){
 function arrastrar(event){
 
     event.dataTransfer.setData(
-        "text",
+        "text/plain",
         event.target.id
     );
 
@@ -58,22 +60,56 @@ function soltar(event){
 
     const numero =
     event.dataTransfer.getData(
-        "text"
+        "text/plain"
     );
 
     const zona =
-    event.target;
+    event.currentTarget;
+
+    /* obtener numero */
+
+    const elemento =
+    document.getElementById(
+        numero
+    );
 
     /* limpiar zona */
 
     zona.innerHTML = "";
 
-    /* mover numero */
+    /* quitar posiciones */
 
-    const elemento =
-    document.getElementById(numero);
+    elemento.style.position =
+    "static";
 
-    zona.appendChild(elemento);
+    elemento.style.left =
+    "auto";
+
+    elemento.style.top =
+    "auto";
+
+    elemento.style.transform =
+    "none";
+
+    elemento.style.margin =
+    "0";
+
+    /* tamaño dentro de zona */
+
+    elemento.style.width =
+    "90px";
+
+    elemento.style.height =
+    "90px";
+
+    elemento.style.fontSize =
+    "40px";
+
+    /* agregar numero */
+
+    zona.appendChild(
+        elemento
+    );
 
     /* guardar respuesta */
 
@@ -92,7 +128,9 @@ function validar(){
     let correctas = 0;
 
     const zonas =
-    document.querySelectorAll(".zona");
+    document.querySelectorAll(
+        ".zona"
+    );
 
     zonas.forEach(zona => {
 
@@ -102,13 +140,19 @@ function validar(){
         const respuesta =
         respuestas[correcto];
 
-        /* CORRECTO */
+        /* limpiar clases */
+
+        zona.classList.remove(
+            "correcta"
+        );
+
+        zona.classList.remove(
+            "error"
+        );
+
+        /* correcto */
 
         if(respuesta === correcto){
-
-            zona.classList.remove(
-                "error"
-            );
 
             zona.classList.add(
                 "correcta"
@@ -118,13 +162,9 @@ function validar(){
 
         }
 
-        /* INCORRECTO */
+        /* incorrecto */
 
         else{
-
-            zona.classList.remove(
-                "correcta"
-            );
 
             zona.classList.add(
                 "error"
@@ -134,9 +174,11 @@ function validar(){
 
     });
 
+    /* ========================= */
     /* TODO CORRECTO */
+    /* ========================= */
 
-    if(correctas === 3){
+    if(correctas === 5){
 
         document.getElementById(
             "mensaje"
@@ -162,47 +204,52 @@ function validar(){
         "inline-block";
 
     }
-/* HAY ERRORES */
 
-else{
+    /* ========================= */
+    /* HAY ERRORES */
+    /* ========================= */
 
-    document.getElementById(
-        "mensaje"
-    ).innerHTML =
-    "❌ Algunos números están incorrectos.";
+    else{
 
-    document.getElementById(
-        "error"
-    ).play();
+        document.getElementById(
+            "mensaje"
+        ).innerHTML =
+        "❌ incorrectos";
 
-    hablar(
-        "Algunos números están incorrectos. Vuelve a intentarlo"
-    );
+        document.getElementById(
+            "error"
+        ).play();
 
-    /* ESPERAR MÁS TIEMPO */
+        setTimeout(() => {
 
-    setTimeout(() => {
+            hablar(
+                " incorrecto . Vuelve a intentarlo"
+            );
 
-        location.reload();
+        },500);
 
-    },6000);
+        /* reiniciar */
 
-}
+        setTimeout(() => {
+
+            location.reload();
+
+        },6000);
+
+    }
 
 }
 
 /* ========================= */
-/* REINICIAR */
+/* SIGUIENTE JUEGO */
 /* ========================= */
 
-function reiniciar(){
+function siguienteJuego(){
 
-    location.reload();
+    window.location.href =
+    "juego3.html";
 
 }
-
-
-
 
 /* ========================= */
 /* VOZ INICIAL */
@@ -215,14 +262,3 @@ window.onload = function(){
     );
 
 };
-/* ========================= */
-/* SIGUIENTE JUEGO */
-/* ========================= */
-
-function siguienteJuego(){
-
-
-    window.location.href =
-    "juego3.html";
-
-}
