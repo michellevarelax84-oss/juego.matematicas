@@ -1,33 +1,32 @@
     let avatarSeleccionado = "";
 
-    // Seleccionar avatar
-    function seleccionarAvatar(img) {
-        const avatares = document.querySelectorAll(".avatars img");
+// Seleccionar avatar
+function seleccionarAvatar(img) {
 
-        avatares.forEach(function(avatar) {
-            avatar.classList.remove("selected");
-        });
+    const avatares = document.querySelectorAll(".avatars img");
 
-        img.classList.add("selected");
-        avatarSeleccionado = img.src;
+    avatares.forEach(function(avatar) {
+        avatar.classList.remove("selected");
+    });
 
-        // Reproducir sonido clic
-        document.getElementById("audioClick").play();
-    }
+    img.classList.add("selected");
 
-// función para hablar con voz femenina
+    avatarSeleccionado = img.src;
+
+    // sonido click
+    document.getElementById("audioClick").play();
+}
+
+
+// Función voz femenina
 function hablar(texto) {
+
     const mensaje = new SpeechSynthesisUtterance(texto);
 
-    // buscar una voz femenina en español
     const voces = speechSynthesis.getVoices();
 
     const vozFemenina = voces.find(voz =>
-        voz.lang.includes("es") &&
-        (voz.name.includes("Female") ||
-        voz.name.includes("Paulina") ||
-        voz.name.includes("Helena") ||
-        voz.name.includes("Google español"))
+        voz.lang.includes("es")
     );
 
     if (vozFemenina) {
@@ -47,25 +46,24 @@ function ingresar() {
 
     const nombre = document.getElementById("nombre").value;
 
+    // Validación
     if (nombre === "" || avatarSeleccionado === "") {
 
-        // voz de error
         hablar("Por favor ingresa tu nombre y selecciona un avatar");
 
-        // sonido error
         document.getElementById("audioError").play();
 
     } else {
 
-        // voz bienvenida
         hablar("Bienvenido " + nombre);
 
-        // sonido confeti
         document.getElementById("audioConfeti").play();
 
-        // esperar 2 segundos antes de redirigir
+        // redirección
         setTimeout(function () {
+
             window.location.href = "inicio.html";
+
         }, 2000);
     }
 }

@@ -1,36 +1,22 @@
-/* ========================= */
-/* CARGAR PAGINA */
-/* ========================= */
-
 window.onload = function(){
 
-    /* reproducir audio final */
-
-    document.getElementById(
-        "audioFinal"
-    ).play();
-
-    /* confeti */
+    document.getElementById("audioFinal").play();
 
     confetti({
 
         particleCount:300,
-
         spread:200,
-
         origin:{ y:0.6 }
 
     });
 
 };
 
-/* ========================= */
-/* VOLVER A JUGAR */
-/* ========================= */
 
-function reiniciarJuego(){
+/* SIGUIENTE JUEGO */
 
-    window.location.href =
-    "index.html";
+function siguienteJuego(){
+
+    window.location.href = "juego4.html";
 
 }
