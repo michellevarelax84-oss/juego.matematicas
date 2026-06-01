@@ -13,42 +13,44 @@
 </head>
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <!-- Logo principal -->
-    <img src="img/logo.png" alt="Logo Plataforma" class="logo">
+        <!-- Logo -->
+        <img src="img/logo.png" alt="Logo Plataforma" class="logo">
 
-    <h2>Bienvenido</h2>
+        <h2>Bienvenido</h2>
 
-    <!-- Campo de texto -->
-    <input type="text" id="nombre" placeholder="Ingresa tu nombre">
+        <!-- Nombre -->
+        <input type="text" id="nombre" placeholder="Ingresa tu nombre">
 
-    <h3>Selecciona tu avatar</h3>
+        <h3>Selecciona tu avatar</h3>
 
-    <!-- Avatares -->
-    <div class="avatars">
-        <img src="img/avatar1.png" alt="Avatar 1" onclick="seleccionarAvatar(this)">
-        <img src="img/avatar2.png" alt="Avatar 2" onclick="seleccionarAvatar(this)">
-        <img src="img/avatar3.png" alt="Avatar 3" onclick="seleccionarAvatar(this)">
+        <!-- Avatares -->
+        <div class="avatars">
+            <img src="img/avatar1.png" alt="Avatar 1" onclick="seleccionarAvatar(this)">
+            <img src="img/avatar2.png" alt="Avatar 2" onclick="seleccionarAvatar(this)">
+            <img src="img/avatar3.png" alt="Avatar 3" onclick="seleccionarAvatar(this)">
+        </div>
+
+        <!-- Botón ingresar -->
+        <button onclick="ingresar()">
+            Ingresar
+        </button>
+
+        <!-- Botón 4° Básico -->
+        <a href="#" class="btn-basico" onclick="irABasico4()">
+            📚 4° Básico
+        </a>
+
     </div>
 
-    <!-- Botón ingresar -->
-    <button onclick="ingresar()">Ingresar</button>
+    <!-- Audios -->
+    <audio id="audioClick" src="sonidos/click.mp3"></audio>
+    <audio id="audioError" src="sonidos/error.mp3"></audio>
+    <audio id="audioConfeti" src="sonidos/confite.mp3"></audio>
 
-    <!-- Nuevo botón -->
-    <a href="basico4.html" class="btn-basico">
-        4° Básico
-    </a>
-
-</div>
-
-<!-- Audios -->
-<audio id="audioClick" src="sonidos/click.mp3"></audio>
-<audio id="audioError" src="sonidos/error.mp3"></audio>
-<audio id="audioConfeti" src="sonidos/confite.mp3"></audio>
-
-<!-- JS -->
-<script src="js/script.js"></script>
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
 
 </body>
 </html>

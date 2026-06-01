@@ -1,4 +1,4 @@
-    let avatarSeleccionado = "";
+let avatarSeleccionado = "";
 
 // Seleccionar avatar
 function seleccionarAvatar(img) {
@@ -13,20 +13,22 @@ function seleccionarAvatar(img) {
 
     avatarSeleccionado = img.src;
 
-    // sonido click
+    // Sonido click
     document.getElementById("audioClick").play();
 }
 
 
-// Función voz femenina
+// Función voz
 function hablar(texto) {
+
+    speechSynthesis.cancel();
 
     const mensaje = new SpeechSynthesisUtterance(texto);
 
     const voces = speechSynthesis.getVoices();
 
     const vozFemenina = voces.find(voz =>
-        voz.lang.includes("es")
+        voz.lang.startsWith("es")
     );
 
     if (vozFemenina) {
@@ -41,29 +43,57 @@ function hablar(texto) {
 }
 
 
-// Botón ingresar
+// Botón Ingresar
 function ingresar() {
 
-    const nombre = document.getElementById("nombre").value;
+    const nombre = document.getElementById("nombre").value.trim();
 
-    // Validación
     if (nombre === "" || avatarSeleccionado === "") {
 
-        hablar("Por favor ingresa tu nombre y selecciona un avatar");
+        hablar("Por favor ingresa un nombre y selecciona un avatar");
 
         document.getElementById("audioError").play();
 
-    } else {
-
-        hablar("Bienvenido " + nombre);
-
-        document.getElementById("audioConfeti").play();
-
-        // redirección
-        setTimeout(function () {
-
-            window.location.href = "inicio.html";
-
-        }, 2000);
+        return;
     }
+
+    // Guardar datos
+    localStorage.setItem("nombre", nombre);
+    localStorage.setItem("avatar", avatarSeleccionado);
+
+    hablar("Bienvenido " + nombre);
+
+    document.getElementById("audioConfeti").play();
+
+    setTimeout(function() {
+        window.location.href = "inicio.html";
+    }, 2000);
 }
+
+
+// Botón 4° Básico
+function irABasico4() {
+
+    const nombre = document.getElementById("nombre").value.trim();
+
+    if (nombre === "" || avatarSeleccionado === "") {
+
+        hablar("Por favor ingresa un nombre y selecciona un avatar");
+
+        document.getElementById("audioError").play();
+
+        return;
+    }
+
+    // Guardar datos
+    localStorage.setItem("nombre", nombre);
+    localStorage.setItem("avatar", avatarSeleccionado);
+
+    window.location.href = "basico4.html";
+}
+
+
+// Cargar voces cuando estén disponibles
+window.speechSynthesis.onvoiceschanged = function() {
+    speechSynthesis.getVoices();
+};
