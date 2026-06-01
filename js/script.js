@@ -1,11 +1,11 @@
 let avatarSeleccionado = "";
 
 // Seleccionar avatar
-function seleccionarAvatar(img) {
+function seleccionarAvatar(img){
 
     const avatares = document.querySelectorAll(".avatars img");
 
-    avatares.forEach(function(avatar) {
+    avatares.forEach(function(avatar){
         avatar.classList.remove("selected");
     });
 
@@ -13,42 +13,25 @@ function seleccionarAvatar(img) {
 
     avatarSeleccionado = img.src;
 
-    // Sonido click
     document.getElementById("audioClick").play();
 }
 
-
-// Función voz
-function hablar(texto) {
-
-    speechSynthesis.cancel();
+// Voz
+function hablar(texto){
 
     const mensaje = new SpeechSynthesisUtterance(texto);
 
-    const voces = speechSynthesis.getVoices();
-
-    const vozFemenina = voces.find(voz =>
-        voz.lang.startsWith("es")
-    );
-
-    if (vozFemenina) {
-        mensaje.voice = vozFemenina;
-    }
-
     mensaje.lang = "es-ES";
-    mensaje.rate = 1;
-    mensaje.pitch = 1.2;
 
     speechSynthesis.speak(mensaje);
 }
 
-
-// Botón Ingresar
-function ingresar() {
+// Ingresar
+function ingresar(){
 
     const nombre = document.getElementById("nombre").value.trim();
 
-    if (nombre === "" || avatarSeleccionado === "") {
+    if(nombre === "" || avatarSeleccionado === ""){
 
         hablar("Por favor ingresa un nombre y selecciona un avatar");
 
@@ -57,26 +40,24 @@ function ingresar() {
         return;
     }
 
-    // Guardar datos
     localStorage.setItem("nombre", nombre);
     localStorage.setItem("avatar", avatarSeleccionado);
 
-    hablar("Bienvenido " + nombre);
-
     document.getElementById("audioConfeti").play();
 
-    setTimeout(function() {
+    setTimeout(function(){
+
         window.location.href = "inicio.html";
-    }, 2000);
+
+    },2000);
 }
 
-
-// Botón 4° Básico
-function irABasico4() {
+// 4° Básico
+function irABasico4(){
 
     const nombre = document.getElementById("nombre").value.trim();
 
-    if (nombre === "" || avatarSeleccionado === "") {
+    if(nombre === "" || avatarSeleccionado === ""){
 
         hablar("Por favor ingresa un nombre y selecciona un avatar");
 
@@ -85,15 +66,8 @@ function irABasico4() {
         return;
     }
 
-    // Guardar datos
     localStorage.setItem("nombre", nombre);
     localStorage.setItem("avatar", avatarSeleccionado);
 
     window.location.href = "basico4.html";
 }
-
-
-// Cargar voces cuando estén disponibles
-window.speechSynthesis.onvoiceschanged = function() {
-    speechSynthesis.getVoices();
-};
