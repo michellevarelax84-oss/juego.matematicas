@@ -1,52 +1,134 @@
 body{
+
     margin:0;
-    font-family:Arial, sans-serif;
-    background:#eef6ff;
+
+    font-family:'Comic Sans MS', Arial;
+
+    background:linear-gradient(
+    #87CEEB,
+    #BFEFFF,
+    #E0FFFF);
+
+    min-height:100vh;
+
     display:flex;
     justify-content:center;
     align-items:center;
-    min-height:100vh;
 }
 
 .contenedor{
-    width:600px;
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    text-align:center;
-    box-shadow:0 0 20px rgba(0,0,0,.15);
-}
 
-.avatar{
-    width:100px;
-    margin-bottom:20px;
+    width:90%;
+    max-width:900px;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:30px;
+
+    text-align:center;
+
+    border:8px solid #FFD54F;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
 }
 
 h1{
-    color:#4a6cf7;
+
+    color:#FF9800;
 }
 
 h2{
-    min-height:60px;
+
+    color:#1565C0;
 }
 
-button{
-    padding:15px 25px;
-    margin:10px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:18px;
+#zonaJuego{
+
+    margin:30px 0;
+}
+
+.tarjetas{
+
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.tarjeta{
+
+    width:120px;
+    height:80px;
+
+    background:#FF9800;
+
+    color:white;
+
+    border-radius:20px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:28px;
+    font-weight:bold;
+
+    cursor:grab;
 }
 
 input{
-    padding:12px;
-    width:80%;
-    font-size:18px;
+
+    width:300px;
+
+    padding:15px;
+
+    font-size:22px;
+
+    border-radius:15px;
+
+    border:2px solid #ccc;
+
+    text-align:center;
+}
+
+button{
+
+    background:#4CAF50;
+
+    color:white;
+
+    border:none;
+
+    padding:15px 30px;
+
+    border-radius:20px;
+
+    font-size:22px;
+
+    cursor:pointer;
+}
+
+button:hover{
+
+    transform:scale(1.05);
 }
 
 #mensaje{
-    margin-top:20px;
-    font-size:22px;
+
+    min-height:50px;
+
+    font-size:28px;
+
     font-weight:bold;
+
+    margin-top:20px;
+}
+
+h3{
+
+    font-size:30px;
+
+    color:#444;
 }
