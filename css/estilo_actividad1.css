@@ -1,13 +1,19 @@
+/* ========================= */
+/* BODY */
+/* ========================= */
+
 body{
 
     margin:0;
+    padding:20px;
 
-    font-family:'Comic Sans MS', Arial;
+    font-family:'Comic Sans MS', Arial, sans-serif;
 
     background:linear-gradient(
-    #87CEEB,
-    #BFEFFF,
-    #E0FFFF);
+    180deg,
+    #87CEEB 0%,
+    #BFEFFF 50%,
+    #E0FFFF 100%);
 
     min-height:100vh;
 
@@ -16,6 +22,10 @@ body{
     align-items:center;
 }
 
+/* ========================= */
+/* CONTENEDOR */
+/* ========================= */
+
 .contenedor{
 
     width:90%;
@@ -23,7 +33,7 @@ body{
 
     background:white;
 
-    padding:30px;
+    padding:35px;
 
     border-radius:30px;
 
@@ -31,36 +41,69 @@ body{
 
     border:8px solid #FFD54F;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.2);
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.2);
 }
+
+/* ========================= */
+/* TITULOS */
+/* ========================= */
 
 h1{
 
     color:#FF9800;
+
+    font-size:45px;
+
+    margin-bottom:10px;
 }
 
 h2{
 
     color:#1565C0;
+
+    font-size:30px;
+
+    margin-bottom:25px;
 }
+
+h3{
+
+    color:#444;
+
+    font-size:34px;
+
+    margin-bottom:20px;
+}
+
+/* ========================= */
+/* ZONA DE JUEGO */
+/* ========================= */
 
 #zonaJuego{
 
     margin:30px 0;
 }
 
+/* ========================= */
+/* TARJETAS */
+/* ========================= */
+
 .tarjetas{
 
     display:flex;
+
     justify-content:center;
+
     gap:15px;
+
     flex-wrap:wrap;
 }
 
 .tarjeta{
 
-    width:120px;
-    height:80px;
+    width:140px;
+    height:100px;
 
     background:#FF9800;
 
@@ -72,28 +115,52 @@ h2{
     justify-content:center;
     align-items:center;
 
-    font-size:28px;
+    font-size:30px;
     font-weight:bold;
 
     cursor:grab;
+
+    transition:.3s;
 }
+
+.tarjeta:hover{
+
+    transform:scale(1.1);
+
+    background:#FFB300;
+}
+
+/* ========================= */
+/* INPUT */
+/* ========================= */
 
 input{
 
-    width:300px;
+    width:320px;
 
     padding:15px;
 
-    font-size:22px;
+    font-size:24px;
+
+    text-align:center;
+
+    border:3px solid #ccc;
 
     border-radius:15px;
 
-    border:2px solid #ccc;
-
-    text-align:center;
+    outline:none;
 }
 
-button{
+input:focus{
+
+    border-color:#2196F3;
+}
+
+/* ========================= */
+/* BOTON VALIDAR */
+/* ========================= */
+
+#btnValidar{
 
     background:#4CAF50;
 
@@ -105,30 +172,151 @@ button{
 
     border-radius:20px;
 
-    font-size:22px;
+    font-size:24px;
+
+    font-weight:bold;
 
     cursor:pointer;
+
+    transition:.3s;
 }
 
-button:hover{
+#btnValidar:hover{
 
-    transform:scale(1.05);
+    transform:scale(1.08);
+
+    background:#43A047;
 }
+
+/* ========================= */
+/* BOTON AUDIO */
+/* ========================= */
+
+.btnAudio{
+
+    background:#2196F3;
+
+    color:white;
+
+    border:none;
+
+    padding:15px 25px;
+
+    border-radius:15px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-bottom:20px;
+
+    transition:.3s;
+}
+
+.btnAudio:hover{
+
+    transform:scale(1.08);
+
+    background:#1976D2;
+}
+
+/* ========================= */
+/* MENSAJES */
+/* ========================= */
 
 #mensaje{
 
     min-height:50px;
 
+    margin-top:20px;
+
     font-size:28px;
 
     font-weight:bold;
-
-    margin-top:20px;
 }
 
-h3{
+/* ========================= */
+/* TEXTO HABLANDO */
+/* ========================= */
 
-    font-size:30px;
+.hablando{
 
-    color:#444;
+    background:#FFF59D;
+
+    color:#FF5722;
+
+    padding:10px;
+
+    border-radius:15px;
+
+    display:inline-block;
+
+    animation:brillo .8s infinite;
+}
+
+@keyframes brillo{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media(max-width:700px){
+
+    h1{
+        font-size:32px;
+    }
+
+    h2{
+        font-size:24px;
+    }
+
+    h3{
+        font-size:24px;
+    }
+
+    .tarjeta{
+        width:110px;
+        height:80px;
+        font-size:24px;
+    }
+
+    input{
+        width:90%;
+        font-size:20px;
+    }
+
+    #btnValidar,
+    .btnAudio{
+        font-size:18px;
+    }
+} 
+.barra{
+    width:100%;
+    height:25px;
+    background:#ddd;
+    border-radius:20px;
+    margin-bottom:20px;
+    overflow:hidden;
+}
+
+#progreso{
+    width:0%;
+    height:100%;
+    background:#4CAF50;
+    transition:.5s;
 }

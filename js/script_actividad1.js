@@ -7,6 +7,9 @@ document.getElementById("zonaJuego");
 const mensaje =
 document.getElementById("mensaje");
 
+const progreso =
+document.getElementById("progreso");
+
 const audioCorrecto =
 document.getElementById("audioCorrecto");
 
@@ -29,7 +32,7 @@ function hablar(texto){
 
     voz.lang = "es-ES";
     voz.rate = 0.9;
-    voz.pitch = 1.2;
+    voz.pitch = 1.1;
 
     speechSynthesis.speak(voz);
 }
@@ -44,25 +47,19 @@ const retos = [
 
 {
 tipo:"ordenar",
-titulo:"🐻 Ordena los números de menor a mayor",
+titulo:"🐻 Ordena de menor a mayor",
 numeros:[3560,8900,4210]
 },
 
 {
 tipo:"ordenar",
-titulo:"⭐ Ordena los números de menor a mayor",
+titulo:"⭐ Ordena de menor a mayor",
 numeros:[7500,1200,9800]
 },
 
 {
-tipo:"ordenar",
-titulo:"🚂 Ordena los números de menor a mayor",
-numeros:[5600,1200,8900,3000]
-},
-
-{
 tipo:"leer",
-titulo:"📖 ¿Qué número representa?",
+titulo:"📖 Escucha y escribe el número",
 texto:"Ocho mil quinientos",
 correcta:"8500"
 },
@@ -91,6 +88,19 @@ correcta:"4528"
 ];
 
 // ======================
+// BARRA DE PROGRESO
+// ======================
+
+function actualizarBarra(){
+
+    const porcentaje =
+    (retoActual / retos.length) * 100;
+
+    progreso.style.width =
+    porcentaje + "%";
+}
+
+// ======================
 // MEZCLAR
 // ======================
 
@@ -106,12 +116,13 @@ function mezclar(array){
 
 function cargarReto(){
 
+    actualizarBarra();
+
     mensaje.textContent = "";
 
     if(retoActual >= retos.length){
 
         finalizar();
-
         return;
     }
 
@@ -120,44 +131,13 @@ function cargarReto(){
     tituloReto.textContent =
     reto.titulo;
 
+    zonaJuego.innerHTML = "";
+
     if(reto.tipo === "ordenar"){
 
         hablar(
         "Ordena los números de menor a mayor"
         );
-
-    }else if(reto.tipo === "leer"){
-
-        hablar(
-        "Lee el número y responde"
-        );
-
-    }else if(reto.tipo === "escribir"){
-
-        hablar(
-        "Escribe el número correctamente"
-        );
-
-    }else if(reto.tipo === "recta"){
-
-        hablar(
-        "Completa la recta numérica"
-        );
-
-    }else if(reto.tipo === "tabla"){
-
-        hablar(
-        "Observa la tabla posicional y responde"
-        );
-    }
-
-    zonaJuego.innerHTML = "";
-
-    // --------------------
-    // ORDENAR
-    // --------------------
-
-    if(reto.tipo === "ordenar"){
 
         zonaJuego.innerHTML =
         `<div class="tarjetas"></div>`;
@@ -165,10 +145,8 @@ function cargarReto(){
         const contenedor =
         document.querySelector(".tarjetas");
 
-        const mezclados =
-        mezclar(reto.numeros);
-
-        mezclados.forEach(numero => {
+        mezclar(reto.numeros)
+        .forEach(numero=>{
 
             const tarjeta =
             document.createElement("div");
@@ -176,11 +154,14 @@ function cargarReto(){
             tarjeta.className =
             "tarjeta";
 
-            tarjeta.draggable =
-            true;
+            tarjeta.draggable = true;
 
             tarjeta.textContent =
             numero;
+
+tarjeta.addEventListener("click", () => {
+    hablar(tarjeta.textContent);
+});
 
             contenedor.appendChild(
             tarjeta
@@ -192,19 +173,80 @@ function cargarReto(){
 
     }else{
 
+
+    if(reto.tipo === "leer"){
+
         zonaJuego.innerHTML =
 
         `
-        <h3>${reto.texto}</h3>
+        <button id="btnAudio" class="btnAudio">
+            🔊 Escuchar número
+        </button>
+
+        <h3 id="textoReto">
+            ${reto.texto}
+        </h3>
 
         <input
         type="text"
         id="respuesta"
         placeholder="Escribe tu respuesta">
         `;
+
+        const btnAudio =
+        document.getElementById("btnAudio");
+
+        btnAudio.onclick = function(){
+
+            const texto =
+            document.getElementById("textoReto");
+
+            texto.classList.add("hablando");
+
+            const voz =
+            new SpeechSynthesisUtterance(
+            reto.texto
+            );
+
+            voz.lang = "es-ES";
+
+            voz.onend = function(){
+
+                texto.classList.remove(
+                "hablando"
+                );
+
+                hablar(
+                "Ahora escribe el número"
+                );
+            };
+
+            speechSynthesis.speak(
+            voz
+            );
+        };
+
+        setTimeout(()=>{
+            btnAudio.click();
+        },1000);
+
+    }else{
+
+        zonaJuego.innerHTML =
+
+        `
+        <h3 id="textoReto">
+            ${reto.texto}
+        </h3>
+
+        <input
+        type="text"
+        id="respuesta"
+        placeholder="Escribe tu respuesta">
+        `
+    }
     }
 }
-
 // ======================
 // DRAG & DROP
 // ======================
@@ -214,39 +256,40 @@ let arrastrado = null;
 function activarDrag(){
 
     const tarjetas =
-    document.querySelectorAll(".tarjeta");
+    document.querySelectorAll(
+    ".tarjeta"
+    );
 
-    tarjetas.forEach(tarjeta => {
+    tarjetas.forEach(t=>{
 
-        tarjeta.addEventListener(
+        t.addEventListener(
         "dragstart",
-        () => {
+        function(){
 
-            arrastrado =
-            tarjeta;
+            arrastrado = t;
 
         });
 
-        tarjeta.addEventListener(
+        t.addEventListener(
         "dragover",
-        (e) => {
+        function(e){
 
             e.preventDefault();
 
         });
 
-        tarjeta.addEventListener(
+        t.addEventListener(
         "drop",
-        () => {
+        function(){
 
-            const temporal =
-            tarjeta.textContent;
+            const temp =
+            t.textContent;
 
-            tarjeta.textContent =
+            t.textContent =
             arrastrado.textContent;
 
             arrastrado.textContent =
-            temporal;
+            temp;
 
         });
 
@@ -254,7 +297,7 @@ function activarDrag(){
 }
 
 // ======================
-// BOTON VALIDAR
+// VALIDAR
 // ======================
 
 document
@@ -263,10 +306,6 @@ document
 "click",
 validar
 );
-
-// ======================
-// VALIDAR
-// ======================
 
 function validar(){
 
@@ -279,7 +318,7 @@ function validar(){
 
         document
         .querySelectorAll(".tarjeta")
-        .forEach(t => {
+        .forEach(t=>{
 
             respuesta.push(
             Number(t.textContent)
@@ -326,31 +365,30 @@ function validar(){
 }
 
 // ======================
-// CORRECTO
+// RESPUESTA CORRECTA
 // ======================
 
 function correcto(){
 
     audioCorrecto.play();
 
-    hablar(
-    "Muy bien"
-    );
+    hablar("Muy bien");
 
     mensaje.innerHTML =
     "✅ ¡Correcto!";
 
     retoActual++;
 
-    setTimeout(() => {
+    actualizarBarra();
 
-        cargarReto();
-
-    },1500);
+    setTimeout(
+    cargarReto,
+    1500
+    );
 }
 
 // ======================
-// INCORRECTO
+// RESPUESTA INCORRECTA
 // ======================
 
 function incorrecto(){
@@ -376,6 +414,9 @@ function finalizar(){
     "completada"
     );
 
+    progreso.style.width =
+    "100%";
+
     audioAplausos.play();
 
     confetti({
@@ -389,18 +430,11 @@ function finalizar(){
     zonaJuego.innerHTML = "";
 
     mensaje.innerHTML =
-    "Has completado la aventura de los números.";
+    "Has completado la actividad.";
 
     hablar(
     "Felicitaciones. Has completado la actividad."
     );
-
-    setTimeout(() => {
-
-        window.location.href =
-        "basico4.html";
-
-    },5000);
 }
 
 // ======================
@@ -408,3 +442,11 @@ function finalizar(){
 // ======================
 
 cargarReto();
+
+setTimeout(function(){
+
+    hablar(
+    "Hola. Bienvenido a la aventura de los números. Escucha atentamente cada desafío. Arrastra las tarjetas para ordenar los números de menor a mayor. También deberás escuchar números y escribir respuestas. Cuando termines cada desafío presiona validar respuesta. Mucha suerte."
+    );
+
+},500);
