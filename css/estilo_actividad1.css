@@ -320,3 +320,17 @@ input:focus{
     background:#4CAF50;
     transition:.5s;
 }
+#tituloReto.hablando{
+
+    background:#FFF59D;
+
+    color:#FF5722;
+
+    padding:10px 20px;
+
+    border-radius:15px;
+
+    display:inline-block;
+
+    animation:brillo .8s infinite;
+}

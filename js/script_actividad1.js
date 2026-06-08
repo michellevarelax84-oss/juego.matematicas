@@ -23,9 +23,13 @@ document.getElementById("audioAplausos");
 // VOZ
 // ======================
 
-function hablar(texto){
+function hablar(texto, elemento = null){
 
     speechSynthesis.cancel();
+
+    if(elemento){
+        elemento.classList.add("hablando");
+    }
 
     const voz =
     new SpeechSynthesisUtterance(texto);
@@ -33,6 +37,13 @@ function hablar(texto){
     voz.lang = "es-ES";
     voz.rate = 0.9;
     voz.pitch = 1.1;
+
+    voz.onend = function(){
+
+        if(elemento){
+            elemento.classList.remove("hablando");
+        }
+    };
 
     speechSynthesis.speak(voz);
 }
@@ -136,7 +147,8 @@ function cargarReto(){
     if(reto.tipo === "ordenar"){
 
         hablar(
-        "Ordena los números de menor a mayor"
+        "Ordena los números de menor a mayor",
+        tituloReto
         );
 
         zonaJuego.innerHTML =
@@ -159,9 +171,16 @@ function cargarReto(){
             tarjeta.textContent =
             numero;
 
-tarjeta.addEventListener("click", () => {
-    hablar(tarjeta.textContent);
-});
+            tarjeta.addEventListener(
+            "click",
+            () => {
+
+                hablar(
+                tarjeta.textContent,
+                tarjeta
+                );
+
+            });
 
             contenedor.appendChild(
             tarjeta
@@ -173,80 +192,82 @@ tarjeta.addEventListener("click", () => {
 
     }else{
 
+        if(reto.tipo === "leer"){
 
-    if(reto.tipo === "leer"){
+zonaJuego.innerHTML =
 
-        zonaJuego.innerHTML =
+`
+<button id="btnAudio" class="btnAudio">
+    🔊 Escuchar
+</button>
 
-        `
-        <button id="btnAudio" class="btnAudio">
-            🔊 Escuchar número
-        </button>
+<h3 id="textoReto">
+    ${reto.texto}
+</h3>
 
-        <h3 id="textoReto">
-            ${reto.texto}
-        </h3>
+<input
+type="text"
+id="respuesta"
+placeholder="Escribe tu respuesta">
+`;
+const btnAudio =
+document.getElementById("btnAudio");
 
-        <input
-        type="text"
-        id="respuesta"
-        placeholder="Escribe tu respuesta">
-        `;
+const textoReto =
+document.getElementById("textoReto");
 
-        const btnAudio =
-        document.getElementById("btnAudio");
+btnAudio.onclick = function(){
 
-        btnAudio.onclick = function(){
+    hablar(
+    reto.texto,
+    textoReto
+    );
+};
 
-            const texto =
-            document.getElementById("textoReto");
 
-            texto.classList.add("hablando");
 
-            const voz =
-            new SpeechSynthesisUtterance(
-            reto.texto
-            );
+setTimeout(()=>{
+    hablar(
+    reto.texto,
+    textoReto
+    );
+},1000);
+        }else{
 
-            voz.lang = "es-ES";
+            zonaJuego.innerHTML =
 
-            voz.onend = function(){
+            `
+            <h3 id="textoReto">
+                ${reto.texto}
+            </h3>
 
-                texto.classList.remove(
-                "hablando"
-                );
+            <input
+            type="text"
+            id="respuesta"
+            placeholder="Escribe tu respuesta">
+            `;
 
-                hablar(
-                "Ahora escribe el número"
-                );
-            };
+            if(reto.tipo === "escribir"){
 
-            speechSynthesis.speak(
-            voz
-            );
-        };
+                setTimeout(()=>{
 
-        setTimeout(()=>{
-            btnAudio.click();
-        },1000);
+                    const texto =
+                    document.getElementById(
+                    "textoReto"
+                    );
 
-    }else{
+                    hablar(
+                    reto.texto,
+                    texto
+                    );
 
-        zonaJuego.innerHTML =
+                },500);
+            }
 
-        `
-        <h3 id="textoReto">
-            ${reto.texto}
-        </h3>
-
-        <input
-        type="text"
-        id="respuesta"
-        placeholder="Escribe tu respuesta">
-        `
-    }
+        }
     }
 }
+
 // ======================
 // DRAG & DROP
 // ======================
@@ -295,7 +316,6 @@ function activarDrag(){
 
     });
 }
-
 // ======================
 // VALIDAR
 // ======================
@@ -443,10 +463,3 @@ function finalizar(){
 
 cargarReto();
 
-setTimeout(function(){
-
-    hablar(
-    "Hola. Bienvenido a la aventura de los números. Escucha atentamente cada desafío. Arrastra las tarjetas para ordenar los números de menor a mayor. También deberás escuchar números y escribir respuestas. Cuando termines cada desafío presiona validar respuesta. Mucha suerte."
-    );
-
-},500);
