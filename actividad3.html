@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Resta con Nosotros</title>
+
+<link rel="stylesheet" href="css/estilo_actividad3.css">
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+
+<body>
+
+<!-- ========================= -->
+<!-- PANTALLA INICIO -->
+<!-- ========================= -->
+
+<div id="pantallaInicio">
+
+    <h1>➖ Resta con Nosotros ➖</h1>
+
+    <p id="textoBienvenida">
+        Bienvenida. Aprende restas de forma divertida.
+    </p>
+
+    <button id="btnComenzar">
+        Comenzar
+    </button>
+
+</div>
+
+<!-- ========================= -->
+<!-- PANTALLA JUEGO -->
+<!-- ========================= -->
+
+<div id="pantallaJuego">
+
+    <h2 id="instruccion"></h2>
+
+    <div id="progreso">
+        <div id="barra"></div>
+    </div>
+
+    <div id="estrellasBox">
+        ⭐ Estrellas: <span id="estrellas">0</span>
+    </div>
+
+    <div id="nivelBox">
+        Nivel: <span id="nivel">1</span>/4
+    </div>
+
+    <!-- NIVEL 1 -->
+    <div id="nivel1">
+        <div id="frutas"></div>
+        <div id="operacion1"></div>
+    </div>
+
+    <!-- NIVEL 2 -->
+    <div id="nivel2">
+        <div id="frutasArrastre"></div>
+        <div id="canasta">🧺</div>
+        <div id="operacion2"></div>
+    </div>
+
+    <!-- NIVEL 3 -->
+    <div id="nivel3">
+        <div id="operacion3"></div>
+    </div>
+
+    <!-- NIVEL 4 -->
+    <div id="nivel4">
+        <div id="operacion4"></div>
+    </div>
+
+    <input type="number" id="respuesta" placeholder="Escribe tu respuesta">
+
+    <button id="btnComprobar">
+        Comprobar
+    </button>
+
+    <div id="mensaje"></div>
+
+</div>
+
+<!-- ========================= -->
+<!-- PANTALLA FINAL -->
+<!-- ========================= -->
+
+<div id="pantallaFinal" style="display:none; text-align:center;">
+
+    <h1>🏁 ¡FELICIDADES!</h1>
+
+    <p>Terminaste todas las restas.</p>
+
+    <h2>Ahora continúa con multiplicación ➗✖️</h2>
+
+</div>
+
+<script src="js/script_actvidad3.js"></script>
+
+</body>
+</html>

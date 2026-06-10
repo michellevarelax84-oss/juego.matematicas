@@ -334,3 +334,29 @@ input:focus{
 
     animation:brillo .8s infinite;
 }
+.trofeo{
+
+    width:120px;
+
+    height:auto;
+
+    margin:10px auto;
+
+    display:block;
+}
+
+@keyframes subirBajar{
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+
+}

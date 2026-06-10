@@ -1,0 +1,213 @@
+
+/* ========================= */
+/* GENERAL */
+/* ========================= */
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#c7e9ff,#fff7d6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+/* ========================= */
+/* CONTENEDOR PRINCIPAL */
+/* ========================= */
+
+#pantallaJuego{
+    background:white;
+    width:900px;
+    max-width:95%;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+    text-align:center;
+}
+
+/* ========================= */
+/* BARRA PROGRESO */
+/* ========================= */
+
+#progreso{
+    width:100%;
+    height:15px;
+    background:#e5e7eb;
+    border-radius:10px;
+    margin:15px 0;
+    overflow:hidden;
+}
+
+#barra{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#4ade80,#22c55e);
+    transition:.4s;
+}
+
+/* ========================= */
+/* NIVELES */
+/* ========================= */
+
+#nivel1,#nivel2,#nivel3,#nivel4{
+    margin:20px 0;
+}
+
+/* ========================= */
+/* FRUTAS */
+/* ========================= */
+
+.fruta{
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-size:45px;
+    margin:5px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.fruta:hover{
+    transform:scale(1.1);
+}
+
+/* ========================= */
+/* CANASTA */
+/* ========================= */
+
+#canasta{
+    width:150px;
+    height:150px;
+    margin:20px auto;
+    border:4px dashed #d97706;
+    border-radius:20px;
+    font-size:70px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fff3c4;
+    transition:.3s;
+}
+
+#canasta:hover{
+    transform:scale(1.05);
+}
+
+/* ========================= */
+/* INPUT Y BOTÓN */
+/* ========================= */
+
+input{
+    padding:10px;
+    font-size:18px;
+    border-radius:10px;
+    border:2px solid #ccc;
+    margin-top:10px;
+}
+
+button{
+    padding:12px 25px;
+    font-size:18px;
+    border:none;
+    border-radius:12px;
+    background:#3b82f6;
+    color:white;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+button:hover{
+    background:#2563eb;
+}
+
+/* ========================= */
+/* MENSAJES */
+/* ========================= */
+
+.correcto{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+.error{
+    color:#dc2626;
+    font-weight:bold;
+}
+
+/* ========================= */
+/* VOZ LEYENDO */
+/* ========================= */
+
+.leyendo{
+    text-decoration:underline;
+    color:#4f46e5;
+}
+
+/* ========================= */
+/* ESTRELLAS */
+/* ========================= */
+
+#estrellasBox{
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+/* ========================= */
+/* PANTALLA INICIO */
+/* ========================= */
+
+#pantallaInicio{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+#btnComenzar{
+    padding:15px 30px;
+    font-size:20px;
+    background:#10b981;
+    border:none;
+    border-radius:12px;
+    color:white;
+    cursor:pointer;
+}
+
+/* ========================= */
+/* PANTALLA FINAL */
+/* ========================= */
+
+#pantallaFinal{
+    background:white;
+    padding:60px 40px;
+    border-radius:25px;
+    box-shadow:0 15px 30px rgba(0,0,0,.25);
+    animation:aparecer 1s ease;
+}
+
+#pantallaFinal h1{
+    font-size:40px;
+    color:#f59e0b;
+}
+
+#pantallaFinal h2{
+    color:#4f46e5;
+    margin-top:20px;
+}
+
+/* animación final */
+
+@keyframes aparecer{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}

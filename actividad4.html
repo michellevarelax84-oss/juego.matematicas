@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Multiplicación divertida</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<link rel="stylesheet" href="css/estilo_actividad4.css">
+</head>
+
+<body>
+
+<!-- ========================= -->
+<!-- INICIO -->
+<!-- ========================= -->
+
+<div id="inicio">
+    <h1>✖️ Multiplicación con Nosotros</h1>
+    <p>Aprende jugando con frutas 🍎</p>
+    <button id="btnStart">Comenzar</button>
+</div>
+
+<!-- ========================= -->
+<!-- JUEGO -->
+<!-- ========================= -->
+
+<div id="juego" style="display:none;">
+
+    <h2 id="operacion"></h2>
+
+    <div id="frutas"></div>
+
+    <!-- INPUT OPCIONAL PARA MULTIPLICACION -->
+    <input id="respuesta" type="number" placeholder="Respuesta">
+
+    <div style="margin-top:15px;">
+        <!-- BOTÓN VALIDAR -->
+        <button id="btnCheck">Comprobar</button>
+        <button id="btnValidate">Validar Respuesta</button>
+    </div>
+
+    <p id="mensaje"></p>
+
+</div>
+
+<!-- ========================= -->
+<!-- JS -->
+<!-- ========================= -->
+
+<script src="js/scrip_actividad4.js"></script>
+
+</body>
+</html>

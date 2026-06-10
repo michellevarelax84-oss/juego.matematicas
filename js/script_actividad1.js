@@ -93,6 +93,7 @@ correcta:"3000"
 tipo:"tabla",
 titulo:"🧮 Tabla posicional",
 texto:"UM = 4   C = 5   D = 2   U = 8",
+audio:"Unidad de mil cuatro, centena cinco, decena dos y unidad ocho",
 correcta:"4528"
 }
 
@@ -232,41 +233,120 @@ setTimeout(()=>{
     textoReto
     );
 },1000);
-        }else{
+}else if(reto.tipo === "escribir"){
 
-            zonaJuego.innerHTML =
+    zonaJuego.innerHTML =
 
-            `
-            <h3 id="textoReto">
-                ${reto.texto}
-            </h3>
+    `
+    <button id="btnAudio" class="btnAudio">
+        🔊 Escuchar
+    </button>
 
-            <input
-            type="text"
-            id="respuesta"
-            placeholder="Escribe tu respuesta">
-            `;
+    <h3 id="textoReto">
+        ${reto.texto}
+    </h3>
 
-            if(reto.tipo === "escribir"){
+    <input
+    type="text"
+    id="respuesta"
+    placeholder="Escribe tu respuesta">
+    `;
 
-                setTimeout(()=>{
+    const btnAudio =
+    document.getElementById("btnAudio");
 
-                    const texto =
-                    document.getElementById(
-                    "textoReto"
-                    );
+    const textoReto =
+    document.getElementById("textoReto");
 
-                    hablar(
-                    reto.texto,
-                    texto
-                    );
+    btnAudio.onclick = function(){
 
-                },500);
-            }
+        hablar(
+        reto.texto,
+        textoReto
+        );
 
-        }
+    };
+
+    setTimeout(()=>{
+
+        btnAudio.click();
+
+    },1000);
+
+}else{
+
+    zonaJuego.innerHTML =
+
+    `
+    <h3 id="textoReto">
+        ${reto.texto}
+    </h3>
+
+    <input
+    type="text"
+    id="respuesta"
+    placeholder="Escribe tu respuesta">
+    `;
+
+    if(reto.tipo === "recta"){
+
+        setTimeout(()=>{
+
+            hablar(
+            "Completa la recta numérica",
+            tituloReto
+            );
+
+        },500);
+
+    }
+
+if(reto.tipo === "tabla"){
+
+    zonaJuego.innerHTML =
+
+    `
+    <button id="btnAudio" class="btnAudio">
+        🔊 Escuchar
+    </button>
+
+    <h3 id="textoReto">
+        ${reto.texto}
+    </h3>
+
+    <input
+    type="text"
+    id="respuesta"
+    placeholder="Escribe tu respuesta">
+    `;
+
+    const btnAudio =
+    document.getElementById("btnAudio");
+
+    const textoReto =
+    document.getElementById("textoReto");
+
+    btnAudio.onclick = function(){
+
+        hablar(
+        "Unidad de mil cuatro, centena cinco, decena dos y unidad ocho",
+        textoReto
+        );
+
+    };
+
+    setTimeout(()=>{
+
+        btnAudio.click();
+
+    },1000);
+
+}
+
     }
 }
+    }
+
 
 // ======================
 // DRAG & DROP
@@ -444,17 +524,35 @@ function finalizar(){
         spread:180
     });
 
+    document.getElementById(
+    "btnValidar"
+    ).style.display = "none";
+
     tituloReto.innerHTML =
     "🏆 ¡FELICITACIONES!";
 
-    zonaJuego.innerHTML = "";
+    zonaJuego.innerHTML = `
+        <img
+        src="img/trofeo.avif"
+        alt="Trofeo"
+        class="trofeo">
 
-    mensaje.innerHTML =
-    "Has completado la actividad.";
+        <h2>Has completado la actividad</h2>
+    `;
+
+    mensaje.innerHTML = "";
 
     hablar(
     "Felicitaciones. Has completado la actividad."
     );
+
+    setTimeout(function(){
+
+        window.location.href =
+        "actividad2.html";
+
+    },5000);
+
 }
 
 // ======================
