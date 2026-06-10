@@ -1,0 +1,67 @@
+        /* ========================= */
+        /* BODY */
+        /* ========================= */
+
+        body{
+            margin:0;
+            font-family:Arial, sans-serif;
+            background:linear-gradient(135deg,#dff6ff,#fef6ff,#fff8dc);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        /* ========================= */
+        /* CONTENEDOR */
+        /* ========================= */
+
+        .contenedor{
+            background:white;
+            padding:40px;
+            border-radius:25px;
+            text-align:center;
+            box-shadow:0 10px 25px rgba(0,0,0,0.1);
+            width:320px;
+        }
+
+        /* ========================= */
+        /* AVATAR */
+        /* ========================= */
+
+        .avatar{
+            width:150px;
+            height:150px;
+            border-radius:50%;
+            object-fit:cover;
+            border:5px solid #87cefa;
+            margin-bottom:20px;
+        }
+
+        /* ========================= */
+        /* TITULO */
+        /* ========================= */
+
+        h1{
+            color:#444;
+            margin-bottom:25px;
+        }
+
+        /* ========================= */
+        /* BOTON */
+        /* ========================= */
+
+        .Boton{
+            background:#87cefa;
+            border:none;
+            padding:15px 25px;
+            border-radius:15px;
+            font-size:18px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .Boton:hover{
+            transform:scale(1.05);
+            background:#5eb6f5;
+        }

@@ -1,0 +1,432 @@
+/* ========================= */
+/* BODY */
+/* ========================= */
+
+body{
+    margin:0;
+
+    font-family:'Comic Sans MS', Arial, sans-serif;
+
+    background:
+    linear-gradient(
+    rgba(255,255,255,0.75),
+    rgba(255,255,255,0.75)
+    ),
+    url("../img/matematica.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    min-height:100vh;
+
+    padding:20px;
+}
+
+/* ========================= */
+/* CONTENEDOR */
+/* ========================= */
+
+#contenedor{
+
+    width:95%;
+    max-width:1200px;
+
+    background:rgba(255,255,255,0.92);
+
+    border-radius:35px;
+
+    padding:40px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 35px rgba(0,0,0,0.20);
+
+    border:6px solid white;
+}
+
+/* ========================= */
+/* TITULO */
+/* ========================= */
+
+h1{
+
+    font-size:55px;
+
+    color:#ff4081;
+
+    margin-bottom:10px;
+
+    text-shadow:
+    3px 3px 0px #ffd54f;
+}
+
+/* ========================= */
+/* NIVEL */
+/* ========================= */
+
+#nivel{
+
+    font-size:32px;
+
+    color:#ff9800;
+
+    margin-bottom:25px;
+}
+
+/* ========================= */
+/* TEXTO */
+/* ========================= */
+
+p{
+
+    font-size:25px;
+
+    color:#444;
+
+    font-weight:bold;
+
+    margin-bottom:30px;
+}
+
+/* ========================= */
+/* JUEGO */
+/* ========================= */
+
+#juego{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+    gap:140px;
+
+    flex-wrap:wrap;
+}
+
+/* ========================= */
+/* NUMEROS */
+/* ========================= */
+
+.numeros{
+
+    position:relative;
+
+    width:420px;
+
+    height:650px;
+}
+
+/* ========================= */
+/* NUMEROS INDIVIDUALES */
+/* ========================= */
+
+.numero{
+
+    width:120px;
+
+    height:120px;
+
+    position:absolute;
+
+    background:
+    linear-gradient(
+    135deg,
+    #42a5f5,
+    #7e57c2
+    );
+
+    border-radius:30px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:55px;
+
+    font-weight:bold;
+
+    cursor:grab;
+
+    transition:0.3s;
+
+    box-shadow:
+    0 8px 18px rgba(0,0,0,0.20);
+
+    border:5px solid white;
+
+    user-select:none;
+}
+
+/* ========================= */
+/* POSICIONES DESORDENADAS */
+/* ========================= */
+
+.n1{
+    top:20px;
+    left:180px;
+    transform:rotate(10deg);
+}
+
+.n2{
+    top:140px;
+    left:20px;
+    transform:rotate(-8deg);
+}
+
+.n3{
+    top:270px;
+    left:220px;
+    transform:rotate(12deg);
+}
+
+.n4{
+    top:410px;
+    left:40px;
+    transform:rotate(-10deg);
+}
+
+.n5{
+    top:520px;
+    left:210px;
+    transform:rotate(8deg);
+}
+
+/* ========================= */
+/* HOVER */
+/* ========================= */
+
+.numero:hover{
+
+    transform:scale(1.10);
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff4081,
+    #ff9800
+    );
+}
+
+/* ========================= */
+/* ZONAS */
+/* ========================= */
+
+.zonas{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+}
+
+/* ========================= */
+/* ZONA */
+/* ========================= */
+
+.zona{
+
+    width:270px;
+
+    height:140px;
+
+    border:5px dashed #29b6f6;
+
+    border-radius:30px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #ffffff,
+    #e3f2fd
+    );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:42px;
+
+    transition:0.3s;
+
+    box-shadow:
+    0 8px 18px rgba(0,0,0,0.15);
+}
+
+/* ========================= */
+/* HOVER ZONA */
+/* ========================= */
+
+.zona:hover{
+
+    transform:scale(1.03);
+}
+
+/* ========================= */
+/* CORRECTA */
+/* ========================= */
+
+.correcta{
+
+    background:
+    linear-gradient(
+    135deg,
+    #69f0ae,
+    #00c853
+    ) !important;
+
+    border-color:#00c853 !important;
+}
+
+/* ========================= */
+/* ERROR */
+/* ========================= */
+
+.error{
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff8a80,
+    #ff5252
+    ) !important;
+
+    border-color:#d50000 !important;
+}
+
+/* ========================= */
+/* MENSAJE */
+/* ========================= */
+
+#mensaje{
+
+    margin-top:35px;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    color:#6a1b9a;
+
+    min-height:40px;
+}
+
+/* ========================= */
+/* BOTONES */
+/* ========================= */
+
+.botones{
+
+    margin-top:35px;
+}
+
+button{
+
+    padding:18px 35px;
+
+    border:none;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #00c6ff,
+    #0072ff
+    );
+
+    color:white;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin:10px;
+
+    transition:0.3s;
+
+    box-shadow:
+    0 8px 18px rgba(0,0,0,0.20);
+}
+
+/* ========================= */
+/* HOVER BOTON */
+/* ========================= */
+
+button:hover{
+
+    transform:scale(1.08);
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff4081,
+    #7c4dff
+    );
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media(max-width:900px){
+
+    #juego{
+
+        flex-direction:column;
+
+        align-items:center;
+
+        gap:60px;
+    }
+
+    .numeros{
+
+        width:320px;
+
+        height:650px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    h1{
+        font-size:40px;
+    }
+
+    .numero{
+
+        width:90px;
+        height:90px;
+
+        font-size:40px;
+    }
+
+    .zona{
+
+        width:220px;
+
+        height:120px;
+
+        font-size:34px;
+    }
+
+}

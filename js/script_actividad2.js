@@ -37,409 +37,216 @@ pantallaJuego.style.display = "none";
 pantallaFinal.style.display = "none";
 
 /* ========================= */
-/* VOZ FEMENINA */
+/* VOZ */
 /* ========================= */
-
-speechSynthesis.onvoiceschanged = () => {
-    speechSynthesis.getVoices();
-};
 
 function hablar(texto){
 
     speechSynthesis.cancel();
 
-    const mensajeVoz =
-    new SpeechSynthesisUtterance(texto);
+    const msg = new SpeechSynthesisUtterance(texto);
+    msg.lang = "es-ES";
+    msg.rate = 1;
+    msg.pitch = 1.8;
 
-    mensajeVoz.lang = "es-ES";
-    mensajeVoz.rate = 1;
-    mensajeVoz.pitch = 1.8;
+    const voces = speechSynthesis.getVoices();
 
-    const voces =
-    speechSynthesis.getVoices();
-
-    const vozFemenina =
-    voces.find(v =>
+    const vozFemenina = voces.find(v =>
         v.name.includes("Helena") ||
-        v.name.includes("Paulina") ||
-        v.name.includes("Monica") ||
         v.name.includes("Laura") ||
+        v.name.includes("Monica") ||
         v.name.includes("Female") ||
         v.name.includes("Microsoft Sabina")
     );
 
     if(vozFemenina){
-        mensajeVoz.voice =
-        vozFemenina;
+        msg.voice = vozFemenina;
     }
 
-    speechSynthesis.speak(
-    mensajeVoz
-    );
+    speechSynthesis.speak(msg);
 }
 
 function aleatorio(min,max){
-
-    return Math.floor(
-        Math.random() *
-        (max - min + 1)
-    ) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function actualizarBarra(){
-
-    const porcentaje =
-    ((nivel - 1) / 4) * 100;
-
-    barra.style.width =
-    porcentaje + "%";
+    const porcentaje = ((nivel - 1) / 4) * 100;
+    barra.style.width = porcentaje + "%";
 }
 
-function crearFrutas(
-contenedor,
-cantidad,
-emoji
-){
+function crearFrutas(contenedor, cantidad, emoji){
 
     contenedor.innerHTML = "";
 
-    for(let i=1;i<=cantidad;i++){
+    for(let i = 1; i <= cantidad; i++){
 
-        const fruta =
-        document.createElement("span");
+        const fruta = document.createElement("span");
+        fruta.className = "objeto"; // 👈 IMPORTANTE (antes no coincidía con CSS)
+        fruta.textContent = emoji;
 
-        fruta.className =
-        "objeto";
-
-        fruta.textContent =
-        emoji;
-
-        fruta.addEventListener(
-        "click",
-        ()=>{
-
+        fruta.addEventListener("click", () => {
             hablar(i);
-
         });
 
-        contenedor.appendChild(
-        fruta
-        );
+        contenedor.appendChild(fruta);
     }
 }
+
 function generarNivel(){
 
     mensaje.textContent = "";
-
     respuesta.value = "";
-
     actualizarBarra();
-
-    /* ========================= */
-    /* NIVEL 1 */
-    /* ========================= */
 
     if(nivel === 1){
 
-        tituloJuego.textContent =
-        "🍎 Cuenta y Suma";
+        tituloJuego.textContent = "🍎 Cuenta y Suma";
 
-        operacionFrutas.style.display =
-        "flex";
-
-        operacionNumeros.style.display =
-        "none";
+        operacionFrutas.style.display = "flex";
+        operacionNumeros.style.display = "none";
 
         n1 = aleatorio(3,8);
         n2 = aleatorio(2,7);
 
         correcta = n1 + n2;
 
-        crearFrutas(
-        grupo1,
-        n1,
-        "🍎"
-        );
+        crearFrutas(grupo1, n1, "🍎");
+        crearFrutas(grupo2, n2, "🍌");
 
-        crearFrutas(
-        grupo2,
-        n2,
-        "🍌"
-        );
+        resultado.textContent = "= ?";
 
-        resultado.textContent =
-        "= ?";
     }
-
-    /* ========================= */
-    /* NIVEL 2 */
-    /* ========================= */
 
     if(nivel === 2){
 
-        tituloJuego.textContent =
-        "🍓 Súper Suma";
+        tituloJuego.textContent = "🍓 Súper Suma";
 
-        operacionFrutas.style.display =
-        "flex";
-
-        operacionNumeros.style.display =
-        "none";
+        operacionFrutas.style.display = "flex"; // 👈 FIX importante
+        operacionNumeros.style.display = "none";
 
         n1 = aleatorio(6,10);
         n2 = aleatorio(5,10);
 
         correcta = n1 + n2;
 
-        crearFrutas(
-        grupo1,
-        n1,
-        "🍓"
-        );
+        crearFrutas(grupo1, n1, "🍓");
+        crearFrutas(grupo2, n2, "🍇");
 
-        crearFrutas(
-        grupo2,
-        n2,
-        "🍇"
-        );
+        resultado.textContent = "= ?";
 
-        resultado.textContent =
-        "= ?";
     }
-
-    /* ========================= */
-    /* NIVEL 3 */
-    /* ========================= */
 
     if(nivel === 3){
 
-        tituloJuego.textContent =
-        "🧠 Suma Mental";
+        tituloJuego.textContent = "🧠 Suma Mental";
 
-        operacionFrutas.style.display =
-        "none";
-
-        operacionNumeros.style.display =
-        "flex";
+        operacionFrutas.style.display = "none";
+        operacionNumeros.style.display = "flex";
 
         n1 = aleatorio(20,50);
         n2 = aleatorio(10,40);
 
         correcta = n1 + n2;
 
-        numero1.textContent =
-        n1;
+        numero1.textContent = n1;
+        numero2.textContent = n2;
 
-        numero2.textContent =
-        n2;
+        resultado.textContent = "= ?";
 
-        resultado.textContent =
-        "= ?";
     }
-
-    /* ========================= */
-    /* NIVEL 4 */
-    /* ========================= */
 
     if(nivel === 4){
 
-        tituloJuego.textContent =
-        "🏆 Desafío Final";
+        tituloJuego.textContent = "🏆 Desafío Final";
 
-        operacionFrutas.style.display =
-        "none";
-
-        operacionNumeros.style.display =
-        "flex";
+        operacionFrutas.style.display = "none";
+        operacionNumeros.style.display = "flex";
 
         n1 = aleatorio(50,99);
         n2 = aleatorio(20,99);
 
         correcta = n1 + n2;
 
-        numero1.textContent =
-        n1;
+        numero1.textContent = n1;
+        numero2.textContent = n2;
 
-        numero2.textContent =
-        n2;
-
-        resultado.textContent =
-        "= ?";
+        resultado.textContent = "= ?";
     }
 }
 
-/* ========================= */
-/* NÚMEROS TOCABLES */
-/* ========================= */
+/* EVENTOS */
 
-numero1.addEventListener(
-"click",
-()=>{
+numero1.addEventListener("click", () => hablar(n1));
+numero2.addEventListener("click", () => hablar(n2));
 
-    hablar(n1);
+btnComenzar.addEventListener("click", () => {
 
-});
+    pantallaInicio.style.display = "none";
+    pantallaJuego.style.display = "block";
 
-numero2.addEventListener(
-"click",
-()=>{
-
-    hablar(n2);
-
-});
-
-/* ========================= */
-/* COMENZAR */
-/* ========================= */
-
-btnComenzar.addEventListener(
-"click",
-()=>{
-
-    pantallaInicio.style.display =
-    "none";
-
-    pantallaJuego.style.display =
-    "block";
-
-    hablar(
-    "Bienvenida. Suma con nosotros. Vamos a divertirnos aprendiendo matemáticas."
-    );
+    hablar("Bienvenida. Vamos a aprender matemáticas jugando.");
 
     generarNivel();
-
 });
 
-/* ========================= */
-/* COMPROBAR */
-/* ========================= */
+btnComprobar.addEventListener("click", () => {
 
-btnComprobar.addEventListener(
-"click",
-()=>{
-
-    const valor =
-    Number(
-    respuesta.value
-    );
+    const valor = Number(respuesta.value);
 
     if(valor === correcta){
 
-        mensaje.textContent =
-        "🎉 ¡Muy bien!";
-
-        mensaje.className =
-        "correcto";
+        mensaje.textContent = "🎉 ¡Correcto!";
+        mensaje.className = "correcto";
 
         estrellas++;
+        estrellasTexto.textContent = estrellas;
 
-        estrellasTexto.textContent =
-        estrellas;
+        hablar("Muy bien");
 
-        if(typeof confetti === "function"){
-
-            confetti({
-
-                particleCount:150,
-                spread:90,
-                origin:{y:0.6}
-
-            });
-
-        }
-
-        hablar(
-        "Excelente trabajo"
-        );
-
-        setTimeout(()=>{
+        setTimeout(() => {
 
             nivel++;
-
 if(nivel > 4){
 
-    hablar(
-    "Felicitaciones. Has completado las sumas. Ahora resta con nosotros."
-    );
+    hablar("Felicitaciones. Ahora vamos a aprender a restar.");
 
-    barra.style.width =
-    "100%";
+    setTimeout(() => {
 
-    setTimeout(()=>{
+        window.location.href = "actividad3.html";
 
-        window.location.href =
-        "actividad3.html";
-
-    },4000);
+    }, 2000);
 
     return;
 }
-            nivelTexto.textContent =
-            nivel;
 
+            nivelTexto.textContent = nivel;
             generarNivel();
 
-        },1500);
+        }, 1200);
 
-    }else{
+    } else {
 
-        mensaje.textContent =
-        "❌ Inténtalo nuevamente";
+        mensaje.textContent = "❌ Inténtalo otra vez";
+        mensaje.className = "error";
 
-        mensaje.className =
-        "error";
-
-        hablar(
-        "No te preocupes. Inténtalo otra vez."
-        );
-
+        hablar("Intenta nuevamente");
     }
 
 });
 
-/* ========================= */
-/* REINICIAR */
-/* ========================= */
-
-btnReiniciar.addEventListener(
-"click",
-()=>{
+btnReiniciar.addEventListener("click", () => {
 
     nivel = 1;
-
     estrellas = 0;
 
-    n1 = 0;
-    n2 = 0;
-    correcta = 0;
+    estrellasTexto.textContent = "0";
+    nivelTexto.textContent = "1";
 
-    estrellasTexto.textContent =
-    "0";
+    barra.style.width = "0%";
 
-    nivelTexto.textContent =
-    "1";
+    pantallaFinal.style.display = "none";
+    pantallaInicio.style.display = "block";
 
-    barra.style.width =
-    "0%";
-
-    mensaje.textContent =
-    "";
-
-    respuesta.value =
-    "";
-
-    pantallaFinal.style.display =
-    "none";
-
-    pantallaJuego.style.display =
-    "block";
-
-    generarNivel();
-
+    hablar("Vamos a empezar otra vez");
 });
-
-/* ========================= */
-/* INICIO */
-/* ========================= */
-
-actualizarBarra();
