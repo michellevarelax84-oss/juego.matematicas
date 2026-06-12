@@ -7,99 +7,128 @@
 
 <title>Resta con Nosotros</title>
 
-<link rel="stylesheet" href="css/estilo_actividad3.css">
+<link rel="stylesheet" href="css/estilo_actividad3.css?v=1.3">
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 
 <body>
 
-<!-- ========================= -->
-<!-- PANTALLA INICIO -->
-<!-- ========================= -->
+  <!-- Fondo ambiental interactivo -->
+  <div class="bg-animation">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+  </div>
 
-<div id="pantallaInicio">
+  <div class="game-container" id="pantallaJuego">
+    <header>
+      <h1 class="game-title">Aventura de las Restas</h1>
+      
+      <!-- Barra de Progreso de Obstáculos -->
+      <div class="progress-bar-container">
+        <div class="progress-line"></div>
+        <div class="progress-line-fill" id="progress-fill"></div>
+        <div class="progress-step active" id="step-1">1</div>
+        <div class="progress-step" id="step-2">2</div>
+        <div class="progress-step" id="step-3">3</div>
+        <div class="progress-step" id="step-4">4</div>
+      </div>
+    </header>
 
-    <h1>➖ Resta con Nosotros ➖</h1>
-
-    <p id="textoBienvenida">
-        Bienvenida. Aprende restas de forma divertida.
-    </p>
-
-    <button id="btnComenzar">
-        Comenzar
-    </button>
-
-</div>
-
-<!-- ========================= -->
-<!-- PANTALLA JUEGO -->
-<!-- ========================= -->
-
-<div id="pantallaJuego">
-
-    <h2 id="instruccion"></h2>
-
-    <div id="progreso">
-        <div id="barra"></div>
+    <!-- Panel de Instrucciones visible durante el juego -->
+    <div class="gameplay-instructions" id="gameplay-instructions">
+      <span class="instruction-icon" id="gameplay-icon">⚡</span>
+      <p class="instruction-text" id="gameplay-text">Resuelve las restas completando los desafíos.</p>
+      <button class="icon-btn-speak" id="gameplay-speak-btn" title="Escuchar instrucciones">🔊</button>
     </div>
 
-    <div id="estrellasBox">
-        ⭐ Estrellas: <span id="estrellas">0</span>
+    <!-- Contenedor del Juego -->
+    <div class="card" style="width: 100%; max-width: 850px; margin-top: 10px;">
+      <!-- Marcadores de Estrellas -->
+      <div style="display: flex; gap: 20px; width: 100%; margin-bottom: 20px;">
+        <div id="estrellasBox" style="margin: 0; flex: 1;">
+          ⭐ Estrellas: <span id="estrellas">0</span>
+        </div>
+        <div id="nivelBox" style="margin: 0; flex: 1;">
+          Obstáculo: <span id="nivel">1</span>/4
+        </div>
+      </div>
+
+      <!-- NIVEL 1 -->
+      <div id="nivel1">
+          <div id="frutas"></div>
+          <div id="operacion1" style="font-size: 38px; font-weight: 800; color: #4f46e5; margin: 20px 0;"></div>
+      </div>
+
+      <!-- NIVEL 2 -->
+      <div id="nivel2">
+          <div id="frutasArrastre"></div>
+          <div id="canasta">🧺</div>
+          <div id="operacion2" style="font-size: 38px; font-weight: 800; color: #4f46e5; margin: 20px 0;"></div>
+      </div>
+
+      <!-- NIVEL 3 -->
+      <div id="nivel3">
+          <div id="frutasNivel3" style="min-height: 70px; margin-bottom: 15px; display: flex; justify-content: center; flex-wrap: wrap;"></div>
+          <div id="operacion3" style="font-size: 48px; font-weight: 800; color: #4f46e5; margin: 20px 0;"></div>
+      </div>
+
+      <!-- NIVEL 4 -->
+      <div id="nivel4">
+          <div id="frutasNivel4" style="min-height: 70px; margin-bottom: 15px; display: flex; justify-content: center; flex-wrap: wrap;"></div>
+          <div id="operacion4" style="font-size: 48px; font-weight: 800; color: #4f46e5; margin: 20px 0;"></div>
+      </div>
+
+      <div style="margin: 25px 0;">
+        <input type="number" id="respuesta" placeholder="Escribe tu respuesta">
+      </div>
+
+      <button id="btnComprobar">
+          Comprobar
+      </button>
+
+      <div id="mensaje"></div>
     </div>
+  </div>
 
-    <div id="nivelBox">
-        Nivel: <span id="nivel">1</span>/4
+  <!-- PANTALLA FINAL -->
+  <div id="pantallaFinal" style="display:none; text-align:center;">
+      <h1>🏁 ¡FELICIDADES!</h1>
+      <p>Terminaste todas las restas.</p>
+      <h2>Ahora continúa con multiplicación ➗✖️</h2>
+      <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap;">
+          <button onclick="window.location.href='basico4.html'" style="background: linear-gradient(135deg, #38bdf8, #0ea5e9); box-shadow: 0 6px 0 #0284c7, 0 10px 15px rgba(14, 165, 233, 0.25);">
+              🏠 Volver al Menú
+          </button>
+          <button onclick="window.location.href='actividad4.html'">
+              ✖️ Ir a Multiplicaciones
+          </button>
+      </div>
+  </div>
+
+  <!-- MODAL DE INSTRUCCIONES / VICTORIA -->
+  <div class="modal-overlay" id="instruction-modal">
+    <div class="modal-card">
+      <span class="modal-icon" id="modal-icon">🎯</span>
+      <h2 class="modal-title" id="modal-title">Obstáculo 1</h2>
+      <div style="display: flex; justify-content: center; margin: 10px 0 20px 0;">
+        <button class="btn-action" id="modal-speak-btn" style="padding: 8px 16px; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid rgba(255,255,255,0.12); border-radius: 50px;">
+          🔊 Escuchar Explicación
+        </button>
+      </div>
+      <p class="modal-desc" id="modal-desc">Prepárate para iniciar.</p>
+      <div class="modal-buttons-container" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 10px; width: 100%;">
+        <button class="btn-action" id="modal-start-btn">Comenzar</button>
+      </div>
     </div>
+  </div>
 
-    <!-- NIVEL 1 -->
-    <div id="nivel1">
-        <div id="frutas"></div>
-        <div id="operacion1"></div>
-    </div>
+<audio id="audioCorrecto" src="sonidos/correcto.mp3"></audio>
+<audio id="audioError" src="sonidos/error.mp3"></audio>
+<audio id="audioAplausos" src="sonidos/confite.mp3"></audio>
 
-    <!-- NIVEL 2 -->
-    <div id="nivel2">
-        <div id="frutasArrastre"></div>
-        <div id="canasta">🧺</div>
-        <div id="operacion2"></div>
-    </div>
-
-    <!-- NIVEL 3 -->
-    <div id="nivel3">
-        <div id="operacion3"></div>
-    </div>
-
-    <!-- NIVEL 4 -->
-    <div id="nivel4">
-        <div id="operacion4"></div>
-    </div>
-
-    <input type="number" id="respuesta" placeholder="Escribe tu respuesta">
-
-    <button id="btnComprobar">
-        Comprobar
-    </button>
-
-    <div id="mensaje"></div>
-
-</div>
-
-<!-- ========================= -->
-<!-- PANTALLA FINAL -->
-<!-- ========================= -->
-
-<div id="pantallaFinal" style="display:none; text-align:center;">
-
-    <h1>🏁 ¡FELICIDADES!</h1>
-
-    <p>Terminaste todas las restas.</p>
-
-    <h2>Ahora continúa con multiplicación ➗✖️</h2>
-
-</div>
-
-<script src="js/script_actvidad3.js"></script>
+<script src="js/script_actvidad3.js?v=1.3"></script>
 
 </body>
 </html>

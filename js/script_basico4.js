@@ -27,6 +27,7 @@ const act2 = document.getElementById("act2");
 const act3 = document.getElementById("act3");
 const act4 = document.getElementById("act4");
 const act5 = document.getElementById("act5");
+const act6 = document.getElementById("act6");
 
 // =======================
 // BLOQUEAR POR DEFECTO
@@ -36,11 +37,13 @@ act2.style.pointerEvents = "none";
 act3.style.pointerEvents = "none";
 act4.style.pointerEvents = "none";
 act5.style.pointerEvents = "none";
+act6.style.pointerEvents = "none";
 
 act2.style.opacity = "0.5";
 act3.style.opacity = "0.5";
 act4.style.opacity = "0.5";
 act5.style.opacity = "0.5";
+act6.style.opacity = "0.5";
 
 // =======================
 // DESBLOQUEAR SEGÚN PROGRESO
@@ -68,6 +71,12 @@ if(localStorage.getItem("actividad3") === "completada"){
 if(localStorage.getItem("actividad4") === "completada"){
     act5.style.pointerEvents = "auto";
     act5.style.opacity = "1";
+}
+
+// Si completó actividad 5
+if(localStorage.getItem("actividad5") === "completada"){
+    act6.style.pointerEvents = "auto";
+    act6.style.opacity = "1";
 }
 // =======================
 // VOZ DE BIENVENIDA

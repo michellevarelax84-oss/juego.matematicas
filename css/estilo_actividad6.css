@@ -78,29 +78,25 @@ body {
 }
 
 /* ========================= */
-/* CONTENEDOR PRINCIPAL (GLASSMORPHISM) */
+/* CONTENEDOR PRINCIPAL */
 /* ========================= */
 
-#pantallaInicio,
-#pantallaJuego,
-#pantallaFinal {
-    background: rgba(255, 255, 255, 0.92);
-    border: 4px solid #fff;
-    width: 900px;
-    max-width: 92%;
-    padding: 40px 30px;
-    border-radius: 28px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.15);
+.game-container {
+    width: 96%;
+    max-width: 950px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     z-index: 2;
-    margin: auto;
+    margin: 0 auto;
     animation: aparecer 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes aparecer {
     from {
         opacity: 0;
-        transform: translateY(40px) scale(0.95);
+        transform: translateY(30px) scale(0.97);
     }
     to {
         opacity: 1;
@@ -108,7 +104,25 @@ body {
     }
 }
 
-h1 {
+/* ========================= */
+/* TARJETAS (GLASSMORPHISM) */
+/* ========================= */
+
+.card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 4px solid #fff;
+    border-radius: 28px;
+    padding: 35px 25px;
+    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.12);
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* ========================= */
+/* TITULOS */
+/* ========================= */
+
+.game-title {
     font-size: 2.5rem;
     font-weight: 800;
     background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
@@ -116,8 +130,8 @@ h1 {
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 4px 6px rgba(99, 102, 241, 0.12));
+    margin-bottom: 10px;
+    filter: drop-shadow(0 4px 6px rgba(99, 102, 241, 0.1));
 }
 
 h2 {
@@ -127,137 +141,9 @@ h2 {
     margin-bottom: 20px;
 }
 
-#instruccion {
-    color: #4f46e5;
-    font-weight: 700;
-    font-size: 1.6rem;
-    margin-bottom: 25px;
-}
-
-#textoBienvenida {
-    font-size: 1.35rem;
-    font-weight: 600;
-    color: #4f46e5;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-
 /* ========================= */
-/* BARRA PROGRESO */
+/* BOTONES 3D */
 /* ========================= */
-
-#progreso {
-    width: 100%;
-    height: 18px;
-    background: #e2e8f0;
-    border-radius: 50px;
-    margin: 20px 0;
-    overflow: hidden;
-    border: 2px solid #fff;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
-#barra {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #10b981, #34d399);
-    border-radius: 50px;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ========================= */
-/* NIVELES */
-/* ========================= */
-
-#nivel1, #nivel2, #nivel3, #nivel4 {
-    margin: 25px 0;
-}
-
-/* ========================= */
-/* FRUTAS */
-/* ========================= */
-
-.fruta {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 50px;
-    margin: 10px;
-    cursor: pointer;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.fruta:hover {
-    transform: scale(1.2) rotate(5deg);
-}
-
-.fruta.counted {
-    opacity: 0.35;
-    filter: grayscale(80%);
-    transform: scale(0.9);
-    position: relative;
-}
-.fruta.counted::after {
-    content: "❌";
-    position: absolute;
-    font-size: 28px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-}
-
-/* ========================= */
-/* CANASTA */
-/* ========================= */
-
-#canasta {
-    width: 160px;
-    height: 160px;
-    margin: 25px auto;
-    border: 4px dashed #f59e0b;
-    border-radius: 28px;
-    font-size: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #fffbeb, #fef3c7);
-    transition: transform 0.2s ease, border-color 0.2s ease;
-    box-shadow: 0 8px 16px rgba(245, 158, 11, 0.1);
-}
-
-#canasta:hover {
-    transform: scale(1.06);
-    border-color: #d97706;
-}
-
-/* ========================= */
-/* INPUT Y BOTÓN */
-/* ========================= */
-
-input {
-    font-family: 'Fredoka', sans-serif;
-    padding: 12px 20px;
-    font-size: 22px;
-    font-weight: 700;
-    color: #4f46e5;
-    border-radius: 16px;
-    border: 3px solid #e0e7ff;
-    background: #f8fafc;
-    width: 240px;
-    text-align: center;
-    outline: none;
-    transition: all 0.3s ease;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin-top: 15px;
-}
-
-input:focus {
-    border-color: #6366f1;
-    background: #fff;
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.05);
-}
 
 button {
     background: linear-gradient(135deg, #10b981, #059669);
@@ -284,36 +170,84 @@ button:active {
     box-shadow: 0 2px 0 #047857, 0 4px 8px rgba(16, 185, 129, 0.15);
 }
 
-#btnComenzar {
-    background: linear-gradient(135deg, #fb7185, #f43f5e);
-    box-shadow: 0 6px 0 #be123c, 0 10px 15px rgba(244, 63, 94, 0.25);
-    font-size: 22px;
-    padding: 16px 36px;
-}
-
-#btnComenzar:hover {
-    box-shadow: 0 10px 0 #be123c, 0 14px 20px rgba(244, 63, 94, 0.35);
-}
-
-#btnComenzar:active {
-    box-shadow: 0 2px 0 #be123c, 0 4px 8px rgba(244, 63, 94, 0.15);
-}
-
 /* ========================= */
-/* ESTRELLAS Y NIVELES INFO */
+/* CABECERA (MARCADORES) */
 /* ========================= */
 
 #estrellasBox, #nivelBox {
-    font-size: 1.25rem;
-    font-weight: 800;
+    background: rgba(255, 255, 255, 0.9);
+    border: 3px solid #fff;
+    padding: 10px 20px;
+    border-radius: 18px;
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.08);
     color: #4f46e5;
-    margin-bottom: 15px;
+    flex: 1;
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 800;
 }
 
 /* ========================= */
-/* MENSAJES */
+/* OPERACIONES */
 /* ========================= */
 
+#operacionNumeros {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin: 35px 0;
+    flex-wrap: wrap;
+}
+
+.signo {
+    font-size: 42px;
+    font-weight: 800;
+    color: #4f46e5;
+}
+
+/* NUMEROS GRANDES */
+.numeroGrande {
+    font-size: 55px;
+    font-weight: 800;
+    color: #6366f1;
+    background: #e0e7ff;
+    padding: 10px 24px;
+    border-radius: 20px;
+    border: 3px solid #fff;
+    box-shadow: 0 6px 12px rgba(99, 102, 241, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.numeroGrande:hover {
+    transform: scale(1.05);
+}
+
+/* INPUT */
+input {
+    font-family: 'Fredoka', sans-serif;
+    padding: 12px 20px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #4f46e5;
+    border-radius: 16px;
+    border: 3px solid #e0e7ff;
+    background: #f8fafc;
+    width: 240px;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+input:focus {
+    border-color: #6366f1;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* MENSAJES */
 #mensaje {
     min-height: 40px;
     margin-top: 20px;
@@ -329,72 +263,9 @@ button:active {
     color: #f43f5e;
 }
 
-/* ========================= */
-/* VOZ LEYENDO EFFECT */
-/* ========================= */
-
-.leyendo {
-    background: #fef08a !important;
-    color: #b45309 !important;
-    padding: 4px 12px;
-    border-radius: 12px;
-    border: 1.5px solid #facc15;
-    display: inline-block;
-    box-shadow: 0 4px 8px rgba(250, 204, 21, 0.15);
-}
-
-/* ========================= */
-/* PANTALLA FINAL */
-/* ========================= */
-
-#pantallaFinal h1 {
-    font-size: 3rem;
-    color: #f59e0b;
-}
-
-#pantallaFinal h2 {
-    color: #4f46e5;
-    margin-top: 25px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 600px) {
-    #pantallaInicio,
-    #pantallaJuego,
-    #pantallaFinal {
-        padding: 30px 15px;
-    }
-    h1 {
-        font-size: 1.8rem;
-    }
-    .fruta {
-        font-size: 40px;
-    }
-    #canasta {
-        width: 130px;
-        height: 130px;
-        font-size: 60px;
-    }
-    input {
-        width: 180px;
-    }
-}
-
 /* ==========================================================================
    DISEÑO DE OBSTÁCULOS Y MODALES COMPATIBLE CON ACTIVIDAD 4 Y 5
    ========================================================================== */
-
-.game-container {
-    width: 96%;
-    max-width: 950px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 2;
-    margin: 0 auto;
-    animation: aparecer 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
 
 header {
     width: 100%;
@@ -480,7 +351,7 @@ header {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     box-shadow: 0 8px 20px rgba(99, 102, 241, 0.06);
     text-align: left;
 }
@@ -605,6 +476,7 @@ header {
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     font-family: 'Fredoka', sans-serif;
+    margin-top: 5px;
 }
 
 .btn-action:hover {
@@ -617,7 +489,24 @@ header {
     box-shadow: 0 2px 0 #be123c, 0 4px 10px rgba(244, 63, 94, 0.2);
 }
 
+/* RESPONSIVE */
 @media (max-width: 600px) {
+    .card {
+        padding: 25px 15px;
+    }
+    .game-title {
+        font-size: 1.8rem;
+    }
+    .objeto {
+        font-size: 38px;
+    }
+    .numeroGrande {
+        font-size: 42px;
+        padding: 8px 18px;
+    }
+    input {
+        width: 180px;
+    }
     .progress-step {
         width: 32px;
         height: 32px;

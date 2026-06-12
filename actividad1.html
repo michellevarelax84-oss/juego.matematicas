@@ -7,39 +7,88 @@
 
 <title>Actividad 1 - Números y Comparación</title>
 
-<link rel="stylesheet" href="css/estilo_actividad1.css">
+<link rel="stylesheet" href="css/estilo_actividad1.css?v=1.3">
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 </head>
 <body>
 
-<div class="contenedor">
+  <!-- Fondo ambiental interactivo -->
+  <div class="bg-animation">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+  </div>
 
-    <h1>🐻 Aventura de los Números</h1>
+  <div class="game-container" id="pantallaJuego">
+    <header>
+      <h1 class="game-title">Aventura de los Números</h1>
+      
+      <!-- Barra de Progreso de Obstáculos -->
+      <div class="progress-bar-container" style="max-width: 500px;">
+        <div class="progress-line"></div>
+        <div class="progress-line-fill" id="progress-fill"></div>
+        <div class="progress-step active" id="step-1">1</div>
+        <div class="progress-step" id="step-2">2</div>
+        <div class="progress-step" id="step-3">3</div>
+        <div class="progress-step" id="step-4">4</div>
+        <div class="progress-step" id="step-5">5</div>
+        <div class="progress-step" id="step-6">6</div>
+      </div>
+    </header>
 
-    <!-- BARRA DE PROGRESO -->
-    <div class="barra">
-        <div id="progreso"></div>
+    <!-- Panel de Instrucciones visible durante el juego -->
+    <div class="gameplay-instructions" id="gameplay-instructions">
+      <span class="instruction-icon" id="gameplay-icon">⚡</span>
+      <p class="instruction-text" id="gameplay-text">Resuelve los desafíos matemáticos.</p>
+      <button class="icon-btn-speak" id="gameplay-speak-btn" title="Escuchar instrucciones">🔊</button>
     </div>
-    
-    <h2 id="tituloReto"></h2>
 
-    <div id="zonaJuego"></div>
+    <!-- Contenedor del Juego -->
+    <div class="card" style="width: 100%; max-width: 850px; margin-top: 10px; background: rgba(255, 255, 255, 0.92); border: 4px solid #fff; border-radius: 28px; padding: 35px 25px; box-shadow: 0 20px 50px rgba(99, 102, 241, 0.12); text-align: center;">
+      <h2 id="tituloReto" style="margin-bottom: 20px; font-size: 1.8rem; color: #4f46e5;"></h2>
+      
+      <div id="zonaJuego"></div>
 
-    <button id="btnValidar">
-        ✅ Validar respuesta
-    </button>
+      <div style="margin-top: 25px;">
+        <button id="btnValidar">
+            ✅ Validar respuesta
+        </button>
+      </div>
 
-    <p id="mensaje"></p>      
+      <p id="mensaje"></p>
+    </div>
+  </div>
 
-</div>
+  <!-- PANTALLA FINAL -->
+  <div id="pantallaFinal" style="display:none; text-align:center;">
+      <img src="img/trofeo.avif" alt="Trofeo" class="trofeo">
+      <h2 style="color: #4f46e5; margin-top: 20px;">¡Has completado la actividad!</h2>
+  </div>
+
+  <!-- MODAL DE INSTRUCCIONES / VICTORIA -->
+  <div class="modal-overlay" id="instruction-modal">
+    <div class="modal-card">
+      <span class="modal-icon" id="modal-icon">🎯</span>
+      <h2 class="modal-title" id="modal-title">Reto 1</h2>
+      <div style="display: flex; justify-content: center; margin: 10px 0 20px 0;">
+        <button class="btn-action" id="modal-speak-btn" style="padding: 8px 16px; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid rgba(255,255,255,0.12); border-radius: 50px;">
+          🔊 Escuchar Explicación
+        </button>
+      </div>
+      <p class="modal-desc" id="modal-desc">Prepárate para iniciar.</p>
+      <div class="modal-buttons-container" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 10px; width: 100%;">
+        <button class="btn-action" id="modal-start-btn">Comenzar</button>
+      </div>
+    </div>
+  </div>
 
 <audio id="audioCorrecto" src="sonidos/correcto.mp3"></audio>
 <audio id="audioError" src="sonidos/error.mp3"></audio>
 <audio id="audioAplausos" src="sonidos/confite.mp3"></audio>
 
-<script src="js/script_actividad1.js"></script>
+<script src="js/script_actividad1.js?v=1.3"></script>
 
 </body>
 </html>

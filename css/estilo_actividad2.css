@@ -1,154 +1,643 @@
-body{
-    margin:0;
-    font-family: "Arial", sans-serif;
-    background: linear-gradient(135deg,#87ceeb,#fff8dc);
-    min-height:100vh;
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&display=swap');
+
+/* ========================= */
+/* BODY Y FONDO DE BURBUJAS */
+/* ========================= */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Fredoka', sans-serif;
+    background-color: #f0f4ff;
+    color: #1e1b4b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    user-select: none;
+    -webkit-user-drag: none;
+    padding: 20px 0;
 }
 
+/* Fondo animado brillante con burbujas de colores */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    background: linear-gradient(135deg, #e0f2fe 0%, #e0e7ff 50%, #f5f3ff 100%);
+    overflow: hidden;
+}
+
+.bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.45;
+    z-index: -1;
+    animation: float 15s infinite ease-in-out;
+}
+
+.blob-1 {
+    width: 300px;
+    height: 300px;
+    background: #fb7185; /* Soft pink */
+    top: -5%;
+    left: -5%;
+    animation-delay: 0s;
+}
+
+.blob-2 {
+    width: 400px;
+    height: 400px;
+    background: #38bdf8; /* Soft blue */
+    bottom: -10%;
+    right: -5%;
+    animation-delay: -4s;
+}
+
+.blob-3 {
+    width: 250px;
+    height: 250px;
+    background: #fef08a; /* Soft yellow */
+    top: 45%;
+    left: 85%;
+    animation-delay: -8s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    50% {
+        transform: translate(40px, 30px) scale(1.1) rotate(15deg);
+    }
+}
+
+/* ========================= */
 /* CONTENEDOR PRINCIPAL */
-#app{
-    width:100%;
-    max-width:900px;
-    margin:auto;
-    padding:20px;
+/* ========================= */
+
+#app {
+    width: 95%;
+    max-width: 850px;
+    margin: auto;
+    padding: 10px;
+    z-index: 2;
+    position: relative;
 }
 
-/* TARJETAS */
-.card{
-    background:white;
-    border-radius:20px;
-    padding:25px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
-    text-align:center;
-    margin-top:20px;
+/* ========================= */
+/* TARJETAS (GLASSMORPHISM) */
+/* ========================= */
+
+.card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 4px solid #fff;
+    border-radius: 28px;
+    padding: 35px 25px;
+    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.12);
+    text-align: center;
+    margin-top: 20px;
+    animation: aparecer 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ========================= */
 /* TITULOS */
-h1,h2{
-    color:#ff6b00;
+/* ========================= */
+
+h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 4px 6px rgba(99, 102, 241, 0.1));
 }
 
-/* BOTONES */
-button{
-    background:#4caf50;
-    border:none;
-    color:white;
-    padding:12px 25px;
-    font-size:18px;
-    border-radius:12px;
-    cursor:pointer;
-    margin-top:10px;
-    transition:0.3s;
+h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #4f46e5;
+    margin-bottom: 20px;
 }
 
-button:hover{
-    transform:scale(1.05);
-    background:#43a047;
+#textoBienvenida {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: #4f46e5;
+    font-weight: 600;
+    margin-bottom: 25px;
 }
 
-/* PANTALLAS */
-#pantallaInicio,
-#pantallaJuego,
-#pantallaFinal{
-    width:100%;
+/* ========================= */
+/* BOTONES 3D */
+/* ========================= */
+
+button {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: 3px solid #fff;
+    color: white;
+    padding: 14px 30px;
+    font-size: 20px;
+    font-weight: 800;
+    border-radius: 18px;
+    cursor: pointer;
+    margin-top: 15px;
+    box-shadow: 0 6px 0 #047857, 0 10px 15px rgba(16, 185, 129, 0.25);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: 'Fredoka', sans-serif;
 }
 
-/* CABECERA */
-#cabecera{
-    display:flex;
-    justify-content:space-between;
-    margin:10px 0;
-    font-weight:bold;
-    font-size:18px;
+button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 0 #047857, 0 14px 20px rgba(16, 185, 129, 0.35);
 }
 
+button:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #047857, 0 4px 8px rgba(16, 185, 129, 0.15);
+}
+
+#btnComenzar {
+    background: linear-gradient(135deg, #fb7185, #f43f5e);
+    box-shadow: 0 6px 0 #be123c, 0 10px 15px rgba(244, 63, 94, 0.25);
+}
+
+#btnComenzar:hover {
+    box-shadow: 0 10px 0 #be123c, 0 14px 20px rgba(244, 63, 94, 0.35);
+}
+
+#btnComenzar:active {
+    box-shadow: 0 2px 0 #be123c, 0 4px 8px rgba(244, 63, 94, 0.15);
+}
+
+#btnReiniciar {
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    box-shadow: 0 6px 0 #0284c7, 0 10px 15px rgba(14, 165, 233, 0.25);
+}
+
+#btnReiniciar:hover {
+    box-shadow: 0 10px 0 #0284c7, 0 14px 20px rgba(14, 165, 233, 0.35);
+}
+
+#btnReiniciar:active {
+    box-shadow: 0 2px 0 #0284c7, 0 4px 8px rgba(14, 165, 233, 0.15);
+}
+
+/* ========================= */
+/* CABECERA (MARCADORES) */
+/* ========================= */
+
+#cabecera {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    font-weight: 800;
+    font-size: 18px;
+    gap: 15px;
+}
+
+#estrellasBox, #nivelBox {
+    background: rgba(255, 255, 255, 0.9);
+    border: 3px solid #fff;
+    padding: 10px 20px;
+    border-radius: 18px;
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.08);
+    color: #4f46e5;
+    flex: 1;
+    text-align: center;
+}
+
+/* ========================= */
 /* BARRA DE PROGRESO */
-#progreso{
-    width:100%;
-    height:15px;
-    background:#ddd;
-    border-radius:20px;
-    overflow:hidden;
-    margin-bottom:15px;
+/* ========================= */
+
+#progreso {
+    width: 100%;
+    height: 18px;
+    background: #e2e8f0;
+    border-radius: 50px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 2px solid #fff;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
 }
 
-#barra{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,#4caf50,#8bc34a);
-    transition:0.5s;
+#barra {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    border-radius: 50px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ========================= */
 /* OPERACIONES */
+/* ========================= */
+
 #operacionFrutas,
-#operacionNumeros{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:20px;
-    margin:20px 0;
+#operacionNumeros {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin: 25px 0;
+    flex-wrap: wrap;
 }
 
 /* FRUTAS */
-.objeto{
-    font-size:50px;
-    cursor:pointer;
-    transition:0.2s;
+.grupoObjetos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    min-height: 60px;
+    background: rgba(241, 245, 249, 0.6);
+    padding: 12px;
+    border-radius: 18px;
+    border: 2px dashed #cbd5e1;
 }
 
-.objeto:hover{
-    transform:scale(1.3);
+.objeto {
+    font-size: 48px;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+}
+
+.objeto:hover {
+    transform: scale(1.25) rotate(5deg);
+}
+
+.signo {
+    font-size: 42px;
+    font-weight: 800;
+    color: #4f46e5;
 }
 
 /* NUMEROS GRANDES */
-.numeroGrande{
-    font-size:60px;
-    font-weight:bold;
-    color:#2196f3;
-    cursor:pointer;
+.numeroGrande {
+    font-size: 55px;
+    font-weight: 800;
+    color: #6366f1;
+    background: #e0e7ff;
+    padding: 10px 24px;
+    border-radius: 20px;
+    border: 3px solid #fff;
+    box-shadow: 0 6px 12px rgba(99, 102, 241, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.numeroGrande:hover {
+    transform: scale(1.05);
 }
 
 /* RESULTADO */
-#resultado{
-    font-size:40px;
-    margin:10px;
-    color:#333;
+#resultado {
+    font-size: 38px;
+    font-weight: 800;
+    margin: 15px;
+    color: #1e1b4b;
 }
 
 /* INPUT */
-input{
-    padding:10px;
-    font-size:18px;
-    border-radius:10px;
-    border:2px solid #ccc;
-    width:200px;
-    text-align:center;
+input {
+    font-family: 'Fredoka', sans-serif;
+    padding: 12px 20px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #4f46e5;
+    border-radius: 16px;
+    border: 3px solid #e0e7ff;
+    background: #f8fafc;
+    width: 240px;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+input:focus {
+    border-color: #6366f1;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* MENSAJES */
-.correcto{
-    color:green;
-    font-size:22px;
-    font-weight:bold;
+#mensaje {
+    min-height: 40px;
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 800;
 }
 
-.error{
-    color:red;
-    font-size:22px;
-    font-weight:bold;
+.correcto {
+    color: #10b981;
 }
 
-/* ESTRELLAS */
-#estrellasBox,
-#nivelBox{
-    background:#fff;
-    padding:10px;
-    border-radius:10px;
-    box-shadow:0 5px 10px rgba(0,0,0,0.1);
+.error {
+    color: #f43f5e;
 }
 
-/* OCULTAR POR DEFECTO */
-#pantallaJuego,
-#pantallaFinal{
-    display:none;
+#estrellasFinal {
+    font-size: 45px;
+    margin: 20px 0;
+    animation: brillar 1s infinite alternate;
+}
+
+@keyframes brillar {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+}
+
+/* PANTALLAS OCULTAS POR DEFECTO */
+#pantallaFinal {
+    display: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .card {
+        padding: 25px 15px;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+    #cabecera {
+        font-size: 16px;
+    }
+    .objeto {
+        font-size: 38px;
+    }
+    .numeroGrande {
+        font-size: 42px;
+        padding: 8px 18px;
+    }
+    input {
+        width: 180px;
+    }
+}
+
+/* ==========================================================================
+   DISEÑO DE OBSTÁCULOS Y MODALES COMPATIBLE CON ACTIVIDAD 4 Y 5
+   ========================================================================== */
+
+.game-container {
+    width: 96%;
+    max-width: 950px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    margin: 0 auto;
+    animation: aparecer 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.progress-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+    margin: 15px auto;
+    position: relative;
+}
+
+.progress-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: #cbd5e1;
+    transform: translateY(-50%);
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.progress-line-fill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #6366f1, #0ea5e9);
+    transform: translateY(-50%);
+    z-index: 1;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.progress-step {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    z-index: 2;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #64748b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.progress-step.active {
+    border-color: #6366f1;
+    background: #6366f1;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    transform: scale(1.2) translateY(-2px);
+}
+
+.progress-step.completed {
+    border-color: #10b981;
+    background: #10b981;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+/* PANEL DE INSTRUCCIONES EN PANTALLA */
+.gameplay-instructions {
+    width: 100%;
+    max-width: 850px;
+    background: #fff;
+    border: 2.5px solid #e0e7ff;
+    border-radius: 18px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.06);
+    text-align: left;
+}
+
+.instruction-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.instruction-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #475569;
+    flex-grow: 1;
+}
+
+.icon-btn-speak {
+    background: #fff;
+    border: 2px solid #cbd5e1;
+    color: #475569;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    box-shadow: 0 3px 0 #cbd5e1;
+}
+
+.icon-btn-speak:hover {
+    background: #f8fafc;
+    transform: scale(1.08);
+    border-color: #94a3b8;
+}
+
+.icon-btn-speak:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #cbd5e1;
+}
+
+/* MODAL DE INSTRUCCIONES Y TRANSICIONES */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(30, 27, 75, 0.45);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-card {
+    background: rgba(255, 255, 255, 0.96);
+    border: 4px solid #fff;
+    border-radius: 28px;
+    width: 90%;
+    max-width: 480px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(99, 102, 241, 0.2);
+    transform: translateY(0);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: #1e1b4b;
+}
+
+.modal-overlay.hidden .modal-card {
+    transform: translateY(50px);
+}
+
+.modal-icon {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    display: inline-block;
+    animation: pulse-slow 2s infinite;
+}
+
+@keyframes pulse-slow {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+.modal-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: #312e81;
+}
+
+.modal-desc {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #4f46e5;
+    margin-bottom: 30px;
+}
+
+.btn-action {
+    background: linear-gradient(135deg, #fb7185, #f43f5e);
+    color: white;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 18px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #be123c, 0 10px 20px rgba(244, 63, 94, 0.3);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    font-family: 'Fredoka', sans-serif;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 #be123c, 0 12px 25px rgba(244, 63, 94, 0.4);
+}
+
+.btn-action:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #be123c, 0 4px 10px rgba(244, 63, 94, 0.2);
+}
+
+@media (max-width: 600px) {
+    .progress-step {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
 }

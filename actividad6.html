@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crucigrama Matemático - Desafío Mixto</title>
+  <!-- Google Fonts para tipografía amigable -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* VARIABLES DE DISEÑO (ESTILO CARTOON / INFANTIL PREMIUM) */
+    :root {
+      --bg-dark: #f0fdfa;
+      --bg-card: rgba(255, 255, 255, 0.92);
+      --bg-grid-cell: #ccfbf1;
+      --border-color: rgba(13, 148, 136, 0.15);
+      --color-primary: #0d9488; /* Teal */
+      --color-secondary: #06b6d4; /* Cyan */
+      --color-success: #10b981; /* Green */
+      --color-error: #f43f5e; /* Rose */
+      --color-warning: #f59e0b; /* Amber */
+      --text-dark: #115e59;
+      --text-light: #ffffff;
+      --text-muted: #0f766e;
+      --glow-error: 0 4px 0 #9f1239;
+    }
+
+    /* ESTILOS BASE Y FONDO DIVERTIDO */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fondo animado brillante con burbujas de colores */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      background: linear-gradient(135deg, #e0f2fe 0%, #e0e7ff 50%, #f5f3ff 100%);
+      overflow: hidden;
+    }
+
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.45;
+      z-index: -1;
+      animation: float 15s infinite ease-in-out;
+    }
+
+    .blob-1 {
+      width: 300px;
+      height: 300px;
+      background: #fb7185; /* Soft pink */
+      top: -5%;
+      left: -5%;
+      animation-delay: 0s;
+    }
+
+    .blob-2 {
+      width: 400px;
+      height: 400px;
+      background: #38bdf8; /* Soft blue */
+      bottom: -10%;
+      right: -5%;
+      animation-delay: -4s;
+    }
+
+    .blob-3 {
+      width: 250px;
+      height: 250px;
+      background: #fef08a; /* Soft yellow */
+      top: 45%;
+      left: 85%;
+      animation-delay: -8s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+      50% {
+        transform: translate(40px, 30px) scale(1.1) rotate(15deg);
+      }
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .game-container {
+      width: 96%;
+      max-width: 1500px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      z-index: 2;
+    }
+
+    /* ENCABEZADO Y PROGRESO */
+    header {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .game-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+      letter-spacing: 0.5px;
+      filter: drop-shadow(0 4px 6px rgba(99, 102, 241, 0.12));
+    }
+
+    .progress-bar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 400px;
+      margin: 15px auto;
+      position: relative;
+    }
+
+    .progress-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: #cbd5e1;
+      transform: translateY(-50%);
+      z-index: 1;
+      border-radius: 10px;
+    }
+
+    .progress-line-fill {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #6366f1, #0ea5e9);
+      transform: translateY(-50%);
+      z-index: 1;
+      width: 0%;
+      border-radius: 10px;
+      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .progress-step {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      z-index: 2;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      color: #64748b;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .progress-step.active {
+      border-color: #6366f1;
+      background: #6366f1;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+      transform: scale(1.2) translateY(-2px);
+    }
+
+    .progress-step.completed {
+      border-color: #10b981;
+      background: #10b981;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+
+    /* PANTALLA DE INSTRUCCIONES / TRANSICIONES */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(30, 27, 75, 0.45);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    .modal-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal-card {
+      background: rgba(255, 255, 255, 0.96);
+      border: 4px solid #fff;
+      border-radius: 28px;
+      width: 90%;
+      max-width: 480px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(99, 102, 241, 0.2);
+      transform: translateY(0);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      color: #1e1b4b;
+    }
+
+    .modal-overlay.hidden .modal-card {
+      transform: translateY(50px);
+    }
+
+    .modal-icon {
+      font-size: 4rem;
+      margin-bottom: 10px;
+      display: inline-block;
+      animation: pulse-slow 2s infinite;
+    }
+
+    @keyframes pulse-slow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .modal-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      color: #312e81;
+    }
+
+    .modal-desc {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #4f46e5;
+      margin-bottom: 30px;
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, #fb7185, #f43f5e);
+      color: white;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 18px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #be123c, 0 10px 20px rgba(244, 63, 94, 0.3);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #be123c, 0 12px 25px rgba(244, 63, 94, 0.4);
+    }
+
+    .btn-action:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #be123c, 0 4px 10px rgba(244, 63, 94, 0.2);
+    }
+
+    .btn-next-act {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9) !important;
+      box-shadow: 0 6px 0 #0284c7, 0 10px 20px rgba(14, 165, 233, 0.3) !important;
+    }
+    .btn-next-act:hover {
+      box-shadow: 0 8px 0 #0284c7, 0 12px 25px rgba(14, 165, 233, 0.4) !important;
+    }
+    .btn-next-act:active {
+      box-shadow: 0 2px 0 #0284c7, 0 4px 10px rgba(14, 165, 233, 0.2) !important;
+    }
+
+    /* TOAST DE NOTIFICACIÓN */
+    .toast-notification {
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: #f43f5e;
+      border: 3px solid #fff;
+      padding: 14px 32px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 25px rgba(244, 63, 94, 0.2);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .toast-notification.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast-notification.hidden {
+      display: none;
+    }
+
+    .toast-icon {
+      font-size: 1.5rem;
+    }
+
+    .toast-text {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    /* CUADRÍCULA DEL CRUCIGRAMA 10x10 */
+    .grid-container {
+      background: var(--bg-card);
+      border: 3px solid #fff;
+      border-radius: 24px;
+      padding: 15px;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 20px auto;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+      gap: 8px;
+      box-shadow: 0 15px 35px rgba(99, 102, 241, 0.12);
+    }
+
+    .cell {
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    /* Estados de las Celdas */
+    .cell.empty {
+      background-color: rgba(99, 102, 241, 0.03);
+      border: 1px dashed rgba(99, 102, 241, 0.1);
+    }
+
+    .cell.static {
+      background-color: #e0e7ff;
+      border: 2px solid #c7d2fe;
+      color: #3730a3;
+      box-shadow: inset 0 -3px #c7d2fe;
+    }
+
+    .cell.operator {
+      background-color: #fef3c7;
+      border: 2px solid #fde68a;
+      color: #d97706;
+      font-weight: 800;
+      font-size: 1.35rem;
+      box-shadow: inset 0 -3px 0 #fde68a;
+    }
+
+    /* ESTILOS DE SOLTADO COMUNES */
+    .dropzone {
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      color: transparent;
+      cursor: pointer;
+    }
+
+    .cell.dropzone {
+      background-color: #fff;
+      border: 2px dashed #a5b4fc;
+      box-shadow: inset 0 3px 6px rgba(99, 102, 241, 0.05);
+    }
+
+    .dropzone.active-hover {
+      background-color: #e0f2fe !important;
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.3) !important;
+      transform: scale(1.05);
+    }
+
+    .dropzone.filled {
+      background-color: #6366f1 !important;
+      border: 3px solid #fff !important;
+      color: #fff !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 0 #4f46e5, 0 6px 12px rgba(99, 102, 241, 0.2) !important;
+      transform: scale(1.03);
+    }
+
+    .dropzone.correct {
+      background-color: #10b981 !important;
+      border: 3px solid #fff !important;
+      color: #fff !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 0 #059669, 0 6px 12px rgba(16, 185, 129, 0.2) !important;
+      cursor: default !important;
+    }
+
+    .dropzone.incorrect {
+      background-color: #f43f5e !important;
+      border: 3px solid #fff !important;
+      color: #fff !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 0 #e11d48, 0 6px 12px rgba(244, 63, 94, 0.2) !important;
+    }
+
+    /* CONTENEDOR DE EMPAREJAMIENTO (OBSTÁCULO 2) */
+    .matching-container, .table-container, .equations-container {
+      width: 100%;
+      background: var(--bg-card);
+      border: 3px solid #fff;
+      border-radius: 24px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 15px 35px rgba(99, 102, 241, 0.12);
+      margin-bottom: 20px;
+    }
+
+    .matching-row, .table-row, .equation-row {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 12px 18px;
+      transition: all 0.3s ease;
+    }
+
+    .matching-row:hover, .table-row:hover, .equation-row:hover {
+      border-color: #cbd5e1;
+      background: #f1f5f9;
+      transform: translateY(-2px);
+    }
+
+    /* Clases de soporte para el alineamiento en fila */
+    .table-equation-part, .equation-text-part {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      width: 100%;
+    }
+
+    /* En pantallas grandes (Tablet/Desktop), colocar la división/problema a la izquierda y el visual a la derecha */
+    @media (min-width: 768px) {
+      .matching-row {
+        flex-direction: row;
+        align-items: center;
+      }
+      .table-row, .equation-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .table-equation-part {
+        flex: 0 0 250px;
+        width: auto;
+      }
+      .equation-text-part {
+        flex: 1;
+        width: auto;
+      }
+      .table-row .visual-box, .equation-row .visual-box {
+        flex: 1.2;
+        width: auto;
+        margin-top: 0 !important;
+      }
+    }
+
+    /* Centrado y compactación para ecuaciones puramente matemáticas (Obstáculo 4) */
+    .math-only-equation {
+      justify-content: center !important;
+      gap: 20px !important;
+    }
+    .math-only-equation .equation-part {
+      flex: 0 0 auto !important;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .matching-dropzone, .table-dropzone, .equation-dropzone {
+      width: 110px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 800;
+      background-color: #fff;
+      border: 2px dashed #a5b4fc;
+      color: transparent;
+    }
+
+    .equation-dropzone {
+      width: 65px;
+    }
+
+    .matching-text, .table-sum, .equation-part {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e1b4b;
+    }
+
+    .table-multiplication {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #4f46e5;
+      text-align: center;
+      background: #eeebff;
+      border: 2px solid #dcd7ff;
+      padding: 8px 12px;
+      border-radius: 12px;
+    }
+
+    /* REPRESENTACIÓN VISUAL DE OBJETOS */
+    .visual-box {
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 6px 12px;
+      background: #ffffff;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .visual-group {
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 6px 8px;
+      background: #f8fafc;
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .visual-item {
+      font-size: 1.25rem;
+      display: inline-block;
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 6px;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .visual-item:hover {
+      transform: scale(1.15);
+    }
+    .visual-item.counted {
+      transform: scale(1.25);
+      filter: drop-shadow(0 0 6px #10b981) drop-shadow(0 0 2px #10b981);
+      background-color: rgba(16, 185, 129, 0.2);
+    }
+    .visual-item.subtracted {
+      opacity: 0.35;
+      filter: grayscale(80%);
+      position: relative;
+    }
+    .visual-item.subtracted::after {
+      content: "❌";
+      position: absolute;
+      font-size: 0.85rem;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      color: #ef4444;
+    }
+    .matching-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      flex: 1;
+    }
+    .matching-label {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #312e81;
+    }
+
+    /* PANEL DE INSTRUCCIONES EN PANTALLA */
+    .gameplay-instructions {
+      width: 100%;
+      background: #fff;
+      border: 2.5px solid #e0e7ff;
+      border-radius: 18px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.06);
+    }
+
+    .instruction-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      animation: pulse-slow 2s infinite;
+    }
+
+    .instruction-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: #475569;
+      flex-grow: 1;
+    }
+
+    .icon-btn-speak {
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      color: #475569;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      box-shadow: 0 3px 0 #cbd5e1;
+    }
+
+    .icon-btn-speak:hover {
+      background: #f8fafc;
+      transform: scale(1.08);
+      border-color: #94a3b8;
+    }
+
+    .icon-btn-speak:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #cbd5e1;
+    }
+
+    /* BOTÓN DE VALIDACIÓN */
+    .validate-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .btn-validate {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      padding: 12px 48px;
+      border-radius: 18px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #047857, 0 10px 20px rgba(16, 185, 129, 0.25);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      letter-spacing: 0.5px;
+    }
+
+    .btn-validate:hover:not(.disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #047857, 0 12px 25px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-validate:active:not(.disabled) {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #047857, 0 4px 10px rgba(16, 185, 129, 0.15);
+    }
+
+    .btn-validate.disabled {
+      background: #cbd5e1;
+      color: #94a3b8;
+      border: none;
+      box-shadow: 0 6px 0 #94a3b8;
+      cursor: not-allowed;
+      transform: translateY(0);
+      opacity: 0.7;
+    }
+
+    /* PANEL DE OPCIONES DRAGGABLES */
+    .options-panel {
+      width: 100%;
+      background: var(--bg-card);
+      border: 3px solid #fff;
+      border-radius: 24px;
+      padding: 18px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 15px 35px rgba(99, 102, 241, 0.1);
+      touch-action: none;
+    }
+
+    .drag-card {
+      border: 3px solid #fff;
+      border-radius: 16px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #1e1b4b;
+      cursor: grab;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 70px;
+      aspect-ratio: 1.25 / 1;
+    }
+
+    .drag-card:nth-child(1) { background: #facc15; box-shadow: 0 6px 0 #ca8a04; }
+    .drag-card:nth-child(1):hover { transform: translateY(-4px); box-shadow: 0 10px 0 #ca8a04; }
+    .drag-card:nth-child(1):active { transform: translateY(2px); box-shadow: 0 4px 0 #ca8a04; }
+
+    .drag-card:nth-child(2) { background: #ff7849; box-shadow: 0 6px 0 #ea580c; }
+    .drag-card:nth-child(2):hover { transform: translateY(-4px); box-shadow: 0 10px 0 #ea580c; }
+    .drag-card:nth-child(2):active { transform: translateY(2px); box-shadow: 0 4px 0 #ea580c; }
+
+    .drag-card:nth-child(3) { background: #22d3ee; box-shadow: 0 6px 0 #0891b2; }
+    .drag-card:nth-child(3):hover { transform: translateY(-4px); box-shadow: 0 10px 0 #0891b2; }
+    .drag-card:nth-child(3):active { transform: translateY(2px); box-shadow: 0 4px 0 #0891b2; }
+
+    .drag-card:nth-child(4) { background: #c084fc; box-shadow: 0 6px 0 #9333ea; }
+    .drag-card:nth-child(4):hover { transform: translateY(-4px); box-shadow: 0 10px 0 #9333ea; }
+    .drag-card:nth-child(4):active { transform: translateY(2px); box-shadow: 0 4px 0 #9333ea; }
+
+    .drag-card:nth-child(5) { background: #4ade80; box-shadow: 0 6px 0 #16a34a; }
+    .drag-card:nth-child(5):hover { transform: translateY(-4px); box-shadow: 0 10px 0 #16a34a; }
+    .drag-card:nth-child(5):active { transform: translateY(2px); box-shadow: 0 4px 0 #16a34a; }
+
+    .drag-card:active {
+      cursor: grabbing;
+    }
+
+    .drag-card.dragging-active {
+      opacity: 0.3;
+    }
+
+    /* ELEMENTO FLOTANTE DE ARRASTRE */
+    .floating-drag-element {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1000;
+      border: 3px solid #fff;
+      border-radius: 16px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #1e1b4b;
+      transform: translate(-50%, -50%) scale(1.15) rotate(3deg);
+      transition: transform 0.05s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 70px;
+      aspect-ratio: 1.25 / 1;
+    }
+
+    /* BOTONES DE SOPORTE E INFORMACIÓN */
+    .control-buttons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .icon-btn {
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      color: #475569;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 0 #cbd5e1, 0 4px 10px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: #f8fafc;
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 6px 0 #cbd5e1, 0 6px 12px rgba(0,0,0,0.08);
+    }
+
+    .icon-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #cbd5e1;
+    }
+
+    /* ANIMACIONES ADICIONALES */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .shake-error {
+      animation: shake 0.4s ease-in-out;
+      border-color: var(--color-error) !important;
+      box-shadow: var(--glow-error) !important;
+    }
+
+    /* CANVAS DE CONFETI */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* AJUSTES RESPONSIVOS */
+    @media (max-width: 500px) {
+      .game-title {
+        font-size: 1.8rem;
+      }
+      .cell {
+        font-size: 1.05rem;
+      }
+      .cell.operator {
+        font-size: 1.15rem;
+      }
+      .drag-card {
+        padding: 8px 12px;
+        font-size: 1.2rem;
+        min-width: 55px;
+      }
+      .progress-step {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+      }
+      .btn-validate {
+        padding: 10px 36px;
+        font-size: 1.1rem;
+      }
+      .matching-text, .table-sum, .equation-part {
+        font-size: 1.05rem;
+      }
+      .matching-dropzone, .table-dropzone, .equation-dropzone {
+        width: 95px;
+        height: 42px;
+        font-size: 1.05rem;
+      }
+      .table-row {
+        gap: 8px;
+        padding: 8px 10px;
+        grid-template-columns: 1fr 1fr 1.3fr;
+      }
+      .table-multiplication {
+        font-size: 1.05rem;
+        padding: 6px;
+      }
+      .equation-row {
+        gap: 10px;
+        padding: 8px 12px;
+      }
+      .equation-dropzone {
+        width: 55px;
+        height: 40px;
+      }
+      .gameplay-instructions {
+        padding: 10px 14px;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+      .instruction-icon {
+        font-size: 1.4rem;
+      }
+      .instruction-text {
+        font-size: 0.85rem;
+      }
+      .icon-btn-speak {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fondo ambiental interactivo -->
+  <div class="bg-animation">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+  </div>
+
+  <!-- Botones de Control superiores -->
+  <div class="control-buttons">
+    <button class="icon-btn" id="sound-toggle-btn" title="Activar/Silenciar sonido">🔊</button>
+  </div>
+
+  <!-- Canvas para el Confeti de Celebración -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Toast de Notificación -->
+  <div class="toast-notification hidden" id="toast-message">
+    <span class="toast-icon">❌</span>
+    <span class="toast-text">¡Incorrecto! Vuelve a hacerlo todo de nuevo.</span>
+  </div>
+
+  <!-- Contenedor del Juego -->
+  <div class="game-container">
+    <header>
+      <h1 class="game-title">Desafío Mixto</h1>
+      
+      <!-- Barra de Progreso de Obstáculos -->
+      <div class="progress-bar-container">
+        <div class="progress-line"></div>
+        <div class="progress-line-fill" id="progress-fill"></div>
+        <div class="progress-step active" id="step-1">1</div>
+        <div class="progress-step" id="step-2">2</div>
+        <div class="progress-step" id="step-3">3</div>
+        <div class="progress-step" id="step-4">4</div>
+      </div>
+    </header>
+
+    <!-- Panel de Instrucciones visible durante el juego -->
+    <div class="gameplay-instructions" id="gameplay-instructions">
+      <span class="instruction-icon" id="gameplay-icon">⚡</span>
+      <p class="instruction-text" id="gameplay-text">Cargando...</p>
+      <button class="icon-btn-speak" id="gameplay-speak-btn" title="Escuchar instrucciones">🔊</button>
+    </div>
+
+    <!-- Tablero del Crucigrama (10x10) - Modo Obstáculo 1 -->
+    <main class="grid-container" id="crossword-grid">
+      <!-- Generado dinámicamente -->
+    </main>
+
+    <!-- Contenedor del Juego de Emparejar - Modo Obstáculo 2 -->
+    <div class="matching-container" id="matching-area" style="display: none;">
+      <!-- Generado dinámicamente -->
+    </div>
+
+    <!-- Contenedor del Juego de Tabla de Equivalencias - Modo Obstáculo 3 -->
+    <div class="table-container" id="table-area" style="display: none;">
+      <!-- Generado dinámicamente -->
+    </div>
+
+    <!-- Contenedor del Juego de Completar Multiplicación - Modo Obstáculo 4 -->
+    <div class="equations-container" id="equations-area" style="display: none;">
+      <!-- Generado dinámicamente -->
+    </div>
+
+    <!-- Botón de Validación -->
+    <div class="validate-container">
+      <button class="btn-validate disabled" id="validate-btn">Validar Respuestas</button>
+    </div>
+
+    <!-- Panel de Opciones Draggables (5 opciones) -->
+    <footer class="options-panel" id="options-container">
+      <!-- Generado dinámicamente -->
+    </footer>
+  </div>
+
+  <!-- MODAL DE INSTRUCCIONES / VICTORIA -->
+  <div class="modal-overlay" id="instruction-modal">
+    <div class="modal-card">
+      <span class="modal-icon" id="modal-icon">🎯</span>
+      <h2 class="modal-title" id="modal-title">Obstáculo 1</h2>
+      <div style="display: flex; justify-content: center; margin: 10px 0 20px 0;">
+        <button class="btn-action" id="modal-speak-btn" style="padding: 8px 16px; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid rgba(255,255,255,0.12); border-radius: 50px;">
+          🔊 Escuchar Explicación
+        </button>
+      </div>
+      <p class="modal-desc" id="modal-desc">Prepárate para iniciar el crucigrama matemático.</p>
+      <div class="modal-buttons-container" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 10px; width: 100%;">
+        <button class="btn-action" id="modal-start-btn">Comenzar</button>
+        <button class="btn-action btn-next-act" id="modal-next-btn" style="display: none;"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================
+       1. EFECTOS DE SONIDO (Web Audio API)
+       ========================================== */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            this.ctx = new AudioContextClass();
+          }
+        }
+      }
+
+      toggleMute() {
+        this.muted = !this.muted;
+        return this.muted;
+      }
+
+      playDrag() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          
+          osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(50, this.ctx.currentTime + 0.08);
+          
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+          
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.08);
+        } catch (err) {
+          console.warn("Error de Web Audio API:", err);
+        }
+      }
+
+      playCorrect() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
+        try {
+          const notes = [523.25, 659.25, 783.99, 1046.50];
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.05);
+            
+            gain.gain.setValueAtTime(0, this.ctx.currentTime + idx * 0.05);
+            gain.gain.linearRampToValueAtTime(0.12, this.ctx.currentTime + idx * 0.05 + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.05 + 0.25);
+            
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(this.ctx.currentTime + idx * 0.05);
+            osc.stop(this.ctx.currentTime + idx * 0.05 + 0.3);
+          });
+        } catch (err) {
+          console.warn("Error de Web Audio API:", err);
+        }
+      }
+
+      playError() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
+        try {
+          const osc = this.ctx.createOscillator();
+          const osc2 = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          
+          osc.type = 'sawtooth';
+          osc2.type = 'triangle';
+          
+          osc.frequency.setValueAtTime(110, this.ctx.currentTime);
+          osc2.frequency.setValueAtTime(113, this.ctx.currentTime);
+          
+          gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.22);
+          
+          osc.connect(gain);
+          osc2.connect(gain);
+          gain.connect(this.ctx.destination);
+          
+          osc.start();
+          osc2.start();
+          osc.stop(this.ctx.currentTime + 0.22);
+          osc2.stop(this.ctx.currentTime + 0.22);
+        } catch (err) {
+          console.warn("Error de Web Audio API:", err);
+        }
+      }
+
+      playLevelComplete() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
+        try {
+          const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 1046.50];
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.07);
+            
+            gain.gain.setValueAtTime(0, this.ctx.currentTime + idx * 0.07);
+            gain.gain.linearRampToValueAtTime(0.1, this.ctx.currentTime + idx * 0.07 + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.07 + 0.35);
+            
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(this.ctx.currentTime + idx * 0.07);
+            osc.stop(this.ctx.currentTime + idx * 0.07 + 0.4);
+          });
+        } catch (err) {
+          console.warn("Error de Web Audio API:", err);
+        }
+      }
+
+      playVictory() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
+        try {
+          const melody = [
+            { f: 523.25, d: 0.12 }, // C5
+            { f: 587.33, d: 0.12 }, // D5
+            { f: 659.25, d: 0.12 }, // E5
+            { f: 783.99, d: 0.12 }, // G5
+            { f: 659.25, d: 0.12 }, // E5
+            { f: 783.99, d: 0.24 }, // G5
+            { f: 880.00, d: 0.12 }, // A5
+            { f: 987.77, d: 0.12 }, // B5
+            { f: 1046.50, d: 0.6 }  // C6
+          ];
+          
+          let current = this.ctx.currentTime;
+          melody.forEach((note) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(note.f, current);
+            
+            gain.gain.setValueAtTime(0, current);
+            gain.gain.linearRampToValueAtTime(0.12, current + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, current + note.d - 0.02);
+            
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(current);
+            osc.stop(current + note.d);
+            current += note.d;
+          });
+        } catch (err) {
+          console.warn("Error de Web Audio API:", err);
+        }
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* ==========================================
+       2. CELEBRACIÓN CON CONFETI (HTML5 Canvas)
+       ========================================== */
+    class ConfettiEffect {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.active = false;
+        
+        window.addEventListener('resize', () => this.resize());
+        this.resize();
+      }
+
+      resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+      }
+
+      start() {
+        this.active = true;
+        this.particles = [];
+        for (let i = 0; i < 150; i++) {
+          this.particles.push(this.createParticle());
+        }
+        this.animate();
+      }
+
+      stop() {
+        this.active = false;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+
+      createParticle() {
+        const colors = [
+          '#f43f5e', '#ec4899', '#d946ef', '#a855f7', 
+          '#8b5cf6', '#6366f1', '#3b82f6', '#0ea5e9', 
+          '#06b6d4', '#14b8a6', '#10b981', '#22c55e', 
+          '#84cc16', '#eab308', '#f97316', '#ef4444'
+        ];
+        return {
+          x: Math.random() * this.canvas.width,
+          y: Math.random() * this.canvas.height - this.canvas.height - 20,
+          size: Math.random() * 8 + 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speedX: Math.random() * 4 - 2,
+          speedY: Math.random() * 4 + 4,
+          rotation: Math.random() * 360,
+          rotationSpeed: Math.random() * 4 - 2
+        };
+      }
+
+      animate() {
+        if (!this.active) return;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.particles.forEach(p => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.rotation += p.rotationSpeed;
+          
+          if (p.y > this.canvas.height) {
+            p.y = -20;
+            p.x = Math.random() * this.canvas.width;
+          }
+          
+          this.ctx.save();
+          this.ctx.translate(p.x, p.y);
+          this.ctx.rotate(p.rotation * Math.PI / 180);
+          this.ctx.fillStyle = p.color;
+          this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          this.ctx.restore();
+        });
+        
+        requestAnimationFrame(() => this.animate());
+      }
+    }
+
+    const confetti = new ConfettiEffect('confetti-canvas');
+
+    /* ==========================================
+       3. DATOS Y ESTRUCTURA DE OBSTÁCULOS
+       ========================================== */
+    const OBSTACLES = [
+      {
+        id: 1,
+        title: "Desafío de Crucigrama Mixto",
+        icon: "⚡",
+        type: "crossword",
+        desc: "Completa las casillas vacías en el crucigrama mixto de un dígito. Arrastra las opciones correctas y presiona 'Validar'.",
+        options: ["1", "2", "6", "8", "9"],
+        gridCells: {
+          // Eq 1: 2 x 4 = [8] (Fila 2, Cols 1 a 5)
+          "2,1": { type: "static", val: "2" },
+          "2,2": { type: "operator", val: "x" },
+          "2,3": { type: "static", val: "4" },
+          "2,4": { type: "operator", val: "=" },
+          "2,5": { type: "dropzone", correct: "8" },
+
+          // Eq 2: [8] - 2 = [6] (Col 5, Filas 2 a 6)
+          "3,5": { type: "operator", val: "-" },
+          "4,5": { type: "static", val: "2" },
+          "5,5": { type: "operator", val: "=" },
+          "6,5": { type: "dropzone", correct: "6" },
+
+          // Eq 3: [6] ÷ 3 = [2] (Fila 6, Cols 5 a 9)
+          "6,6": { type: "operator", val: "÷" },
+          "6,7": { type: "static", val: "3" },
+          "6,8": { type: "operator", val: "=" },
+          "6,9": { type: "dropzone", correct: "2" },
+
+          // Eq 4: [2] + 7 = [9] (Col 9, Filas 6 a 2 going upwards)
+          "5,9": { type: "operator", val: "+" },
+          "4,9": { type: "static", val: "7" },
+          "3,9": { type: "operator", val: "=" },
+          "2,9": { type: "dropzone", correct: "9" },
+
+          // Eq 5: [9] - [1] = 8 (Fila 2, Cols 9 a 5 going leftwards)
+          "2,8": { type: "operator", val: "-" },
+          "2,7": { type: "dropzone", correct: "1" },
+          "2,6": { type: "operator", val: "=" }
+        }
+      },
+      {
+        id: 2,
+        title: "Desafío de Parejas de Operaciones",
+        icon: "🔄",
+        type: "matching",
+        desc: "Une cada operación de un dígito con su resultado correcto. Arrastra las operaciones de la parte inferior a las casillas correspondientes.",
+        options: ["3 + 4", "8 - 2", "2 x 4", "6 ÷ 3", "9 - 4"],
+        pairs: [
+          { label: "Resultado es 7", correct: "3 + 4" },
+          { label: "Resultado es 6", correct: "8 - 2" },
+          { label: "Resultado es 8", correct: "2 x 4" },
+          { label: "Resultado es 2", correct: "6 ÷ 3" },
+          { label: "Resultado es 5", correct: "9 - 4" }
+        ]
+      },
+      {
+        id: 3,
+        title: "Desafío de Tabla Mixta",
+        icon: "📊",
+        type: "table",
+        desc: "Completa las operaciones de un dígito en la tabla. Arrastra el resultado correcto a la casilla central.",
+        options: ["2", "4", "5", "7", "8"],
+        rows: [
+          { multiplication: "", addition: "3 + 4", correct: "7", visual: { count: 7, icon: "🍊" } },
+          { multiplication: "", addition: "9 - 5", correct: "4", visual: { count: 9, icon: "🍎" } },
+          { multiplication: "", addition: "2 x 4", correct: "8", visual: { count: 8, icon: "🍓", groups: 2 } },
+          { multiplication: "", addition: "6 ÷ 3", correct: "2", visual: { count: 6, icon: "🍇", groups: 3 } },
+          { multiplication: "", addition: "9 - 4", correct: "5", visual: { count: 9, icon: "🍌" } }
+        ]
+      },
+      {
+        id: 4,
+        title: "Completa el Término Faltante",
+        icon: "🏆",
+        type: "equations",
+        desc: "Encuentra el número de un dígito que falta en cada operación para que sea correcta. Arrastra la tarjeta adecuada.",
+        options: ["3", "4", "5", "6", "8"],
+        equations: [
+          { expr: ["4", "+", "___", "=", "9"], blankIdx: 2, correct: "5" },
+          { expr: ["___", "-", "3", "=", "5"], blankIdx: 0, correct: "8" },
+          { expr: ["3", "x", "___", "=", "12"], blankIdx: 2, correct: "4" },
+          { expr: ["___", "÷", "2", "=", "3"], blankIdx: 0, correct: "6" },
+          { expr: ["9", "-", "___", "=", "6"], blankIdx: 2, correct: "3" }
+        ]
+      }
+    ];
+
+    /* ==========================================
+       4. CONTROLADORES Y LÓGICA DEL JUEGO
+       ========================================== */
+    let currentLevelIdx = 0;
+    let correctCount = 0;
+    const totalDropsNeeded = 5;
+
+    const NUMBER_WORDS_ES = [
+      "", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez",
+      "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve", "veinte",
+      "veintiuno", "veintidós", "veintitrés", "veinticuatro", "veinticinco", "veintiséis", "veintisiete", "veintiocho", "veintinueve", "treinta",
+      "treintiuno", "treintidós", "treintitres", "treinticuatro", "treinticinco", "treintiséis", "treintisiete", "treintiocho", "treintinueve", "cuarenta"
+    ];
+
+    function handleVisualItemClick(item, vBox) {
+      const items = Array.from(vBox.querySelectorAll('.visual-item'));
+      const alreadyCounted = item.classList.contains('counted');
+      
+      if (alreadyCounted) {
+        items.forEach(el => el.classList.remove('counted'));
+        sound.playDrag();
+      } else {
+        item.classList.add('counted');
+        sound.playDrag();
+        const count = items.filter(el => el.classList.contains('counted')).length;
+        const numberWord = NUMBER_WORDS_ES[count] || count.toString();
+        speakText(numberWord);
+      }
+    }
+
+    let voiceUtterance = null;
+    let firstInteractionSpeechDone = false;
+
+    function speakText(text) {
+      if ('speechSynthesis' in window && !sound.muted) {
+        window.speechSynthesis.cancel(); // Detener cualquier audio previo
+        
+        voiceUtterance = new SpeechSynthesisUtterance(text);
+        voiceUtterance.lang = 'es-ES'; // Español
+        voiceUtterance.rate = 0.92;     // Ligeramente más pausado para niños
+        voiceUtterance.pitch = 1.05;    // Tono amigable y claro
+        
+        window.speechSynthesis.speak(voiceUtterance);
+        firstInteractionSpeechDone = true; // Marcar como reproducido para evitar doble voz en el primer clic
+      }
+    }
+
+    function stopSpeaking() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    function handleFirstInteractionSpeech() {
+      if (firstInteractionSpeechDone) return;
+      const level = OBSTACLES[currentLevelIdx];
+      if (level) {
+        speakText(level.desc);
+      }
+      firstInteractionSpeechDone = true;
+      document.removeEventListener('click', handleFirstInteractionSpeech);
+      document.removeEventListener('pointerdown', handleFirstInteractionSpeech);
+    }
+
+    // Elementos del DOM
+    const crosswordGrid = document.getElementById('crossword-grid');
+    const matchingArea = document.getElementById('matching-area');
+    const tableArea = document.getElementById('table-area');
+    const equationsArea = document.getElementById('equations-area');
+    const optionsContainer = document.getElementById('options-container');
+    const progressFill = document.getElementById('progress-fill');
+    const validateBtn = document.getElementById('validate-btn');
+    const toastMessage = document.getElementById('toast-message');
+    
+    // Modal Elements
+    const instructionModal = document.getElementById('instruction-modal');
+    const modalIcon = document.getElementById('modal-icon');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    let modalStartBtn = document.getElementById('modal-start-btn');
+    const soundToggleBtn = document.getElementById('sound-toggle-btn');
+
+    // Inicialización del juego al cargar
+    window.addEventListener('DOMContentLoaded', () => {
+      showInstructionModal(currentLevelIdx);
+      
+      // Escuchar primera interacción del usuario para asegurar la reproducción de voz
+      document.addEventListener('click', handleFirstInteractionSpeech);
+      document.addEventListener('pointerdown', handleFirstInteractionSpeech);
+      
+      // Control de Sonido
+      soundToggleBtn.addEventListener('click', () => {
+        const isMuted = sound.toggleMute();
+        soundToggleBtn.innerText = isMuted ? "🔇" : "🔊";
+        if (isMuted) {
+          stopSpeaking();
+        }
+      });
+
+      // Evento del botón de Validar
+      validateBtn.addEventListener('click', () => {
+        if (validateBtn.classList.contains('disabled')) return;
+        validateCurrentAnswers();
+      });
+
+      // Delegar clicks en las cuadrículas o celdas para regresar opciones
+      crosswordGrid.addEventListener('click', (e) => {
+        const cell = e.target.closest('.cell.dropzone.filled:not(.correct):not(.incorrect)');
+        if (cell) handleReturnCard(cell);
+      });
+
+      matchingArea.addEventListener('click', (e) => {
+        const cell = e.target.closest('.matching-dropzone.dropzone.filled:not(.correct):not(.incorrect)');
+        if (cell) handleReturnCard(cell);
+      });
+
+      tableArea.addEventListener('click', (e) => {
+        const cell = e.target.closest('.table-dropzone.dropzone.filled:not(.correct):not(.incorrect)');
+        if (cell) handleReturnCard(cell);
+      });
+
+      equationsArea.addEventListener('click', (e) => {
+        const cell = e.target.closest('.equation-dropzone.dropzone.filled:not(.correct):not(.incorrect)');
+        if (cell) handleReturnCard(cell);
+      });
+    });
+
+    // Retorna una tarjeta colocada al panel inferior
+    function handleReturnCard(cell) {
+      const value = cell.dataset.placed;
+      if (value) {
+        cell.innerText = '?';
+        cell.removeAttribute('data-placed');
+        cell.classList.remove('filled');
+        createOptionCard(value);
+        sound.playDrag();
+        updateValidateButtonState();
+      }
+    }
+
+    // Mostrar modal con instrucciones del obstáculo
+    function showInstructionModal(levelIdx) {
+      const level = OBSTACLES[levelIdx];
+      modalIcon.innerText = level.icon;
+      modalTitle.innerText = level.title;
+      modalDesc.innerText = level.desc;
+      
+      const nextBtn = document.getElementById('modal-next-btn');
+      if (nextBtn) nextBtn.style.display = 'none';
+      
+      const currentStartBtn = document.getElementById('modal-start-btn');
+      currentStartBtn.innerText = "Comenzar Obstáculo";
+      instructionModal.classList.remove('hidden');
+
+      // Intentar hablar automáticamente
+      speakText(level.desc);
+
+      const currentSpeakBtn = document.getElementById('modal-speak-btn');
+      const newSpeakBtn = currentSpeakBtn.cloneNode(true);
+      currentSpeakBtn.parentNode.replaceChild(newSpeakBtn, currentSpeakBtn);
+      newSpeakBtn.addEventListener('click', () => {
+        speakText(level.desc);
+      });
+
+      const newBtn = currentStartBtn.cloneNode(true);
+      currentStartBtn.parentNode.replaceChild(newBtn, currentStartBtn);
+      modalStartBtn = newBtn;
+      
+      newBtn.addEventListener('click', () => {
+        instructionModal.classList.add('hidden');
+        stopSpeaking(); // Detener locución al iniciar
+        sound.init(); // Inicializar contexto de sonido tras interacción del usuario
+        loadObstacle(levelIdx);
+      });
+    }
+
+    // Cargar la configuración de un obstáculo en particular
+    function loadObstacle(levelIdx) {
+      // Sincronizar SIEMPRE el índice global con el nivel que se está cargando
+      currentLevelIdx = levelIdx;
+      correctCount = 0;
+      updateProgressBar(levelIdx);
+      
+      // Limpiar y ocultar layouts
+      crosswordGrid.innerHTML = '';
+      crosswordGrid.style.display = 'none';
+      matchingArea.innerHTML = '';
+      matchingArea.style.display = 'none';
+      tableArea.innerHTML = '';
+      tableArea.style.display = 'none';
+      equationsArea.innerHTML = '';
+      equationsArea.style.display = 'none';
+      
+      optionsContainer.innerHTML = '';
+      updateValidateButtonState();
+      
+      const levelData = OBSTACLES[levelIdx];
+
+      // Actualizar instrucciones en pantalla
+      document.getElementById('gameplay-icon').innerText = levelData.icon;
+      document.getElementById('gameplay-text').innerText = levelData.desc;
+
+      // Vincular el botón de voz del panel de juego
+      const gameplaySpeakBtn = document.getElementById('gameplay-speak-btn');
+      const newGameplaySpeakBtn = gameplaySpeakBtn.cloneNode(true);
+      gameplaySpeakBtn.parentNode.replaceChild(newGameplaySpeakBtn, gameplaySpeakBtn);
+      newGameplaySpeakBtn.addEventListener('click', () => {
+        speakText(levelData.desc);
+      });
+
+      if (levelData.type === 'matching') {
+        // MODO EMPAREJAMIENTO (OBSTÁCULOS 2)
+        matchingArea.style.display = 'flex';
+        
+        levelData.pairs.forEach(pair => {
+          const row = document.createElement('div');
+          row.classList.add('matching-row');
+          
+          const dz = document.createElement('div');
+          dz.classList.add('matching-dropzone', 'dropzone');
+          dz.dataset.correct = pair.correct;
+          dz.innerText = '?';
+          row.appendChild(dz);
+          
+          const info = document.createElement('div');
+          info.classList.add('matching-info');
+          
+          const label = document.createElement('div');
+          label.classList.add('matching-label');
+          label.innerText = pair.label;
+          info.appendChild(label);
+          
+          if (pair.visual) {
+            const vBox = document.createElement('div');
+            vBox.classList.add('visual-box');
+            for (let i = 0; i < pair.visual.count; i++) {
+              const item = document.createElement('span');
+              item.classList.add('visual-item');
+              item.innerText = pair.visual.icon;
+              item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleVisualItemClick(item, vBox);
+              });
+              vBox.appendChild(item);
+            }
+            info.appendChild(vBox);
+          }
+          
+          row.appendChild(info);
+          matchingArea.appendChild(row);
+        });
+      } else if (levelData.type === 'table') {
+        // MODO TABLA DE EQUIVALENCIAS (OBSTÁCULO 3)
+        tableArea.style.display = 'flex';
+        
+        levelData.rows.forEach(rowData => {
+          const row = document.createElement('div');
+          row.classList.add('table-row');
+          const contentRow = document.createElement('div');
+          contentRow.classList.add('table-equation-part');
+          
+          if (rowData.multiplication) {
+            const mult = document.createElement('div');
+            mult.classList.add('table-multiplication');
+            mult.innerText = rowData.multiplication;
+            contentRow.appendChild(mult);
+          }
+          
+          const sum = document.createElement('div');
+          sum.classList.add('table-sum');
+          sum.innerText = `${rowData.addition}  =  `;
+          contentRow.appendChild(sum);
+          
+          const dz = document.createElement('div');
+          dz.classList.add('table-dropzone', 'dropzone');
+          dz.dataset.correct = rowData.correct;
+          dz.innerText = '?';
+          contentRow.appendChild(dz);
+          
+          row.appendChild(contentRow);
+          
+          if (rowData.visual) {
+            const vBox = document.createElement('div');
+            vBox.classList.add('visual-box');
+            
+            if (rowData.visual.groups) {
+              const itemsPerGroup = Math.floor(rowData.visual.count / rowData.visual.groups);
+              for (let g = 0; g < rowData.visual.groups; g++) {
+                const groupEl = document.createElement('div');
+                groupEl.classList.add('visual-group');
+                for (let i = 0; i < itemsPerGroup; i++) {
+                  const item = document.createElement('span');
+                  item.classList.add('visual-item');
+                  item.innerText = rowData.visual.icon;
+                  item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    handleVisualItemClick(item, groupEl);
+                  });
+                  groupEl.appendChild(item);
+                }
+                vBox.appendChild(groupEl);
+              }
+            } else {
+              // Si es una resta, podemos tachar los elementos restados para guiar al alumno
+              let restados = 0;
+              if (rowData.addition.includes("-")) {
+                const partes = rowData.addition.split("-");
+                if (partes.length > 1) {
+                  restados = parseInt(partes[1].trim()) || 0;
+                }
+              }
+              for (let i = 0; i < rowData.visual.count; i++) {
+                const item = document.createElement('span');
+                item.classList.add('visual-item');
+                item.innerText = rowData.visual.icon;
+                
+                // Si es una resta y este elemento está entre los restados, tacharlo
+                if (i < restados) {
+                  item.classList.add('subtracted');
+                }
+
+                item.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  handleVisualItemClick(item, vBox);
+                });
+                vBox.appendChild(item);
+              }
+            }
+            row.appendChild(vBox);
+          }
+          
+          tableArea.appendChild(row);
+        });
+      } else if (levelData.type === 'equations') {
+        // MODO COMPLETAR MULTIPLICACIÓN (OBSTÁCULO 4)
+        equationsArea.style.display = 'flex';
+        
+        levelData.equations.forEach(eq => {
+          const row = document.createElement('div');
+          row.classList.add('equation-row');
+          const contentRow = document.createElement('div');
+          contentRow.classList.add('equation-text-part');
+          if (!eq.visual) {
+            contentRow.classList.add('math-only-equation');
+          }
+          
+          eq.expr.forEach((token, idx) => {
+            if (idx === eq.blankIdx) {
+              const dz = document.createElement('div');
+              dz.classList.add('equation-dropzone', 'dropzone');
+              dz.dataset.correct = eq.correct;
+              dz.innerText = '?';
+              contentRow.appendChild(dz);
+            } else {
+              const span = document.createElement('span');
+              span.classList.add('equation-part');
+              span.innerText = token;
+              if (eq.visual) {
+                span.style.flex = '1';
+              }
+              contentRow.appendChild(span);
+              
+              // Si es el obstáculo 3 (tiene problemas en texto, indicado por la presencia de eq.visual)
+              if (eq.visual) {
+                const speakBtn = document.createElement('button');
+                speakBtn.classList.add('icon-btn-speak');
+                speakBtn.style.marginLeft = '8px';
+                speakBtn.style.marginRight = '8px';
+                speakBtn.style.width = '32px';
+                speakBtn.style.height = '32px';
+                speakBtn.style.fontSize = '0.85rem';
+                speakBtn.title = "Escuchar problema";
+                speakBtn.innerText = "🔊";
+                speakBtn.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  let cleanText = token.replace(/👉/g, '').replace(/___/g, '').trim();
+                  speakText(cleanText);
+                });
+                contentRow.appendChild(speakBtn);
+              }
+            }
+          });
+          row.appendChild(contentRow);
+          
+          if (eq.visual) {
+            const vBox = document.createElement('div');
+            vBox.classList.add('visual-box');
+
+            
+            if (eq.visual.groups) {
+              const itemsPerGroup = Math.floor(eq.visual.count / eq.visual.groups);
+              for (let g = 0; g < eq.visual.groups; g++) {
+                const groupEl = document.createElement('div');
+                groupEl.classList.add('visual-group');
+                for (let i = 0; i < itemsPerGroup; i++) {
+                  const item = document.createElement('span');
+                  item.classList.add('visual-item');
+                  item.innerText = eq.visual.icon;
+                  item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    handleVisualItemClick(item, groupEl);
+                  });
+                  groupEl.appendChild(item);
+                }
+                vBox.appendChild(groupEl);
+              }
+            } else {
+              for (let i = 0; i < eq.visual.count; i++) {
+                const item = document.createElement('span');
+                item.classList.add('visual-item');
+                item.innerText = eq.visual.icon;
+                item.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  handleVisualItemClick(item, vBox);
+                });
+                vBox.appendChild(item);
+              }
+            }
+            row.appendChild(vBox);
+          }
+          
+          equationsArea.appendChild(row);
+        });
+      } else {
+        // MODO CRUCIGRAMA (OBSTÁCULOS 1)
+        crosswordGrid.style.display = 'grid';
+        
+        // Construir la cuadrícula 10x10
+        for (let r = 0; r < 10; r++) {
+          for (let c = 0; c < 10; c++) {
+            const key = `${r},${c}`;
+            const cellElement = document.createElement('div');
+            cellElement.classList.add('cell');
+            cellElement.dataset.row = r;
+            cellElement.dataset.col = c;
+            
+            if (levelData.gridCells[key]) {
+              const data = levelData.gridCells[key];
+              cellElement.classList.add(data.type);
+              
+              if (data.type === 'static' || data.type === 'operator') {
+                cellElement.innerText = data.val;
+              } else if (data.type === 'dropzone') {
+                cellElement.dataset.correct = data.correct;
+                cellElement.innerText = '?';
+              }
+            } else {
+              cellElement.classList.add('empty');
+            }
+            
+            crosswordGrid.appendChild(cellElement);
+          }
+        }
+      }
+
+      // Cargar las 5 tarjetas de opciones barajadas
+      const shuffledOptions = [...levelData.options].sort(() => Math.random() - 0.5);
+      shuffledOptions.forEach(optVal => {
+        createOptionCard(optVal);
+      });
+    }
+
+    // Crear una tarjeta en el panel de opciones
+    function createOptionCard(value) {
+      const card = document.createElement('div');
+      card.classList.add('drag-card');
+      card.innerText = value;
+      card.dataset.val = value;
+      optionsContainer.appendChild(card);
+      
+      setupPointerDrag(card);
+    }
+
+    // Comprobar si todas las celdas Dropzone tienen una opción colocada
+    function updateValidateButtonState() {
+      const activeDropZones = Array.from(document.querySelectorAll('.dropzone'));
+      const allFilled = activeDropZones.every(dz => dz.dataset.placed || dz.classList.contains('correct'));
+      
+      if (allFilled && activeDropZones.length > 0) {
+        validateBtn.classList.remove('disabled');
+      } else {
+        validateBtn.classList.add('disabled');
+      }
+    }
+
+    // Muestra una barra de notificación emergente (Toast)
+    function showToastNotification(text, isSuccess = false) {
+      const toastIcon = toastMessage.querySelector('.toast-icon');
+      const toastText = toastMessage.querySelector('.toast-text');
+      
+      toastIcon.innerText = isSuccess ? "✅" : "❌";
+      toastText.innerText = text;
+      
+      if (isSuccess) {
+        toastMessage.style.background = 'rgba(16, 185, 129, 0.95)';
+        toastMessage.style.boxShadow = '0 10px 25px rgba(16, 185, 129, 0.4)';
+      } else {
+        toastMessage.style.background = 'rgba(244, 63, 94, 0.95)';
+        toastMessage.style.boxShadow = '0 10px 25px rgba(244, 63, 94, 0.4)';
+      }
+      
+      toastMessage.classList.remove('hidden');
+      toastMessage.offsetWidth;
+      toastMessage.classList.add('show');
+      
+      setTimeout(() => {
+        toastMessage.classList.remove('show');
+        setTimeout(() => {
+          toastMessage.classList.add('hidden');
+        }, 400);
+      }, 1500);
+    }
+
+    // Validar respuestas al presionar el botón
+    function validateCurrentAnswers() {
+      const dropZones = Array.from(document.querySelectorAll('.dropzone'));
+      let wrongCount = 0;
+
+      validateBtn.classList.add('disabled');
+
+      // Evaluar respuestas colocadas en esta ronda con trim() para seguridad
+      dropZones.forEach(dz => {
+        const placedVal = (dz.dataset.placed || '').trim();
+        const correctVal = (dz.dataset.correct || '').trim();
+
+        if (placedVal !== correctVal) {
+          dz.classList.remove('filled');
+          dz.classList.add('incorrect', 'shake-error');
+          wrongCount++;
+        } else {
+          dz.classList.remove('filled');
+          dz.classList.add('correct');
+        }
+      });
+
+      if (wrongCount > 0) {
+        sound.playError();
+        showToastNotification("¡Incorrecto! Vuelve a hacerlo todo de nuevo.", false);
+        
+        // Esperar 1.5 segundos y reiniciar todo el nivel
+        setTimeout(() => {
+          dropZones.forEach(dz => {
+            if (dz.classList.contains('matching-dropzone')) {
+              dz.className = 'matching-dropzone dropzone';
+            } else if (dz.classList.contains('table-dropzone')) {
+              dz.className = 'table-dropzone dropzone';
+            } else if (dz.classList.contains('equation-dropzone')) {
+              dz.className = 'equation-dropzone dropzone';
+            } else {
+              dz.className = 'cell dropzone';
+            }
+            dz.innerText = '?';
+            dz.removeAttribute('data-placed');
+          });
+
+          // Vaciar el contenedor de opciones y regenerar todas las opciones originales barajadas
+          optionsContainer.innerHTML = '';
+          const levelData = OBSTACLES[currentLevelIdx];
+          const shuffledOptions = [...levelData.options].sort(() => Math.random() - 0.5);
+          shuffledOptions.forEach(optVal => {
+            createOptionCard(optVal);
+          });
+
+          correctCount = 0;
+          updateValidateButtonState();
+        }, 1500);
+      } else {
+        // TODOS EXCELENTES EN EL NIVEL
+        sound.playCorrect();
+        correctCount = totalDropsNeeded;
+        
+        // Asegurar que queden bloqueados en verde esmeralda
+        dropZones.forEach(dz => {
+          if (dz.classList.contains('matching-dropzone')) {
+            dz.className = 'matching-dropzone dropzone correct';
+          } else if (dz.classList.contains('table-dropzone')) {
+            dz.className = 'table-dropzone dropzone correct';
+          } else if (dz.classList.contains('equation-dropzone')) {
+            dz.className = 'equation-dropzone dropzone correct';
+          } else {
+            dz.className = 'cell dropzone correct';
+          }
+          dz.removeAttribute('data-placed');
+        });
+        
+        checkLevelCompletion();
+      }
+    }
+
+    // Comprobación de fin de nivel
+    function checkLevelCompletion() {
+      if (correctCount === totalDropsNeeded) {
+        setTimeout(() => {
+          if (currentLevelIdx < OBSTACLES.length - 1) {
+            sound.playLevelComplete();
+            currentLevelIdx++;
+            showInstructionModal(currentLevelIdx);
+          } else {
+            triggerFinalVictory();
+          }
+        }, 600);
+      }
+    }
+
+    // Actualizar la línea de progreso superior
+    function updateProgressBar(levelIdx) {
+      const percent = (levelIdx / (OBSTACLES.length - 1)) * 100;
+      progressFill.style.width = `${percent}%`;
+      
+      for (let i = 0; i < OBSTACLES.length; i++) {
+        const stepNode = document.getElementById(`step-${i + 1}`);
+        stepNode.className = 'progress-step';
+        if (i < levelIdx) {
+          stepNode.classList.add('completed');
+          stepNode.innerText = '✓';
+        } else if (i === levelIdx) {
+          stepNode.classList.add('active');
+          stepNode.innerText = `${i + 1}`;
+        } else {
+          stepNode.innerText = `${i + 1}`;
+        }
+      }
+    }
+
+    /* ==========================================
+       5. SISTEMA DE ARRASTRE Y SOLTAR (Pointer Capture)
+       ========================================== */
+    function setupPointerDrag(element) {
+      element.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        
+        element.setPointerCapture(e.pointerId);
+        sound.playDrag();
+
+        const value = element.dataset.val;
+        element.classList.add('dragging-active');
+
+        // Crear elemento flotante
+        const floatingEl = document.createElement('div');
+        floatingEl.classList.add('floating-drag-element');
+        floatingEl.innerText = value;
+
+        // Copiar el color de fondo y la sombra del botón original para mantener la coherencia de color
+        const bg = window.getComputedStyle(element).backgroundColor;
+        const shadow = window.getComputedStyle(element).boxShadow;
+        floatingEl.style.backgroundColor = bg;
+        floatingEl.style.boxShadow = shadow;
+
+        document.body.appendChild(floatingEl);
+
+        updateFloatingPosition(floatingEl, e.clientX, e.clientY);
+
+        const dropZones = Array.from(document.querySelectorAll('.dropzone:not(.correct)'));
+        let hoveredZone = null;
+
+        function onPointerMove(moveEvent) {
+          if (moveEvent.pointerId !== e.pointerId) return;
+          updateFloatingPosition(floatingEl, moveEvent.clientX, moveEvent.clientY);
+
+          let activeZone = null;
+          for (let zone of dropZones) {
+            const rect = zone.getBoundingClientRect();
+            if (
+              moveEvent.clientX >= rect.left &&
+              moveEvent.clientX <= rect.right &&
+              moveEvent.clientY >= rect.top &&
+              moveEvent.clientY <= rect.bottom
+            ) {
+              activeZone = zone;
+              break;
+            }
+          }
+
+          if (activeZone !== hoveredZone) {
+            if (hoveredZone) hoveredZone.classList.remove('active-hover');
+            hoveredZone = activeZone;
+            if (hoveredZone) hoveredZone.classList.add('active-hover');
+          }
+        }
+
+        // Drop
+        function onPointerUp(upEvent) {
+          if (upEvent.pointerId !== e.pointerId) return;
+
+          element.releasePointerCapture(e.pointerId);
+          element.classList.remove('dragging-active');
+          floatingEl.remove();
+
+          element.removeEventListener('pointermove', onPointerMove);
+          element.removeEventListener('pointerup', onPointerUp);
+          element.removeEventListener('pointercancel', onPointerCancel);
+
+          if (hoveredZone) {
+            hoveredZone.classList.remove('active-hover');
+            
+            // Si ya hay una ficha en la zona, la devolvemos
+            if (hoveredZone.dataset.placed) {
+              createOptionCard(hoveredZone.dataset.placed);
+            }
+
+            // Colocar la ficha en el dropzone
+            hoveredZone.innerText = value;
+            hoveredZone.dataset.placed = value;
+            hoveredZone.classList.add('filled');
+            
+            element.remove();
+            sound.playDrag();
+            updateValidateButtonState();
+          }
+        }
+
+        function onPointerCancel(cancelEvent) {
+          if (cancelEvent.pointerId !== e.pointerId) return;
+          
+          element.releasePointerCapture(e.pointerId);
+          element.classList.remove('dragging-active');
+          floatingEl.remove();
+          if (hoveredZone) hoveredZone.classList.remove('active-hover');
+
+          element.removeEventListener('pointermove', onPointerMove);
+          element.removeEventListener('pointerup', onPointerUp);
+          element.removeEventListener('pointercancel', onPointerCancel);
+        }
+
+        element.addEventListener('pointermove', onPointerMove);
+        element.addEventListener('pointerup', onPointerUp);
+        element.addEventListener('pointercancel', onPointerCancel);
+      });
+    }
+
+    function updateFloatingPosition(el, x, y) {
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+    }
+
+    // Celebración final
+    function triggerFinalVictory() {
+      localStorage.setItem("actividad6", "completada");
+      sound.playVictory();
+      confetti.start();
+
+      modalIcon.innerText = "🏆🎉";
+      modalTitle.innerText = "¡Felicidades, Campeón!";
+      const victoryText = "Has superado con éxito el Desafío Mixto final de Matemática de 4° Básico de manera impecable.";
+      modalDesc.innerText = victoryText;
+      
+      const currentStartBtn = document.getElementById('modal-start-btn');
+      currentStartBtn.innerText = "Volver a jugar 🔄";
+      instructionModal.classList.remove('hidden');
+
+      speakText("¡Felicidades, Campeón! " + victoryText);
+
+      const currentSpeakBtn = document.getElementById('modal-speak-btn');
+      const newSpeakBtn = currentSpeakBtn.cloneNode(true);
+      currentSpeakBtn.parentNode.replaceChild(newSpeakBtn, currentSpeakBtn);
+      newSpeakBtn.addEventListener('click', () => {
+        speakText("¡Felicidades, Campeón! " + victoryText);
+      });
+
+      const newBtn = currentStartBtn.cloneNode(true);
+      currentStartBtn.parentNode.replaceChild(newBtn, currentStartBtn);
+      modalStartBtn = newBtn;
+      
+      newBtn.addEventListener('click', () => {
+        instructionModal.classList.add('hidden');
+        stopSpeaking();
+        confetti.stop();
+        currentLevelIdx = 0;
+        showInstructionModal(currentLevelIdx);
+      });
+
+      const nextBtn = document.getElementById('modal-next-btn');
+      if (nextBtn) {
+        nextBtn.style.display = 'inline-block';
+        nextBtn.innerText = "Volver al Menú 🏠";
+        
+        // Clonar para limpiar event listeners previos
+        const newNextBtn = nextBtn.cloneNode(true);
+        nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+        
+        newNextBtn.addEventListener('click', () => {
+          stopSpeaking();
+          confetti.stop();
+          window.location.href = 'basico4.html';
+        });
+      }
+    }
+  </script>
+</body>
+</html>

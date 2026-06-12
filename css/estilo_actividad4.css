@@ -1,213 +1,446 @@
-
- /* ========================= */
-/* 🎮 BASE DEL JUEGO */
-/* ========================= */
-
-body{
-    margin:0;
-    font-family:'Arial', sans-serif;
-    background:linear-gradient(135deg,#fdf6e3,#dbeafe);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    color:#1f2937;
-}
-
-/* ========================= */
-/* 🧩 PANTALLAS */
-/* ========================= */
-
-#inicio, #juego{
-    background:rgba(255,255,255,0.92);
-    backdrop-filter: blur(10px);
-    padding:40px;
-    border-radius:25px;
-    box-shadow:0 15px 35px rgba(0,0,0,0.15);
-    width:90%;
-    max-width:800px;
-    text-align:center;
-    animation:fadeIn 0.5s ease;
-}
-
-/* animación entrada */
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(20px);}
-    to{opacity:1; transform:translateY(0);}
-}
-
-/* ========================= */
-/* 🧠 TÍTULOS */
-/* ========================= */
-
-h1{
-    font-size:32px;
-    color:#f59e0b;
-}
-
-#operacion{
-    font-size:34px;
-    font-weight:bold;
-    margin:20px 0;
-}
-
-/* ========================= */
-/* 🔘 BOTONES */
-/* ========================= */
-
-button{
-    padding:14px 26px;
-    border:none;
-    border-radius:12px;
-    background:linear-gradient(90deg,#10b981,#059669);
-    color:white;
-    font-size:18px;
-    cursor:pointer;
-    transition:0.3s;
-    box-shadow:0 6px 15px rgba(0,0,0,0.15);
-}
-
-button:hover{
-    transform:scale(1.05);
-}
-
-/* ========================= */
-/* 🎯 BOTÓN VALIDAR (IMPORTANTE) */
-/* ========================= */
-
-#btnValidate{
-    margin-top:15px;
-    padding:14px 30px;
-    font-size:18px;
-    font-weight:bold;
-
-    border-radius:15px;
-    border:none;
-
-    background:linear-gradient(90deg,#f59e0b,#f97316);
-    color:white;
-
-    cursor:pointer;
-
-    box-shadow:0 8px 20px rgba(0,0,0,0.2);
-
-    transition:all 0.25s ease;
-
-    animation:glow 1.5s infinite alternate;
-}
-
-#btnValidate:hover{
-    transform:scale(1.08);
-}
-
-#btnValidate:active{
-    transform:scale(0.95);
-}
-
-/* brillo animado */
-@keyframes glow{
-    from{ box-shadow:0 0 10px #f59e0b; }
-    to{ box-shadow:0 0 25px #f97316; }
-}
-
-/* ========================= */
-/* 🍎 FRUTAS Y GRUPOS */
-/* ========================= */
-
-#frutas{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-    align-items:center;
-    margin:20px 0;
-}
-
-/* grupo de frutas */
-.grupo{
-    display:flex;
-    gap:5px;
-    padding:10px;
-    border-radius:15px;
-    border:2px dashed rgba(0,0,0,0.15);
-    background:#fff;
-    transition:0.3s;
-}
-
-.grupo:hover{
-    transform:scale(1.05);
-}
-
-/* colores alternados */
-.grupo:nth-child(odd){
-    background:#fef9c3;
-}
-
-.grupo:nth-child(even){
-    background:#dbeafe;
-}
-
-/* frutas */
-.fruta{
-    font-size:40px;
-    cursor:pointer;
-    transition:0.2s;
-}
-
-.fruta:hover{
-    transform:scale(1.2);
-}
-
-/* ========================= */
-/* ✏️ INPUT */
-/* ========================= */
-
-input{
-    padding:12px;
-    font-size:18px;
-    border-radius:10px;
-    border:2px solid #e5e7eb;
-    margin-top:10px;
-}
-
-input:focus{
-    outline:none;
-    border-color:#10b981;
-    box-shadow:0 0 8px rgba(16,185,129,0.3);
-}
-
-/* ========================= */
-/* 📢 MENSAJES */
-/* ========================= */
-
-#mensaje{
-    margin-top:15px;
-    font-size:18px;
-    font-weight:bold;
-}
-
-#mensaje.correcto{
-    color:#16a34a;
-}
-
-#mensaje.error{
-    color:#dc2626;
-}
-
-/* ========================= */
-/* 📱 RESPONSIVE */
-/* ========================= */
-
-@media (max-width:600px){
-
-    h1{
-        font-size:24px;
+/* VARIABLES DE DISEÑO (SISTEMA DE COLOR HSL PREMIUM) */
+    :root {
+      --bg-dark: #090a16;
+      --bg-card: rgba(17, 20, 44, 0.7);
+      --bg-grid-cell: rgba(26, 31, 66, 0.6);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --color-primary: #6366f1; /* Indigo */
+      --color-secondary: #06b6d4; /* Cyan */
+      --color-success: #10b981; /* Esmeralda */
+      --color-error: #f43f5e; /* Rosa/Rojo */
+      --color-warning: #eab308; /* Amarillo */
+      --text-light: #f8fafc;
+      --text-muted: #94a3b8;
+      --glow-primary: 0 0 15px rgba(99, 102, 241, 0.4);
+      --glow-success: 0 0 20px rgba(16, 185, 129, 0.6);
+      --glow-error: 0 0 20px rgba(244, 63, 94, 0.6);
     }
-
-    #operacion{
-        font-size:26px;
+    /* ESTILOS BASE Y FONDO ANIMADO */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-drag: none;
     }
-
-    .fruta{
-        font-size:32px;
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
     }
-}
+    /* Fondo ambiental con gradientes y movimiento lento */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
+                  radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
+                  #070811;
+      overflow: hidden;
+    }
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.5;
+      z-index: -1;
+      animation: float 20s infinite ease-in-out;
+    }
+    .blob-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--color-primary);
+      top: -10%;
+      left: -10%;
+      animation-delay: 0s;
+    }
+    .blob-2 {
+      width: 500px;
+      height: 500px;
+      background: var(--color-secondary);
+      bottom: -15%;
+      right: -10%;
+      animation-delay: -5s;
+    }
+    @keyframes float {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      50% {
+        transform: translate(50px, 30px) scale(1.1);
+      }
+    }
+    /* CONTENEDOR PRINCIPAL */
+    .game-container {
+      width: 100%;
+      max-width: 650px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+    /* ENCABEZADO Y PROGRESO */
+    header {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .game-title {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 30%, var(--color-secondary) 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+      /* Se usa filter: drop-shadow para evitar conflictos de text-shadow con background-clip */
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    }
+    .progress-bar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 400px;
+      margin: 15px auto;
+      position: relative;
+    }
+    .progress-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+    .progress-line-fill {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+      transform: translateY(-50%);
+      z-index: 1;
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .progress-step {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #11142c;
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 2;
+      transition: all 0.4s ease;
+      color: var(--text-muted);
+    }
+    .progress-step.active {
+      border-color: var(--color-secondary);
+      background: var(--bg-dark);
+      color: var(--color-secondary);
+      box-shadow: 0 0 12px var(--color-secondary);
+      transform: scale(1.15);
+    }
+    .progress-step.completed {
+      border-color: var(--color-success);
+      background: var(--color-success);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    }
+    /* PANTALLA DE INSTRUCCIONES / TRANSICIONES */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(5, 6, 15, 0.85);
+      backdrop-filter: blur(16px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+    .modal-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      width: 90%;
+      max-width: 480px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      transform: translateY(0);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .modal-overlay.hidden .modal-card {
+      transform: translateY(50px);
+    }
+    .modal-icon {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      display: inline-block;
+      animation: pulse-slow 2s infinite;
+    }
+    @keyframes pulse-slow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    .modal-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+    .modal-desc {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+    }
+    .btn-action {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .btn-action:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(6, 182, 212, 0.5);
+    }
+    .btn-action:active {
+      transform: translateY(-1px);
+    }
+    /* CUADRÍCULA DEL CRUCIGRAMA 10x10 */
+    .grid-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 12px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+      gap: 5px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 25px;
+    }
+    .cell {
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    /* Estados de las Celdas */
+    .cell.empty {
+      background-color: rgba(5, 6, 15, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.02);
+    }
+    .cell.static {
+      background-color: var(--bg-grid-cell);
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+    }
+    .cell.operator {
+      background-color: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      color: var(--color-secondary);
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+    .cell.dropzone {
+      background-color: rgba(6, 182, 212, 0.05);
+      border: 2px dashed rgba(6, 182, 212, 0.4);
+      color: transparent;
+      cursor: pointer;
+      box-shadow: inset 0 0 8px rgba(6, 182, 212, 0.1);
+    }
+    .cell.dropzone.active-hover {
+      background-color: rgba(6, 182, 212, 0.15);
+      border-color: var(--color-secondary);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+      transform: scale(1.03);
+    }
+    .cell.dropzone.correct {
+      background-color: rgba(16, 185, 129, 0.15);
+      border: 2px solid var(--color-success);
+      color: var(--color-success);
+      font-weight: 800;
+      text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+      box-shadow: var(--glow-success);
+      cursor: default;
+    }
+    /* PANEL DE OPCIONES DRAGGABLES */
+    .options-panel {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      touch-action: none; /* Previene scrolling al arrastrar en moviles */
+    }
+    .drag-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(17, 24, 39, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      cursor: grab;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 60px;
+      aspect-ratio: 1.2 / 1;
+    }
+    .drag-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-primary);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    }
+    .drag-card:active {
+      cursor: grabbing;
+    }
+    .drag-card.dragging-active {
+      opacity: 0.4;
+    }
+    /* ELEMENTO FLOTANTE DE ARRASTRE */
+    .floating-drag-element {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1000;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5);
+      transform: translate(-50%, -50%) scale(1.1);
+      transition: transform 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 60px;
+      aspect-ratio: 1.2 / 1;
+    }
+    /* BOTONES DE SOPORTE E INFORMACIÓN */
+    .control-buttons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+    .icon-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.08);
+      border-color: var(--color-secondary);
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+    }
+    /* ANIMACIONES ADICIONALES */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .shake-error {
+      animation: shake 0.4s ease-in-out;
+      border-color: var(--color-error) !important;
+      box-shadow: var(--glow-error) !important;
+    }
+    /* CANVAS DE CONFETI */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+    }
+    /* AJUSTES RESPONSIVOS */
+    @media (max-width: 500px) {
+      .game-title {
+        font-size: 1.6rem;
+      }
+      .cell {
+        font-size: 0.95rem;
+      }
+      .cell.operator {
+        font-size: 1.05rem;
+      }
+      .drag-card {
+        padding: 8px 12px;
+        font-size: 1.1rem;
+        min-width: 45px;
+      }
+      .progress-step {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+      }
+    }

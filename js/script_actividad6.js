@@ -1,31 +1,19 @@
 const pantallaJuego = document.getElementById("pantallaJuego");
-const pantallaFinal = document.getElementById("pantallaFinal");
 
 const btnComprobar = document.getElementById("btnComprobar");
-const btnReiniciar = document.getElementById("btnReiniciar");
 
 const tituloJuego = document.getElementById("tituloJuego");
 
-const grupo1 = document.getElementById("grupo1");
-const grupo2 = document.getElementById("grupo2");
-
-const operacionFrutas = document.getElementById("operacionFrutas");
-const operacionNumeros = document.getElementById("operacionNumeros");
-
 const numero1 = document.getElementById("numero1");
 const numero2 = document.getElementById("numero2");
+const operador = document.getElementById("operador");
 
 const respuesta = document.getElementById("respuesta");
 const mensaje = document.getElementById("mensaje");
 
 const estrellasTexto = document.getElementById("estrellas");
 const nivelTexto = document.getElementById("nivel");
-const barra = document.getElementById("barra");
 const resultado = document.getElementById("resultado");
-
-const audioCorrecto = document.getElementById("audioCorrecto");
-const audioError = document.getElementById("audioError");
-const audioAplausos = document.getElementById("audioAplausos");
 
 // Nuevos selectores del Modal y Barra de Obstáculos
 const instructionModal = document.getElementById("instruction-modal");
@@ -39,11 +27,18 @@ const gameplayText = document.getElementById("gameplay-text");
 const gameplayIcon = document.getElementById("gameplay-icon");
 const gameplaySpeakBtn = document.getElementById("gameplay-speak-btn");
 
+const progressFill = document.getElementById("progress-fill");
+
+const audioCorrecto = document.getElementById("audioCorrecto");
+const audioError = document.getElementById("audioError");
+const audioAplausos = document.getElementById("audioAplausos");
+
 let nivel = 1;
 let estrellas = 0;
 
 let n1 = 0;
 let n2 = 0;
+let opStr = "";
 let correcta = 0;
 let ecuacionesSesion = [];
 
@@ -89,43 +84,42 @@ function hablar(texto) {
     speechSynthesis.speak(msg);
 }
 
-function aleatorio(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 /* ========================= */
-/* MEZCLA DE ECUACIONES */
+/* GENERAR ECUACIONES */
 /* ========================= */
 
 function generarEcuacionesSesion() {
-    const listaPosibles = [
-        { a: 3, b: 2 },
-        { a: 4, b: 3 },
-        { a: 5, b: 1 },
-        { a: 2, b: 6 },
-        { a: 4, b: 5 },
-        { a: 2, b: 2 },
-        { a: 1, b: 2 },
-        { a: 6, b: 3 },
-        { a: 3, b: 5 },
-        { a: 2, b: 4 },
-        { a: 4, b: 1 },
-        { a: 3, b: 1 },
-        { a: 5, b: 2 },
-        { a: 1, b: 6 },
-        { a: 7, b: 2 },
-        { a: 2, b: 5 }
+    const sumas = [
+        { a: 5, b: 3, op: "+", correct: 8, name: "Suma" },
+        { a: 4, b: 5, op: "+", correct: 9, name: "Suma" },
+        { a: 6, b: 2, op: "+", correct: 8, name: "Suma" },
+        { a: 7, b: 1, op: "+", correct: 8, name: "Suma" }
+    ];
+    const restas = [
+        { a: 9, b: 4, op: "-", correct: 5, name: "Resta" },
+        { a: 8, b: 3, op: "-", correct: 5, name: "Resta" },
+        { a: 7, b: 5, op: "-", correct: 2, name: "Resta" },
+        { a: 6, b: 2, op: "-", correct: 4, name: "Resta" }
+    ];
+    const multis = [
+        { a: 6, b: 7, op: "x", correct: 42, name: "Multiplicación" },
+        { a: 8, b: 4, op: "x", correct: 32, name: "Multiplicación" },
+        { a: 7, b: 9, op: "x", correct: 63, name: "Multiplicación" },
+        { a: 9, b: 6, op: "x", correct: 54, name: "Multiplicación" }
+    ];
+    const divs = [
+        { a: 8, b: 2, op: "÷", correct: 4, name: "División" },
+        { a: 9, b: 3, op: "÷", correct: 3, name: "División" },
+        { a: 6, b: 2, op: "÷", correct: 3, name: "División" },
+        { a: 8, b: 4, op: "÷", correct: 2, name: "División" }
     ];
     
-    // Shuffle
-    for (let i = listaPosibles.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = listaPosibles[i];
-        listaPosibles[i] = listaPosibles[j];
-        listaPosibles[j] = temp;
-    }
+    const s = sumas[Math.floor(Math.random() * sumas.length)];
+    const r = restas[Math.floor(Math.random() * restas.length)];
+    const m = multis[Math.floor(Math.random() * multis.length)];
+    const d = divs[Math.floor(Math.random() * divs.length)];
     
-    ecuacionesSesion = listaPosibles.slice(0, 4);
+    ecuacionesSesion = [s, r, m, d];
 }
 
 generarEcuacionesSesion();
@@ -144,32 +138,15 @@ function updateProgress(stepNumber) {
         if (stepEl) {
             if (i < stepNumber) {
                 stepEl.className = "progress-step completed";
+                stepEl.innerText = "✓";
             } else if (i === stepNumber) {
                 stepEl.className = "progress-step active";
+                stepEl.innerText = i;
             } else {
                 stepEl.className = "progress-step";
+                stepEl.innerText = i;
             }
         }
-    }
-}
-
-/* ========================= */
-/* CREAR FRUTAS PARA CONTEO */
-/* ========================= */
-
-function crearFrutas(contenedor, cantidad, emoji) {
-    contenedor.innerHTML = "";
-
-    for (let i = 1; i <= cantidad; i++) {
-        const fruta = document.createElement("span");
-        fruta.className = "objeto";
-        fruta.textContent = emoji;
-
-        fruta.addEventListener("click", () => {
-            hablar(i);
-        });
-
-        contenedor.appendChild(fruta);
     }
 }
 
@@ -179,28 +156,28 @@ function crearFrutas(contenedor, cantidad, emoji) {
 
 const INFO_OBSTACULOS = {
     1: {
-        titulo: "Obstáculo 1: Cuenta y Suma",
-        desc: "Cuenta las manzanas y los plátanos en cada grupo. Luego, escribe el resultado total de la suma.",
-        icon: "🍎",
-        speakText: "Cuenta las manzanas y los plátanos en cada grupo. Luego, escribe el resultado total de la suma."
+        titulo: "Desafío de Suma",
+        desc: "Resuelve la suma de un dígito mentalmente y escribe la respuesta.",
+        icon: "➕",
+        speakText: "Resuelve la suma de un dígito mentalmente y escribe la respuesta."
     },
     2: {
-        titulo: "Obstáculo 2: Súper Suma",
-        desc: "Cuenta las frutillas y las uvas en cada grupo. Luego, escribe el resultado total de la suma.",
-        icon: "🍓",
-        speakText: "Cuenta las frutillas y las uvas en cada grupo. Luego, escribe el resultado total de la suma."
+        titulo: "Desafío de Resta",
+        desc: "Resuelve la resta de un dígito mentalmente y escribe la respuesta.",
+        icon: "➖",
+        speakText: "Resuelve la resta de un dígito mentalmente y escribe la respuesta."
     },
     3: {
-        titulo: "Obstáculo 3: Suma Mental",
-        desc: "Resuelve la suma de dos números mentalmente y escribe la respuesta correcta.",
-        icon: "🧠",
-        speakText: "Resuelve la suma de dos números mentalmente y escribe la respuesta correcta."
+        titulo: "Desafío de Multiplicación",
+        desc: "Resuelve la multiplicación mentalmente y escribe la respuesta.",
+        icon: "✖️",
+        speakText: "Resuelve la multiplicación mentalmente y escribe la respuesta."
     },
     4: {
-        titulo: "Obstáculo 4: Desafío Final",
-        desc: "Resuelve esta suma mental de mayor dificultad para ganar el juego. ¡Tú puedes!",
-        icon: "🏆",
-        speakText: "Resuelve esta suma mental de mayor dificultad para ganar el juego. ¡Tú puedes!"
+        titulo: "Desafío de División",
+        desc: "Resuelve la división mentalmente y escribe la respuesta.",
+        icon: "➗",
+        speakText: "Resuelve la división mentalmente y escribe la respuesta."
     }
 };
 
@@ -217,8 +194,8 @@ function abrirModalExplicacion() {
     modalTitle.textContent = info.titulo;
     modalDesc.textContent = info.desc;
     
-    gameplayIcon.textContent = info.icon;
-    gameplayText.textContent = info.desc;
+    if (gameplayIcon) gameplayIcon.textContent = info.icon;
+    if (gameplayText) gameplayText.textContent = info.desc;
 
     // Restaurar botones y voz para el modo de juego
     const speakBtnInModal = document.getElementById("modal-speak-btn");
@@ -256,47 +233,14 @@ function generarNivel() {
     const ec = ecuacionesSesion[nivel - 1];
     n1 = ec.a;
     n2 = ec.b;
-    correcta = n1 + n2;
+    opStr = ec.op;
+    correcta = ec.correct;
 
-    if (nivel === 1) {
-        tituloJuego.textContent = "🍎 Cuenta y Suma";
-        operacionFrutas.style.display = "flex";
-        operacionNumeros.style.display = "none";
-
-        crearFrutas(grupo1, n1, "🍎");
-        crearFrutas(grupo2, n2, "🍌");
-        resultado.textContent = "= ?";
-    }
-
-    if (nivel === 2) {
-        tituloJuego.textContent = "🍓 Súper Suma";
-        operacionFrutas.style.display = "flex";
-        operacionNumeros.style.display = "none";
-
-        crearFrutas(grupo1, n1, "🍓");
-        crearFrutas(grupo2, n2, "🍇");
-        resultado.textContent = "= ?";
-    }
-
-    if (nivel === 3) {
-        tituloJuego.textContent = "🧠 Suma Mental";
-        operacionFrutas.style.display = "none";
-        operacionNumeros.style.display = "flex";
-
-        numero1.textContent = n1;
-        numero2.textContent = n2;
-        resultado.textContent = "= ?";
-    }
-
-    if (nivel === 4) {
-        tituloJuego.textContent = "🏆 Desafío Final";
-        operacionFrutas.style.display = "none";
-        operacionNumeros.style.display = "flex";
-
-        numero1.textContent = n1;
-        numero2.textContent = n2;
-        resultado.textContent = "= ?";
-    }
+    tituloJuego.textContent = `🌀 Desafío de ${ec.name}`;
+    numero1.textContent = n1;
+    numero2.textContent = n2;
+    operador.textContent = opStr;
+    resultado.textContent = "= ?";
 
     nivelTexto.textContent = nivel;
     abrirModalExplicacion();
@@ -323,9 +267,10 @@ btnComprobar.addEventListener("click", () => {
         setTimeout(() => {
             nivel++;
             if (nivel > 4) {
-                localStorage.setItem("actividad2", "completada");
+                localStorage.setItem("actividad6", "completada");
+
                 if (audioAplausos) audioAplausos.play();
-                hablar("Felicitaciones. Has completado todas las sumas.");
+                hablar("¡Felicitaciones! Has completado con éxito todo el desafío mixto.");
 
                 confetti({
                     particleCount: 250,
@@ -336,7 +281,7 @@ btnComprobar.addEventListener("click", () => {
                 // Configurar Modal de Victoria
                 modalIcon.textContent = "🏆🎉";
                 modalTitle.textContent = "¡Felicidades, Campeón!";
-                modalDesc.textContent = "Has completado con éxito los 4 obstáculos del mercado de las sumas.";
+                modalDesc.textContent = "Has superado con éxito el Desafío Mixto final de Matemática de 4° Básico.";
                 
                 const speakBtnInModal = document.getElementById("modal-speak-btn");
                 if (speakBtnInModal) speakBtnInModal.style.display = "none";
@@ -346,9 +291,6 @@ btnComprobar.addEventListener("click", () => {
                     buttonsContainer.innerHTML = `
                         <button class="btn-action" onclick="window.location.href='basico4.html'" style="background: linear-gradient(135deg, #38bdf8, #0ea5e9); box-shadow: 0 6px 0 #0284c7, 0 10px 15px rgba(14, 165, 233, 0.25);">
                             🏠 Volver al Menú
-                        </button>
-                        <button class="btn-action" onclick="window.location.href='actividad3.html'">
-                            ➡️ Siguiente Actividad
                         </button>
                     `;
                 }
@@ -365,21 +307,6 @@ btnComprobar.addEventListener("click", () => {
         if (audioError) audioError.play();
         hablar("Intenta nuevamente");
     }
-});
-
-btnReiniciar.addEventListener("click", () => {
-    nivel = 1;
-    estrellas = 0;
-    generarEcuacionesSesion();
-
-    estrellasTexto.textContent = "0";
-    nivelTexto.textContent = "1";
-
-    pantallaFinal.style.display = "none";
-    pantallaJuego.style.display = "block";
-
-    hablar("Vamos a empezar otra vez");
-    generarNivel();
 });
 
 window.onload = () => {
